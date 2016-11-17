@@ -44,8 +44,9 @@ function cdashmu_business_update_form(){
         ?>
    
     <p>
-        <label for="bus_name"><?php echo __('Business Name')?> *</label>
-        <input type="text" name="bname" id="bname" required value="<?php echo $bus_title; ?>">
+        <label for="bus_name"><?php echo __('Business Name')?></label>
+        <!--<input type="text" name="bname" id="bname" required value="<?php echo $bus_title; ?>">-->
+        <?php echo $bus_title; ?>
     </p>
     
     <p>
@@ -60,29 +61,29 @@ function cdashmu_business_update_form(){
     ?>
     <p>
         <label for="bus_cat">Current Business Category</label>
+        <div class="current_category_list">
         <?php 
           foreach($terms as $single_biz_category) {
                 echo $single_biz_category->name; //do something here
                 echo "<br />";
           }
         ?>
+        </div><!--end of current category list-->
     </p>
     
     <p>
         <label for="bus_cat">Add New Business Category</label>
+        <br />
         <?php
-
-        $category = 'business_category';
-        //$terms = get_terms($taxonomy); // Get all terms of a taxonomy
-        $terms = wp_get_post_terms( $business_id, $category, $args ); 
-        if ( $terms && !is_wp_error( $terms ) ) :
-        ?>        
-            <select name="bus_cat">
-                <?php foreach ( $terms as $term ) { ?>
-                    <option name = "<?php echo get_term_link($term->slug, $category); ?>"><?php echo $term->name; ?></option>
-                <?php } ?>
-            </select>
-        <?php endif;?>
+            $terms = get_terms('business_category');
+            foreach($terms as $single_category){
+        ?>
+                <input type="checkbox" name="business_category[]" value="<?php echo $single_category->term_id; ?>" />
+        <?php
+                echo $single_category-> name;
+                echo "<br />";
+            }
+        ?>
     </p>
     
     <p>
@@ -91,7 +92,7 @@ function cdashmu_business_update_form(){
 
         $level = 'membership_level';
         //$terms = get_terms($taxonomy); // Get all terms of a taxonomy
-        $terms = wp_get_post_terms( $business_id, $level, $args ); 
+        $terms = wp_get_post_terms( $business_id, $level, $args );     
         if ( $terms && !is_wp_error( $terms ) ) :
             foreach ( $terms as $term ) { 
             echo $term->name;  
@@ -113,7 +114,8 @@ function cdashmu_business_update_form(){
     	}
 	}
     ?>
-        <label for="bus_logo">Logo</label> <br /><?php echo $logo; ?> <br />(If you wish, you can upload a new logo (image dimensions).
+       <?php $member_options = get_option('cdashmm_options');  ?>
+        <label for="bus_logo">Logo</label> <br /><?php echo $logo; ?> <br />(If you wish, you can upload a new logo (<?php echo $member_options['bus_logo_image_width']; ?>px X <?php echo $member_options['bus_logo_image_height']; ?>px ).
         <input type="file" name="logo" value=""/>
     </p>
     
@@ -344,7 +346,7 @@ function cdashmu_business_update_form_shortcode(){
      $update_business_fields = array(
         'ID' => $business_id,
         'post_title' => $_POST['bname'],
-        'post_content' => $_POST['bdesc']        
+        'post_content' => $_POST['bdesc']
      );
      
      wp_update_post( $update_business_fields );
