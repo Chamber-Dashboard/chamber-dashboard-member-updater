@@ -34,7 +34,6 @@ function cdashmu_business_update_form(){
 
         if(isset($_POST['submit'])){
             cdashmu_update_business_data($business_id);
-
         ?>
           <p>Your business has been successfully updated.<br />
           <p>View your business here: <a href="<?php echo $business_url; ?> "><?php echo $business_url; ?></a></p>
@@ -56,8 +55,8 @@ function cdashmu_business_update_form(){
     
     <!--Display Current Categoty-->
     <?php 
-    $taxonomy = 'business_category';
-    $terms = wp_get_post_terms( $business_id, $taxonomy, $args ); 
+        $taxonomy = 'business_category';
+        $terms = wp_get_post_terms( $business_id, $taxonomy, $args ); 
     ?>
     <p>
         <label for="bus_cat">Current Business Category</label>
@@ -75,10 +74,14 @@ function cdashmu_business_update_form(){
         <label for="bus_cat">Add New Business Category</label>
         <br />
         <?php
+            $taxonomy = 'business_category';
+            $current_terms = wp_get_post_terms( $business_id, $taxonomy, $args ); 
             $terms = get_terms('business_category');
             foreach($terms as $single_category){
+            $category_slug = $single_category->slug;    
         ?>
-                <input type="checkbox" name="business_category[]" value="<?php echo $single_category->term_id; ?>" />
+                <input type="checkbox" name="business_category[]" value="<?php echo $single_category->slug; ?>" />
+                
         <?php
                 echo $single_category-> name;
                 echo "<br />";
@@ -345,12 +348,15 @@ function cdashmu_business_update_form_shortcode(){
      //$business_data['desc'] = $_POST['bdesc'];
      $update_business_fields = array(
         'ID' => $business_id,
-        'post_title' => $_POST['bname'],
         'post_content' => $_POST['bdesc']
      );
-     
      wp_update_post( $update_business_fields );
      
+     $terms = [];
+     if(!empty($_POST['business_category'])){
+         $terms = $_POST['business_category'];
+     }
+     wp_set_object_terms( $business_id, $terms, 'business_category', false);
      /*global $buscontact_metabox;
      $contactmeta = $buscontact_metabox->the_meta();
      $contactmeta = $_POST['buscontact_meta'];

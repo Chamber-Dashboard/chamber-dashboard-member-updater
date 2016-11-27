@@ -1,0 +1,90 @@
+<?php
+/* Options Page */
+
+
+// --------------------------------------------------------------------------------------
+// CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options')
+// --------------------------------------------------------------------------------------
+
+// Delete options table entries ONLY when plugin deactivated AND deleted
+function cdashmu_delete_plugin_options() {
+	delete_option('cdashmu_options');
+}
+
+// ------------------------------------------------------------------------------
+// CALLBACK FUNCTION FOR: register_activation_hook(__FILE__, 'cdcrm_add_defaults')
+// ------------------------------------------------------------------------------
+
+// Define default option settings
+function cdmu_add_defaults() {
+	//$tmp = get_option('cdmu_options');
+    //if(!is_array($tmp)) {
+		//delete_option('cdmu_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
+		/*$arr = array(	
+						"person_phone_type" => "Work, Home, Cell",
+			 			"person_email_type" => "Work, Personal",
+			 			"person_business_roles" => "Owner, Manager, Employee, Accounting",
+		);*/
+		//update_option('cdmu_options', $arr);
+	//}
+}
+
+// ------------------------------------------------------------------------------
+// CALLBACK FUNCTION FOR: add_action('admin_init', 'cdcrm_init' )
+// ------------------------------------------------------------------------------
+// THIS FUNCTION RUNS WHEN THE 'admin_init' HOOK FIRES, AND REGISTERS YOUR PLUGIN
+// SETTING WITH THE WORDPRESS SETTINGS API. YOU WON'T BE ABLE TO USE THE SETTINGS
+// API UNTIL YOU DO.
+// ------------------------------------------------------------------------------
+
+// Init plugin options to white list our options
+function cdmu_init(){
+	register_setting( 'cdmu_plugin_options', 'cdmu_options' );
+}
+
+// ------------------------------------------------------------------------------
+// CALLBACK FUNCTION FOR: add_action('admin_menu', 'cdmu_add_options_page');
+// ------------------------------------------------------------------------------
+
+// Add menu page
+function cdmu_add_options_page() {
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater Options', 'cdmu'), __('Member Updater Options', 'cdmu'), 'manage_options', 'cdash-mu', 'cdmu_render_form' );
+}
+
+// ------------------------------------------------------------------------------
+// Register Settings
+// ------------------------------------------------------------------------------
+
+add_action( 'admin_init', 'cdmu_settings_init' );
+
+function cdmu_settings_init() {
+	register_setting( 'cdmu_settings_page', 'cdmu_options' );
+	register_setting( 'cdmu_import_page', 'cdmu_options' );
+
+	add_settings_section(
+		'cdmu_settings_page_section', 
+		__( 'Chamber Dashboard Member Updater Settings', 'cdmu' ), 
+		'cdmu_options_section_callback', 
+		'cdashmm_plugin_options'
+	);
+}
+
+// Render the Plugin options form
+function cdmu_render_form() {
+	?>
+	<div class="wrap">
+    	<!-- Display Plugin Icon, Header, and Description -->
+		<div class="icon32" id="icon-options-general"><br></div>
+		<h2><?php _e('Chamber Dashboard Member Updater Options', 'cdcrm'); ?></h2>
+        
+        <?php settings_errors(); ?>
+        
+        
+    </div>
+    <?php
+}
+
+function cdmu_options_section_callback(){
+}
+
+?>
