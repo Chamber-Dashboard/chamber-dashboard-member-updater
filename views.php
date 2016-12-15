@@ -162,32 +162,19 @@ function cdashmu_get_business_email_from_business_id($business_id) {
         return null;        
     }
     
-    $business = new WP_Query(array('p' => $business_id));
-    //$business = get_post($business_id);
-    while($business->have_posts()) : $business->the_post();
-        global $buscontact_metabox;
-        $contactmeta = $buscontact_metabox->the_meta();
-        
-        if( isset( $buscontactmeta['location'] ) ) {
-            $locations = $buscontactmeta['location'];
-            if( is_array( $locations ) && !empty( $locations ) ) {
-                foreach( $locations as $location ) {
-                    if( isset( $location['email'] ) && !empty( $location['email'] ) ) {
-                        foreach( $location['email'] as $email_addr ) {
-                            $business_email = $email_addr['emailaddress'];                            
-                        }
-                    } 
-                    break; // we're cheating and just grabbing the first one
-                }
-            }
-        }
-        else{
-            $business_email = 'sushmasomu@gmail.com';
-        }
-    endwhile;        
+    global $buscontact_metabox;    
+    $contactmeta = $buscontact_metabox->the_meta($business_id);
     
-    //$business_email = $business->email;    
-    //$business_email = 'chandrika+1149@chamberdashboard.com';
+    if(isset($contactmeta['location'])){
+       if( is_array( $contactmeta['location'] ) && !empty( $contactmeta['location'] ) ) {
+           $location = $contactmeta['location'][0];
+           if(isset($location) && is_array($location)){
+               if( isset( $location['email'][0] ) && !empty( $location['email'][0] ) ) {
+                   $business_email = $contactmeta['location'][0]['email'][0]['emailaddress'];               
+               }               
+           }           
+       } 
+    }
     return $business_email;    
 }
 
@@ -199,31 +186,56 @@ function cdashmu_get_business_email_from_business_id($business_id) {
  * Snippet Name: Customize registration emails sent to the connected business
  * Snippet URL: http://www.wpcustoms.net/snippets/customize-registration-emails-sent-to-new-users/
  */
- function cdashmu_wp_new_user_notification($user_id) {
-	$user = get_userdata( $user_id );
-    $bus_email = cdashmu_get_business_email($user_id, true);    
-    $bus_email = 'chandrika@chamberdashboard.com';
+ function cdashmu_wp_new_user_notification($user_id, $business_id, $bus_name, $name) {
+     
+     $member_options = get_option('cdashmm_options');
+	 $user = get_userdata( $user_id );
+     $bus_email1 = cdashmu_get_business_email_from_business_id($business_id);    
+     $bus_email = cdashmu_get_business_email_from_business_id($business_id);
+     $user_email = $user->user_email; 
+     $headers = array('Content-Type: text/html; charset=UTF-8');
+          
+     if($member_options['additional_admin_email'] == ""){
+         $admin_email = get_option('admin_email');         
+     }
+     else{
+         $admin_email = $member_options['additional_admin_email'];
+     }
+     
+     
 
-	// The blogname option is escaped with esc_html on the way into the database in sanitize_option
-	// we want to reverse this for the plain text arena of emails.
-	$blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+	 // The blogname option is escaped with esc_html on the way into the database in sanitize_option
+	 // we want to reverse this for the plain text arena of emails.
+     //This email goes to the admin 
+	 $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
-	$message  = sprintf(__('New user registration on your site %s:'), $blogname) . "\r\n\r\n";
-	$message .= sprintf(__('Username: %s'), $user->user_login) . "\r\n\r\n";
-	$message .= sprintf(__('E-mail: %s'), $user->user_email) . "\r\n";
+	 $message  = sprintf(__('You have a new user registered on your site %s:'), $blogname) . "<br />";
+	 $message .= sprintf(__('Name: %s'), $name) . "<br />";
+     $message .= sprintf(__('Registered E-mail: %s'), $user->user_email) . "<br />";
+     $message .= sprintf(__('Business Connected to: %s'), $bus_name) . "<br />";
+     $message .= sprintf(__('Business Email: %s'), $bus_email) . "<br />"; 
+	
+	 @wp_mail($admin_email, sprintf(__('[%s] New User Registration'), $blogname), $message, $headers);
 
-	@wp_mail(get_option('admin_email'), sprintf(__('[%s] New User Registration'), $blogname), $message);
-
-	//if ( empty($plaintext_pass) )
+	 //if ( empty($plaintext_pass) )
 		//return;
-
-	$message  = sprintf(__('Username: %s'), $user->user_login) . "\r\n";
-	//$message .= sprintf(__('Password: %s'), '') . "\r\n";
-	$message .= 'To log into the admin area please us the following address ' . wp_login_url() . "\r\n";
-
-	//wp_mail($user-user_email, sprintf(__('[%s] Your username and password'), $blogname), $message);
-    wp_mail($bus_email, sprintf(__('[%s] Your username and password'), $blogname), $message);
-
+     
+     
+     //This email goes to the first business email listed under the business listing. 
+	 $message  = sprintf(__('New user connected to your business %s:'), $bus_name) . "<br />";
+     $message .= sprintf(__('Name: %s'), $name) . "<br />";
+     $message .= sprintf(__('Registered E-mail: %s'), $user->user_email) . "<br />";
+    
+     wp_mail($bus_email, sprintf(__('[%s] New User added to your business listing'), $bus_name), $message, $headers);
+    
+    
+     
+     //This email goes to the registered user
+     $message  = sprintf(__('You have been successfully registered as a user for  %s:'), $bus_name) . "<br />";
+     $message .= sprintf(__('Here is your username: %s'), $user->user_login) . "<br />";  
+     $message .= sprintf(__('Registered E-mail: %s'), $user->user_email) . "<br />";
+     $message .= $member_options['custom_registration_message'];
+     wp_mail($user_email, sprintf(__('[%s] Your Registration was Successful.'), $blogname), $message, $headers); 
 }
 
 
@@ -235,7 +247,7 @@ function cdashmu_get_business_edit_link(){
     $member_options = get_option('cdashmm_options');
     $business_edit_url = $member_options['business_update_page'];
     //$business_edit_url = plugins_url('cdashmu-edit-business.php', __FILE__);;
-    $edit_post = add_query_arg( 'post', get_the_ID(), get_permalink(  + $_POST['_wp_http_referer'] ) );
+    //$edit_post = add_query_arg( 'post', get_the_ID(), get_permalink(  + $_POST['_wp_http_referer'] ) );
     $business_edit_link = '<a href="' . $business_edit_url . '">Edit Your Business Listing</a>'; 
 
     return $business_edit_link;

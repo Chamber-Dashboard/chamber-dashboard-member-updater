@@ -35,3 +35,7 @@
 	z-index: 1000;
 }
 
+#cdashmu_business_update_form.cdash_form label{
+    font-size:18px;
+    font-weight: bold;
+}

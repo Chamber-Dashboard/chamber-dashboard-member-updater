@@ -22,6 +22,10 @@ function cdashmu_add_defaults() {
 	if( !isset( $tmp['user_registration_page'] ) ) {
 		$tmp['user_registration_page'] = get_bloginfo( 'home' );
 	}
+    
+    if(!isset($tmp['custom_registration_message'])){
+        $tmp['custom_registration_message'] = 'Thank you for registering as a member. You will be able to update your business after you have been approved by the chamber admin. If you have questions, please contact us.';
+    }
 	
 	if( !isset( $tmp['user_login_page'] ) ) {
 		$tmp['user_login_page'] = '';
@@ -37,6 +41,10 @@ function cdashmu_add_defaults() {
     
     if( !isset($tmp['bus_logo_image_height'])){
         $tmp['bus_logo_image_height'] = '200';
+    }
+    
+    if( !isset($tmp['additional_admin_email'])){
+        $tmp['additional_admin_email'] = '';
     }
 	
 	update_option( 'cdashmm_options', $tmp );
@@ -61,6 +69,17 @@ function cdashmu_options_init(  ) {
 		'cdashmu_options_section',
 		array(
 			__( 'Enter the url for your user registration page. Members will be directed to this page after they join.', 'cdashmu' )
+		)
+	);
+    
+    add_settings_field( 
+		'custom_registration_message', 
+		__( 'Custom Registration Message', 'cdashmu' ), 
+		'cdashmu_custom_registration_message_page_render', 
+		'cdashmm_plugin_options', 
+		'cdashmu_options_section',
+		array(
+			__( 'Enter the message you would like your users to see after they sign up as a user connected to a business.', 'cdashmu' )
 		)
 	);
 	
@@ -107,6 +126,17 @@ function cdashmu_options_init(  ) {
 			__( 'Here you can specify the maximum height of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
 		)
 	);
+    
+    add_settings_field( 
+		'additional_admin_email', 
+		__( 'Additional Admin Email', 'cdashmu' ), 
+		'cdashmu_additional_admin_email_page_render', 
+		'cdashmm_plugin_options', 
+		'cdashmu_options_section',
+		array(
+			__( 'If you would like the new user registration emails to go to a different email than the admin email, please enter it here.', 'cdashmu' )
+		)
+	);
 }
 
 function cdashmu_user_registration_page_render( $args ) { 
@@ -115,6 +145,23 @@ function cdashmu_user_registration_page_render( $args ) {
 	?>
 	<input type='text' name='cdashmm_options[user_registration_page]' value='<?php echo $options['user_registration_page']; ?>'>
 	<br /><span class="description"><?php echo $args[0]; ?></span>
+	<?php
+
+}
+
+function cdashmu_custom_registration_message_page_render( $args ) { 
+
+	$options = get_option( 'cdashmm_options' );
+	?>
+	<!--<input type='textarea' name='cdashmm_options[custom_registration_message]' value='<?php echo $options['custom_registration_message']; ?>'>
+	<br />--><span class="description"><?php echo $args[0]; ?></span>
+	<?php
+
+		$args = array("wpautop" => false, "media_buttons" => true, "textarea_name" => "cdashmm_options[custom_registration_message]", "textarea_rows" => "5");
+
+		wp_editor( $options['custom_registration_message'], "registration", $args );
+
+	?>
 	<?php
 
 }
@@ -154,6 +201,16 @@ function cdashmu_business_logo_image_height_render( $args ) {
 	$options = get_option( 'cdashmm_options' );
 	?>
 	<input type='text' name='cdashmm_options[bus_logo_image_height]' value='<?php echo $options['bus_logo_image_height']; ?>' style="width:50px;">
+	<br /><span class="description"><?php echo $args[0]; ?></span>
+	<?php
+
+}
+
+function cdashmu_additional_admin_email_page_render( $args ) { 
+
+	$options = get_option( 'cdashmm_options' );
+	?>
+	<input type='email' name='cdashmm_options[additional_admin_email]' value='<?php echo $options['additional_admin_email']; ?>'">
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 

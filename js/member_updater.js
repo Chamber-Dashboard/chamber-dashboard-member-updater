@@ -33,5 +33,8 @@ jQuery(document).ready(function ($) {
             $("#business_id").val(response.business_id);
             $("#bus_name").val(response.business_name);
         });
-    });
+    });  
+        
+    
+
 });

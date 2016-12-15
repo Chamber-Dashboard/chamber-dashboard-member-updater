@@ -163,7 +163,7 @@ function cdashmu_user_registration_form( $first_name, $last_name, $username, $pa
 	}
 	
     echo '
-    <form action="' . $_SERVER['REQUEST_URI'] . '" method="post" id="cdashmu_user_registration_form">
+    <form action="' . $_SERVER['REQUEST_URI'] . '" method="post" id="cdashmu_user_registration_form" class="cdash_form">
 	
 	<p class="explain">' . __( '* = Required') . '</p>
 	<input name="cdashmu_user_registration_nonce" id="cdashmu_user_registration_nonce" type="hidden" value="' . wp_create_nonce( 'cdashmu_user_registration_nonce' ) . '">
@@ -269,10 +269,11 @@ function cdashmu_complete_user_registration($first_name, $last_name, $username, 
         p2p_type('businesses_to_people')->connect($business_id, $person, array('date' => current_time('mysql')));
         cdashmu_connect_user_to_people($user, $person);
 		
-	        echo 'Registration complete. Goto <a href="' . $options['user_login_page'] . '">Login page</a>.';   
+	        //echo 'Registration complete. Goto <a href="' . $options['user_login_page'] . '">Login page</a>.';   
+            echo $options['custom_registration_message'];
 			// send an email to the admin alerting them of the registration
             //$user_id =  $user->ID;
-			cdashmu_wp_new_user_notification($user);
+			cdashmu_wp_new_user_notification($user, $business_id, $bus_name, $name);
 }
 
 function cdashmu_member_custom_registration_function() {
