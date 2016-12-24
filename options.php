@@ -1,7 +1,25 @@
 <?php
 /* Options Page */
 
+// --------------------------------------------------------------------------------------
+// CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdashmu_add_new_user_role')
+// --------------------------------------------------------------------------------------
 
+// Add a new user role when the plugin is activated
+function cdashmu_add_new_user_role() {
+	add_role(
+    'business_editor',
+    __( 'Business Editor' ),
+    array(
+        'read'         => true,  // true allows this capability
+        'edit_posts'   => true,
+        'delete_posts' => false, // Use false to explicitly deny
+        'delete_published_posts' => false,
+        'upload_files' => true,
+        'publish_posts'=> true
+    )
+    );
+}
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options')
 // --------------------------------------------------------------------------------------
@@ -41,6 +59,14 @@ function cdashmu_add_defaults() {
     
     if( !isset($tmp['bus_logo_image_height'])){
         $tmp['bus_logo_image_height'] = '200';
+    }
+    
+    if( !isset($tmp['bus_featured_image_width'])){
+        $tmp['bus_featured_image_width'] = '400';
+    }
+    
+    if( !isset($tmp['bus_featured_image_height'])){
+        $tmp['bus_featured_image_height'] = '400';
     }
     
     if( !isset($tmp['additional_admin_email'])){
@@ -128,6 +154,30 @@ function cdashmu_options_init(  ) {
 	);
     
     add_settings_field( 
+		'bus_featured_image_width', 
+		__( 'Business Featured Image Width', 'cdashmu' ), 
+		'cdashmu_business_featured_image_width_render', 
+		'cdashmm_plugin_options', 
+		'cdashmu_options_section',
+		array(
+			__( 'Here you can specify the maximum width of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
+		)
+	);
+    
+    add_settings_field( 
+		'bus_featured_image_height', 
+		__( 'Business Featured Image height', 'cdashmu' ), 
+		'cdashmu_business_featured_image_height_render', 
+		'cdashmm_plugin_options', 
+		'cdashmu_options_section',
+		array(
+			__( 'Here you can specify the maximum height of the featured image that the businesses can upload. The default is \400px.', 'cdashmu' )
+		)
+	);
+
+
+    
+    add_settings_field( 
 		'additional_admin_email', 
 		__( 'Additional Admin Email', 'cdashmu' ), 
 		'cdashmu_additional_admin_email_page_render', 
@@ -205,6 +255,27 @@ function cdashmu_business_logo_image_height_render( $args ) {
 	<?php
 
 }
+
+function cdashmu_business_featured_image_width_render( $args ) { 
+
+	$options = get_option( 'cdashmm_options' );
+	?>
+	<input type='text' name='cdashmm_options[bus_featured_image_width]' value='<?php echo $options['bus_featured_image_width']; ?>' style="width:50px;">
+	<br /><span class="description"><?php echo $args[0]; ?></span>
+	<?php
+
+}
+
+function cdashmu_business_featured_image_height_render( $args ) { 
+
+	$options = get_option( 'cdashmm_options' );
+	?>
+	<input type='text' name='cdashmm_options[bus_featured_image_height]' value='<?php echo $options['bus_featured_image_height']; ?>' style="width:50px;">
+	<br /><span class="description"><?php echo $args[0]; ?></span>
+	<?php
+
+}
+
 
 function cdashmu_additional_admin_email_page_render( $args ) { 
 

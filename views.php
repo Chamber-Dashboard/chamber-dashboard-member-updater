@@ -25,11 +25,11 @@ function cdashmu_user_login_redirect( $url, $request, $user ){
         if( $user->has_cap( 'administrator' ) ) {
             $url = admin_url();    
         }
-        else if( $user->has_cap( 'author' ) ) {
+        else if( $user->has_cap( 'business_editor' ) ) {
             $user_id = $user->ID;
             $url = cdashmu_get_business_url($user_id, false);
             if($url == null){
-                    wp_logout();
+                    wp_logout();                    
             }
         }else{
             wp_logout();

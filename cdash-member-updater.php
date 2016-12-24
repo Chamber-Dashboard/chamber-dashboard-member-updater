@@ -65,6 +65,8 @@ function cdashmu_member_manager_notice(){
     ?><div class="error"><p><?php _e('Sorry, but the Chamber Dashboard Member Updater requires the <a href="https://wordpress.org/plugins/chamber-dashboard-member-manager/" target="_blank">Chamber Dashboard Member Manager</a> to be installed and active.', 'cdashmu' ); ?></p></div><?php
 }
 
+add_action('show_admin_bar', '__return_false');
+
 // Freemius
 // Create a helper function for easy SDK access.
 function cdmu_fs() {
@@ -113,6 +115,7 @@ cdmu_fs();
 // Set-up Action and Filter Hooks
 register_activation_hook(__FILE__, 'cdashmu_add_defaults');
 register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options');
+register_activation_hook(__FILE__, 'cdashmu_add_new_user_role');
 //add_action('admin_init', 'cdmu_init' );
 //add_action('admin_menu', 'cdmu_add_options_page');
 //add_filter( 'plugin_action_links', 'cdmu_plugin_action_links', 10, 2 );
@@ -357,8 +360,12 @@ function cdashmu_add_lost_password_link() {
 add_action('wp_logout','cdashmu_auto_redirect_after_logout');
 function cdashmu_auto_redirect_after_logout(){
     wp_redirect( home_url() );
-    cdash_custom_logout_message();
+    //cdash_custom_logout_message();
     exit();
+}
+
+function cdash_custom_logout_message(){
+    echo "You have been logged out as you do no have permissions. Please contact the administrator";
 }
 // ------------------------------------------------------------------------
 // Connect Users to People

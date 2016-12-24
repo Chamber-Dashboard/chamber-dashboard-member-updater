@@ -11,13 +11,16 @@ function cdashmu_business_update_form(){
 	wp_localize_script( 'user-registration-form', 'userregistrationformajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
     
     $user_id = cdashmu_get_current_user_id();
+    $member_options = get_option('cdashmm_options');
     if(!$user_id){
-        return "Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
+        echo "Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
+        return;
     }
     $person_id = cdashmu_get_person_id_from_user_id($user_id, false);
     $business_id = cdashmu_get_business_id_from_person_id($person_id, false);  
     if(!$business_id){
-        return "You are not connected to a business. Please contact your Chamber of Commerce.";
+        echo "You are not connected to a business. Please contact your Chamber of Commerce.";
+        return;
     }
     
     // Enqueue stylesheet                
@@ -157,10 +160,9 @@ function cdashmu_business_update_form(){
     ?>
         <label for="featured_image"><?php echo __('Featured Image')?></label><br />
         <div id="featured_image">
-            <?php echo "This is the featured image: " . $thumbnail_image; ?><br /><br />
-            <?php echo "This is the uploaded featured image: " . $newupload; ?>
+            <?php echo $thumbnail_image; ?>
         </div><br />
-        (If you wish, you can upload a new featured image (image dimensions).  
+        If you wish, you can upload a new featured image (<?php echo $member_options['bus_featured_image_width']; ?>px X <?php echo $member_options['bus_featured_image_height']; ?>px).  
         <input type="file" name="featured_image" id="featured_image_upload" value=""/>            
     </p>
     
@@ -187,33 +189,37 @@ function cdashmu_business_update_form(){
         </p>
         
         <p>
+            <?php
+                $display_location = $location_info['donotdisplay'];
+            ?>
             <label for="display_location"><?php echo __('Do not display this location to the public?'); ?></label>
-            <input type="checkbox" name="buscontact_meta[location][<?php echo $i; ?>][donotdisplay]" value="<?php echo $location_info['donotdisplay'];?>" />
+            <input type="checkbox" name="buscontact_meta[location][<?php echo $i; ?>][donotdisplay]" value="<?php echo $location_info['donotdisplay'];?>" <?php if ($display_location == '1') echo "checked='checked'"; ?> />
         </p>
         
         <p>
             <label for="bus_address"><?php echo __('Address')?></label>
-            <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][address]" value="<?php echo $location_info['address']; ?>"/>
+            <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_address" name="buscontact_meta[location][<?php echo $i; ?>][address]" value="<?php echo $location_info['address']; ?>"/>
         </p>
         
         <p>
             <label for="bus_city"><?php echo __('City')?></label>
-            <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][city]" value="<?php echo $location_info['city']; ?>"/>
+            <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_city" name="buscontact_meta[location][<?php echo $i; ?>][city]" value="<?php echo $location_info['city']; ?>"/>
         </p>
         
         <p>
             <label for="bus_state"><?php echo __('State')?></label>
-            <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][state]" value="<?php echo $location_info['state']; ?>"/>
+            <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_state" name="buscontact_meta[location][<?php echo $i; ?>][state]" value="<?php echo $location_info['state']; ?>"/>
         </p>
         
         <p>
             <label for="bus_zip"><?php echo __('Zip')?></label>
-            <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][zip]" value="<?php echo $location_info['zip']; ?>"/>
+            <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_zip" name="buscontact_meta[location][<?php echo $i; ?>][zip]" value="<?php echo $location_info['zip']; ?>"/>
         </p>
         
-        <label><?php echo __('Use this for the billing address.')?></label>
-        <input type="checkbox" name="same_billing_address_<?php echo $i; ?>" />
-        <br />
+        <p>
+            <label for="bus_hours"><?php echo __('Hours')?></label>
+            <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][hours]" value="<?php echo $location_info['hours']; ?>"/>
+        </p>
         
         <div style="float:left; width:50%;">
         <h6>Phone Numbers</h6>
@@ -224,7 +230,7 @@ function cdashmu_business_update_form(){
         ?>
             <p>
                 <label for="bus_phone_1">Phone Number</label>
-                <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonenumber]" value="<?php echo $phone_info['phonenumber']; ?>" />
+                <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_phone_<?php echo $loop_index_phone; ?>_phonenumber" name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonenumber]" value="<?php echo $phone_info['phonenumber']; ?>" />
             </p>
             
             <p>
@@ -257,7 +263,7 @@ function cdashmu_business_update_form(){
         <p>
             <label for="bus_email_1">Email Address</label>
             <?php $selected = ' selected="selected"'; ?>            
-            <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][email][<?php echo $loop_index_email; ?>][emailaddress]" value="<?php echo $email_info['emailaddress']; ?>"/>
+            <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_email_<?php echo $loop_index_email; ?>_emailaddress" name="buscontact_meta[location][<?php echo $i; ?>][email][<?php echo $loop_index_email; ?>][emailaddress]" value="<?php echo $email_info['emailaddress']; ?>"/>
         </p>
                 
         <p>
@@ -276,8 +282,13 @@ function cdashmu_business_update_form(){
         <?php
                 $loop_index_email++;
             }
-        ?>
+        ?>    
+        
         </div>        
+        <!--<label><?php echo __('Use this for the billing address.')?></label>-->
+        <!--<input type="checkbox" name="same_billing_address_<?php echo $i; ?>" />-->
+             <button type="button" id="copy_billing_address_<?php echo $i; ?>" name="copy_billing_address_<?php echo $i; ?>" class="copy_billing_address"><?php echo __('Set as Billing Address'); ?></button><span id="billing_copy_message_<?php echo $i; ?>" class="message"></span>
+        <br /><br />
     </fieldset>       
     <?php
             $i++;
@@ -287,50 +298,64 @@ function cdashmu_business_update_form(){
     
     <fieldset>
         <legend>Social Media Links</legend>
-        <p>
-                <?php
-                    //$business_data['social'] = $contactmeta['social']; 
-                    $i = 0;
-                    foreach( $contactmeta['social'] as $social_info ) {
-                ?>
-                       <?php $selected = ' selected="selected"'; 
-                        $social_media_list = array(
-                            "avvo"  => "Avvo",
-                            "facebook"  =>  "Facebook",
-                            "flickr"    =>  "Flickr",
-                            "google"  =>  "Google +",
-                            "instagram"  =>  "Instagram",
-                            "linkedin"  =>  "LinkedIn",
-                            "pinterest"  =>  "Pinterest",
-                            "tripadvisor"  =>  "Trip Advisor",
-                            "tumblr"  =>  "Tumblr",
-                            "twitter"  =>  "Twitter",
-                            "urbanspoon"  =>  "Urbanspoon",
-                            "vimeo" =>  "Vimeo",
-                            "website"   =>  "Website",
-                            "youtube"   =>  "YouTube",
-                            "yelp"  =>  "Yelp"
-                        );
-            ?>
-			<label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]">Social Media Service</label>            
-			<select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
-				<option value=""></option>
-				<?php
-				foreach($social_media_list as $key=>$value){
-                ?>   
-                <option value="<?php echo $key; ?>" <?php if($social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
-				<?php        
-				}
-                ?>				
-			</select>
+        <div id="social_media" class="social_media_div">
+            <p>
+                    <?php
+                        $social_media_list = "";
+                        //$business_data['social'] = $contactmeta['social']; 
+                        $i = 0;
+                        foreach( $contactmeta['social'] as $social_info ) {
+                    ?>
+                           <?php $selected = ' selected="selected"'; 
+                            $social_media_list = array(
+                                "avvo"  => "Avvo",
+                                "facebook"  =>  "Facebook",
+                                "flickr"    =>  "Flickr",
+                                "google"  =>  "Google +",
+                                "instagram"  =>  "Instagram",
+                                "linkedin"  =>  "LinkedIn",
+                                "pinterest"  =>  "Pinterest",
+                                "tripadvisor"  =>  "Trip Advisor",
+                                "tumblr"  =>  "Tumblr",
+                                "twitter"  =>  "Twitter",
+                                "urbanspoon"  =>  "Urbanspoon",
+                                "vimeo" =>  "Vimeo",
+                                "website"   =>  "Website",
+                                "youtube"   =>  "YouTube",
+                                "yelp"  =>  "Yelp"
+                            );                        
+                ?>            
+                <div id="buscontact_meta_social_<?php echo $i; ?>_socialservice" class="social_media_child">
+                    <label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]">Social Media Service</label>     
+                    <select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
+                        <option value=""></option>
+                        <?php
+                        foreach($social_media_list as $key=>$value){
+                        ?>   
+                        <option value="<?php echo $key; ?>" <?php if($social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
+                        <?php
+                        }
+                        ?>				
+                    </select>
+
+                    <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
+                    <input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $social_info['socialurl']; ?>" /><br />
+                    <span class="remove">
+                        <input type="checkbox" name="social_media_remove_<?php echo $i; ?>" class="social_media_remove" id="social_media_remove_<?php echo $i; ?>" value="" />Delete
+                    </span> <br />      
+                </div><!--end social media child-->
             
-            <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
-            <input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $social_info['socialurl']; ?>" /><br />
-            <?php
-                    $i++;
+                <br />    
+                <?php
+                        $i++;
+                    }
+                if(empty($social_media_list)){
+                    echo "There are no social media links selected. Click here to add social media links to your business.";
                 }
-            ?>
-        </p>
+
+                ?>
+            </div><!--end of social media div-->
+        <button type="button" id="add_social_media" class="button">Add Social Media Links</button>
     </fieldset>
     
     <fieldset>
@@ -341,47 +366,35 @@ function cdashmu_business_update_form(){
         ?>
         <p>
             <label for="billing_address">Address</label>
-            <input type="text" name="billing_address" value="<?php echo $billingmeta['billing_address']; ?>"/>
+            <input type="text" id="billing_address" name="billing_address" value="<?php echo $billingmeta['billing_address']; ?>"/>
         </p>
         
         <p>
             <label for="billing_city">City</label>
-            <input type="text" name="billing_city" value="<?php echo $billingmeta['billing_city']; ?>"/>
+            <input type="text" id="billing_city" name="billing_city" value="<?php echo $billingmeta['billing_city']; ?>"/>
         </p>
         
         <p>
             <label for="billing_state">State</label>
-            <input type="text" name="billing_state" value="<?php echo $billingmeta['billing_state']; ?>"/>
+            <input type="text" id="billing_state" name="billing_state" value="<?php echo $billingmeta['billing_state']; ?>"/>
         </p>
         
         <p>
             <label for="billing_zip">Zip</label>
-            <input type="text" name="billing_zip" value="<?php echo $billingmeta['billing_zip']; ?>"/>
+            <input type="text" id="billing_zip" name="billing_zip" value="<?php echo $billingmeta['billing_zip']; ?>"/>
         </p>
         
         <p>
             <label for="billing_email">Billing Email</label>
-            <input type="text" name="billing_email" value="<?php echo $billingmeta['billing_email']; ?>"/>
+            <input type="text" id="billing_email" name="billing_email" value="<?php echo $billingmeta['billing_email']; ?>"/>
         </p>
         
         <p>
             <label for="billing_phone">Billing Phone</label>
-            <input type="text" name="billing_phone" value="<?php echo $billingmeta['billing_phone']; ?>"/>
+            <input type="text" id="billing_phone" name="billing_phone" value="<?php echo $billingmeta['billing_phone']; ?>"/>
         </p>
     
     </fieldset>	
-    
-    <fieldset>
-        <legend>Connected People</legend>
-            <p>
-                <label for="connected_people">Connected People</label>
-                Display connected people here.
-            </p>
-            
-            Add more connections
-        
-    </fieldset>
-        
     
     <input type="submit" name="submit" id="mu_edit_form" value="Submit" />	
     </form>
