@@ -88,31 +88,33 @@ jQuery(document).ready(function ($) {
             num++;
         }
         //alert(num);
-        var new_social_media_div = "<div id='buscontact_meta_social_" + num + "_socialservice' class='social_media_child'>";
-        new_social_media_div += "<label for='buscontact_meta[social][" + num + "][socialservice]'>Social Media Service</label>";
-        new_social_media_div += "<select name='buscontact_meta[social][" + num + "][socialservice]'>";
-        new_social_media_div += "<option value=''></option>";
+        var new_social_media_div_id = "buscontact_meta_social_" + num + "_socialservice";
+        var new_social_media_service_label_for = "buscontact_meta[social][" + num + "][socialservice]";
+        var new_social_media_select_name = "buscontact_meta[social][" + num + "][socialservice]";
+        var new_social_media_url_label_for = "buscontact_meta[social][" + num + "][socialurl]";
+        var new_social_media_input_text_name = "buscontact_meta[social][" + num + "][socialurl]";
+        var new_social_media_remove_checkbox_name = "social_media_remove_" + num;
         
-        $.each( social_media_array, function( key, value ) {
-        //alert( key + ": " + value );
-            new_social_media_div += "<option value='" + key + "' >" + value + "</option>";
-        });
-        new_social_media_div += "</select>";
-        new_social_media_div += "<label for='buscontact_meta[social][" + num + "][socialurl]'>Social Media Url</label>";
-        new_social_media_div += "<input type='text' name='buscontact_meta[social][" + num + "][socialurl]' value='' /><br />";
-        new_social_media_div += "<span class='remove'>";
-        new_social_media_div += "<input type='checkbox' name='social_media_remove_" + num + "' class='social_media_remove' id='social_media_remove_" + num + "' value ='' />";
-        new_social_media_div += "Delete</span> <br />";
         
-        new_social_media_div += "</div>";
-        $( ".social_media_div" ).append(new_social_media_div);
+        var new_social_media_div = $("#buscontact_meta_social_template_socialservice");
+        var new_social_media_clone = $(new_social_media_div).clone(true);
+        $(new_social_media_clone).appendTo(".social_media_div");
+        $(new_social_media_clone).css("display", "block");
         
+        $(new_social_media_clone).attr("id", new_social_media_div_id );
+        $("#" + new_social_media_div_id + " label").first().attr("for", new_social_media_service_label_for);
+        $("#" + new_social_media_div_id + " select").attr("name", new_social_media_select_name);
+        //$("#" + new_social_media_div_id + " select").attr("name", new_social_media_select_name);
+        $("#" + new_social_media_div_id + " label:nth-of-type(2)").attr("for", new_social_media_url_label_for);
+        $("#" + new_social_media_div_id + " input[type='text']").attr("name", new_social_media_input_text_name);
+        $("#" + new_social_media_div_id + " .remove input[type='checkbox']").attr("name", new_social_media_remove_checkbox_name);
+        $("#" + new_social_media_div_id + " .remove input[type='checkbox']").attr("id", new_social_media_remove_checkbox_name);        
     });
     
     //Hide the social media div when the delete button is checked
     $(".social_media_remove").click(function(){
-        alert($(this).attr('id'));
-        $(this).parent().parent().hide();        
+        //alert($(this).attr('id'));
+        $(this).parent().parent().remove();        
     });
 
 });

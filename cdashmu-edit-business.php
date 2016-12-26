@@ -298,63 +298,80 @@ function cdashmu_business_update_form(){
     
     <fieldset>
         <legend>Social Media Links</legend>
-        <div id="social_media" class="social_media_div">
-            <p>
+        <div id="social_media" class="social_media_div">            
+            <?php
+                //$social_media_list = "";
+                $social_media_list = array(
+                        "avvo"  => "Avvo",
+                        "facebook"  =>  "Facebook",
+                        "flickr"    =>  "Flickr",
+                        "google"  =>  "Google +",
+                        "instagram"  =>  "Instagram",
+                        "linkedin"  =>  "LinkedIn",
+                        "pinterest"  =>  "Pinterest",
+                        "tripadvisor"  =>  "Trip Advisor",
+                        "tumblr"  =>  "Tumblr",
+                        "twitter"  =>  "Twitter",
+                        "urbanspoon"  =>  "Urbanspoon",
+                        "vimeo" =>  "Vimeo",
+                        "website"   =>  "Website",
+                        "youtube"   =>  "YouTube",
+                        "yelp"  =>  "Yelp"
+                    );
+            ?>
+            <div id="buscontact_meta_social_template_socialservice" class="social_media_child" style="display:none;">
+                <label for="buscontact_meta_social_template_socialservice">Social Media Service</label>     
+                <select name="buscontact_meta_social_template_socialservice">
+                    <option value=""></option>
                     <?php
-                        $social_media_list = "";
-                        //$business_data['social'] = $contactmeta['social']; 
-                        $i = 0;
-                        foreach( $contactmeta['social'] as $social_info ) {
-                    ?>
-                           <?php $selected = ' selected="selected"'; 
-                            $social_media_list = array(
-                                "avvo"  => "Avvo",
-                                "facebook"  =>  "Facebook",
-                                "flickr"    =>  "Flickr",
-                                "google"  =>  "Google +",
-                                "instagram"  =>  "Instagram",
-                                "linkedin"  =>  "LinkedIn",
-                                "pinterest"  =>  "Pinterest",
-                                "tripadvisor"  =>  "Trip Advisor",
-                                "tumblr"  =>  "Tumblr",
-                                "twitter"  =>  "Twitter",
-                                "urbanspoon"  =>  "Urbanspoon",
-                                "vimeo" =>  "Vimeo",
-                                "website"   =>  "Website",
-                                "youtube"   =>  "YouTube",
-                                "yelp"  =>  "Yelp"
-                            );                        
-                ?>            
-                <div id="buscontact_meta_social_<?php echo $i; ?>_socialservice" class="social_media_child">
-                    <label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]">Social Media Service</label>     
-                    <select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
-                        <option value=""></option>
-                        <?php
-                        foreach($social_media_list as $key=>$value){
-                        ?>   
-                        <option value="<?php echo $key; ?>" <?php if($social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
-                        <?php
-                        }
-                        ?>				
-                    </select>
-
-                    <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
-                    <input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $social_info['socialurl']; ?>" /><br />
-                    <span class="remove">
-                        <input type="checkbox" name="social_media_remove_<?php echo $i; ?>" class="social_media_remove" id="social_media_remove_<?php echo $i; ?>" value="" />Delete
-                    </span> <br />      
-                </div><!--end social media child-->
-            
-                <br />    
-                <?php
-                        $i++;
+                    foreach($social_media_list as $key=>$value){
+                    ?>   
+                    <option value="<?php echo $key; ?>" <?php if($social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
+                    <?php
                     }
-                if(empty($social_media_list)){
-                    echo "There are no social media links selected. Click here to add social media links to your business.";
-                }
+                    ?>				
+                </select>
 
-                ?>
-            </div><!--end of social media div-->
+                <label for="buscontact_meta_social_template_socialurl">Social Media Url</label>
+                <input type="text" name="buscontact_meta_social_template_socialurl" value="<?php echo $social_info['socialurl']; ?>" /><br />
+                <span class="remove">
+                    <input type="checkbox" name="social_media_remove_template" class="social_media_remove" id="social_media_remove_template" value="" />Delete
+                </span> <br /><br />      
+            </div>
+            <?php
+                //$business_data['social'] = $contactmeta['social']; 
+                $i = 0;
+                foreach( $contactmeta['social'] as $social_info ) {
+                $selected = ' selected="selected"';                                                   
+            ?>            
+            <div id="buscontact_meta_social_<?php echo $i; ?>_socialservice" class="social_media_child">               
+                <label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]">Social Media Service</label>     
+                <select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
+                    <option value=""></option>
+                    <?php
+                    foreach($social_media_list as $key=>$value){
+                    ?>   
+                    <option value="<?php echo $key; ?>" <?php if($social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
+                    <?php
+                    }
+                    ?>				
+                </select>
+
+                <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
+                <input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $social_info['socialurl']; ?>" /><br />
+                <span class="remove">
+                    <input type="checkbox" name="social_media_remove_<?php echo $i; ?>" class="social_media_remove" id="social_media_remove_<?php echo $i; ?>" value="" />Delete
+                </span> <br /><br />      
+            </div>
+            <?php
+                    $i++;
+                }
+            if(empty($social_media_list)){
+                echo "There are no social media links selected. Click here to add social media links to your business.";
+            }
+
+            ?>
+        </div><!--end of social media div-->
         <button type="button" id="add_social_media" class="button">Add Social Media Links</button>
     </fieldset>
     
@@ -458,8 +475,12 @@ function cdashmu_business_update_form_shortcode(){
      update_post_meta($business_id, '_cdash_location', $locations);
     
      // update social
+     $social_array = [];
      $social = $_POST['buscontact_meta']['social'];    //$social[0] = first social, $social[1] = second social
-     update_post_meta($business_id, '_cdash_social', $social);
+     foreach($social as $social_element){
+         $social_array[] = $social_element;
+     }
+     update_post_meta($business_id, '_cdash_social', $social_array);
 
      
      //UPDATING THE BILLING ADDRESS FIELDS
