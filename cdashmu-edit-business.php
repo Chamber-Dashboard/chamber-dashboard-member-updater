@@ -71,7 +71,7 @@ function cdashmu_business_update_form(){
     <!--Display Current Categoty-->
     <?php 
         $taxonomy = 'business_category';
-        $current_terms = wp_get_post_terms( $business_id, $taxonomy, $args ); 
+        $current_terms = wp_get_post_terms( $business_id, $taxonomy); 
     ?>
     <!--<p>
         <label for="bus_cat">Current Business Category</label>
@@ -135,15 +135,21 @@ function cdashmu_business_update_form(){
 	global $buslogo_metabox;
 	$logometa = $buslogo_metabox->the_meta();
     if( isset( $logometa['buslogo'] ) ) {
-    	if( $single_link == "yes" ) {
+        $logoattr = array(
+            'class'	=> 'logo',
+        );
+    	/*if( $single_link == "yes" ) {
     		$logo = "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
-		} else {
+		} else {*/
 		$logo= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
-    	}
+    	//}
 	}
+    else{
+        $logo = "There is no logo set for your business.";
+    }
     ?><br />
        <?php $member_options = get_option('cdashmm_options');  ?>
-        <label for="bus_logo"><?php echo __('Logo')?></label> <br /><?php echo $logo; ?> <br />If you wish, you can upload a new logo (<?php echo $member_options['bus_logo_image_width']; ?>px X <?php echo $member_options['bus_logo_image_height']; ?>px ).
+        <label for="bus_logo"><?php echo __('Logo')?></label><?php echo $logo; ?> <br />If you wish, you can upload a new logo (<?php echo $member_options['bus_logo_image_width']; ?>px X <?php echo $member_options['bus_logo_image_height']; ?>px ).
         <input type="file" name="bus_logo" value=""/>
     </p>
     
@@ -152,7 +158,7 @@ function cdashmu_business_update_form(){
         // check if the post has a Post Thumbnail assigned to it.
         if ( has_post_thumbnail() ) {
             $thumbnail = get_the_post_thumbnail( $business_id, 'thumbnail' ); 
-        	$thumbnail_image = "<a href='" . get_the_permalink() . "'>" . $thumbnail . "</a>";
+        	//$thumbnail_image = "<a href='" . get_the_permalink() . "'>" . $thumbnail . "</a>";
         }
         else{
             $thumbnail_image = "There is no featured image set for your business.";

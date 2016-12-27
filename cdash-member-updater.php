@@ -409,7 +409,7 @@ function cdashmu_find_existing_business() {
 
     $args = array( 
         'post_type' => 'business',
-        'post_title like' => $bus_name,
+        'post_title_like' => $bus_name,
         'posts_per_page' => -1,
         'orderby' => 'title',
         'order' => 'ASC',
