@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.1.1
+Version: 1.0
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash
@@ -26,6 +26,16 @@ Text Domain: cdash
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+if ( ! defined('ABSPATH') ) {
+	die('Please do not load this file directly.');
+}
+
+/* some plugin defines */
+define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
+define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
+define('CDASHMU_VERSION',   				'1.0');
+
+
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:                                               
 // ------------------------------------------------------------------------
@@ -35,10 +45,10 @@ function cdashmu_requires_wordpress_version() {
 	$plugin = plugin_basename( __FILE__ );
 	$plugin_data = get_plugin_data( __FILE__, false );
 
-	if ( version_compare($wp_version, "3.8", "<" ) ) {
+	if ( version_compare($wp_version, "4.2", "<" ) ) {
 		if( is_plugin_active($plugin) ) {
 			deactivate_plugins( $plugin );
-			wp_die( "'".$plugin_data['Name']."' requires WordPress 3.8 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."'>WordPress admin</a>." );
+			wp_die( "'".$plugin_data['Name']."' requires WordPress 4.2 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."'>WordPress admin</a>." );
 		}
 	}
 }
@@ -67,66 +77,32 @@ function cdashmu_member_manager_notice(){
 
 add_action('show_admin_bar', '__return_false');
 
-// Freemius
-// Create a helper function for easy SDK access.
-function cdmu_fs() {
-    global $cdmu_fs;
-
-    if ( ! isset( $cdmu_fs ) ) {
-        // Include Freemius SDK.
-        if ( file_exists( dirname( dirname( __FILE__ ) ) . '/chamber-dashboard-business-directory/freemius/start.php' ) ) {
-            // Try to load SDK from parent plugin folder.
-            require_once dirname( dirname( __FILE__ ) ) . '/chamber-dashboard-business-directory/freemius/start.php';
-        } else if ( file_exists( dirname( dirname( __FILE__ ) ) . '/chamber-dashboard-business-directory-premium/freemius/start.php' ) ) {
-            // Try to load SDK from premium parent plugin folder.
-            require_once dirname( dirname( __FILE__ ) ) . '/chamber-dashboard-business-directory-premium/freemius/start.php';
-        } else {
-            require_once dirname(__FILE__) . '/freemius/start.php';
-        }
-
-        $cdrp_fs = fs_dynamic_init( array(
-            'id'                => '171',
-            'slug'              => 'chamber-dashboard-member-updater',
-            'public_key'        => 'pk_1d438ffef9a0b4d1c8404cd6ea83c',
-            'is_premium'        => true,
-            'has_paid_plans'    => true,
-            'parent'      => array(
-                'id'         => '170',
-                'slug'       => 'chamber-dashboard-business-directory',
-                'public_key' => 'pk_fb8be3233878561440e6781b2bda4',
-                'name'       => 'Chamber Dashboard Business Directory',
-            ),
-            // Set the SDK to work in a sandbox mode (for development & testing).
-            // IMPORTANT: MAKE SURE TO REMOVE SECRET KEY BEFORE DEPLOYMENT.
-            'secret_key'  => 'sk_.z@xhhEUZ5EsvWa0P3n8mZhJfgYT1',
-        ) );
-    }
-
-    return $cdmu_fs;
-}
-
-// Init Freemius.
-cdmu_fs();
 
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:
 // ------------------------------------------------------------------------
 
 // Set-up Action and Filter Hooks
+//What to do when the plugin is activated
 register_activation_hook(__FILE__, 'cdashmu_add_defaults');
-register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options');
 register_activation_hook(__FILE__, 'cdashmu_add_new_user_role');
-//add_action('admin_init', 'cdmu_init' );
-//add_action('admin_menu', 'cdmu_add_options_page');
-//add_filter( 'plugin_action_links', 'cdmu_plugin_action_links', 10, 2 );
+
+add_action('admin_menu', 'cdmu_add_settings_page');
+
+//What to do when the plugin is uninstalled
+register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options');
 
 // Require options stuff
 require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
+
+// Require Settings Page
+require_once( plugin_dir_path( __FILE__ ) . 'settings.php' );
+
 // Require views
 require_once( plugin_dir_path( __FILE__ ) . 'views.php' );
+
 // Require business update form
 require_once( plugin_dir_path( __FILE__ ) . 'cdashmu-edit-business.php' );
-
 
 // Initialize language so it can be translated
 function cdashmu_language_init() {
@@ -134,13 +110,42 @@ function cdashmu_language_init() {
 }
 add_action('init', 'cdashmu_language_init');
 
-// Automatic updates
-define( 'CDASHMU_STORE_URL', 'https://chamberdashboard.com' );
-define( 'CDASHMU_ITEM_NAME', 'Member Updater' );
+
+// ------------------------------------------------------------------------
+// ADD THE EDD LICENSE INFORMATION
+// ------------------------------------------------------------------------
+
+// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
+define( 'EDD_SAMPLE_STORE_URL', 'http://easydigitaldownloads.com' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
+
+// the name of your product. This should match the download name in EDD exactly
+define( 'EDD_SAMPLE_ITEM_NAME', 'Sample Plugin' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
+
+// the name of the settings page for the license input to be displayed
+define( 'EDD_SAMPLE_PLUGIN_LICENSE_PAGE', 'pluginname-license' );
+
 if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-    // load our custom updater if it doesn't already exist 
-    include( plugin_dir_path( __FILE__ ) . 'includes/EDD_SL_Plugin_Updater.php' );
+	// load our custom updater
+	include( dirname( __FILE__ ) . '/EDD_SL_Plugin_Updater.php' );
 }
+
+function edd_sl_sample_plugin_updater() {
+
+	// retrieve our license key from the DB
+	$license_key = trim( get_option( 'edd_sample_license_key' ) );
+
+	// setup the updater
+	$edd_updater = new EDD_SL_Plugin_Updater( EDD_SAMPLE_STORE_URL, __FILE__, array(
+			'version'   => '1.0',                // current version number
+			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
+			'item_name' => EDD_SAMPLE_ITEM_NAME, // name of this plugin
+			'author'    => 'Pippin Williamson'   // author of this plugin
+		)
+	);
+
+}
+add_action( 'admin_init', 'edd_sl_sample_plugin_updater', 0 );
+
 
 
 // ------------------------------------------------------------------------

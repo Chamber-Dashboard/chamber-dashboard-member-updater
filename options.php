@@ -1,6 +1,13 @@
 <?php
 /* Options Page */
 
+
+// Add menu page
+function cdmu_add_settings_page() {
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater License', 'cdmu'), __('Member Updater License', 'cdmu'), 'manage_options', 'cdash-mu', 'cdmu_render_license_key_form' );
+}
+
+
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdashmu_add_new_user_role')
 // --------------------------------------------------------------------------------------
@@ -293,5 +300,9 @@ function cdashmu_options_section_callback(  ) {
 
 	echo __( 'Chamber Dashboard Member Updater General Settings', 'cdashmu' );
 
+}
+
+function cdmu_render_license_key_form(){
+    //echo "This is where the license key form will go.";
 }
 ?>
