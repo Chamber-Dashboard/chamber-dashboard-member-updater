@@ -1,22 +1,32 @@
 <?php
 /* Options Page */
 
-echo "Testing to see if the text shows up on the admin page";
 
-function edd_sample_license_menu() {
-	add_plugins_page( 'Plugin License', 'Plugin License', 'manage_options', EDD_SAMPLE_PLUGIN_LICENSE_PAGE, 'edd_sample_license_page' );
+function cdmu_render_license_key_form(){      
+?>
+    <div class="wrap">
+        <!--<h1><?= esc_html(get_admin_page_title()); ?></h1>-->
+        <?php cdash_mu_edd_license_page(); ?>
+    </div>
+    
+<?php
 }
-add_action('admin_menu', 'edd_sample_license_menu');
+?>
+<?php
+/*function edd_sample_license_menu() {
+	add_plugins_page( 'Plugin License', 'Plugin License', 'manage_options', CDASHMU_EDD_PLUGIN_LICENSE_PAGE, 'cdash_mu_edd_license_page' );
+}
+add_action('admin_menu', 'edd_sample_license_menu');*/
 
-function edd_sample_license_page() {
-	$license = get_option( 'edd_sample_license_key' );
-	$status  = get_option( 'edd_sample_license_status' );
+function cdash_mu_edd_license_page() {
+	$license = get_option( 'cdash_mu_edd_license_key' );
+	$status  = get_option( 'cdash_mu_edd_license_status' );
 	?>
 	<div class="wrap">
-		<h2><?php _e('Plugin License Options'); ?></h2>
+		<h2><?php _e('Member Updater License Options'); ?></h2>
 		<form method="post" action="options.php">
 
-			<?php settings_fields('edd_sample_license'); ?>
+			<?php settings_fields('cdash_mu_edd_license'); ?>
 
 			<table class="form-table">
 				<tbody>
@@ -25,8 +35,8 @@ function edd_sample_license_page() {
 							<?php _e('License Key'); ?>
 						</th>
 						<td>
-							<input id="edd_sample_license_key" name="edd_sample_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" />
-							<label class="description" for="edd_sample_license_key"><?php _e('Enter your license key'); ?></label>
+							<input id="cdash_mu_edd_license_key" name="cdash_mu_edd_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" />
+							<label class="description" for="cdash_mu_edd_license_key"><?php _e('Enter your license key'); ?></label>
 						</td>
 					</tr>
 					<?php if( false !== $license ) { ?>
@@ -37,10 +47,10 @@ function edd_sample_license_page() {
 							<td>
 								<?php if( $status !== false && $status == 'valid' ) { ?>
 									<span style="color:green;"><?php _e('active'); ?></span>
-									<?php wp_nonce_field( 'edd_sample_nonce', 'edd_sample_nonce' ); ?>
+									<?php wp_nonce_field( 'cdash_mu_edd_nonce', 'cdash_mu_edd_nonce' ); ?>
 									<input type="submit" class="button-secondary" name="edd_license_deactivate" value="<?php _e('Deactivate License'); ?>"/>
 								<?php } else {
-									wp_nonce_field( 'edd_sample_nonce', 'edd_sample_nonce' ); ?>
+									wp_nonce_field( 'cdash_mu_edd_nonce', 'cdash_mu_edd_nonce' ); ?>
 									<input type="submit" class="button-secondary" name="edd_license_activate" value="<?php _e('Activate License'); ?>"/>
 								<?php } ?>
 							</td>
@@ -54,16 +64,16 @@ function edd_sample_license_page() {
 	<?php
 }
 
-function edd_sample_register_option() {
+function cdash_mu_edd_register_option() {
 	// creates our settings in the options table
-	register_setting('edd_sample_license', 'edd_sample_license_key', 'edd_sanitize_license' );
+	register_setting('cdash_mu_edd_license', 'cdash_mu_edd_license_key', 'edd_sanitize_license' );
 }
-add_action('admin_init', 'edd_sample_register_option');
+add_action('admin_init', 'cdash_mu_edd_register_option');
 
 function edd_sanitize_license( $new ) {
-	$old = get_option( 'edd_sample_license_key' );
+	$old = get_option( 'cdash_mu_edd_license_key' );
 	if( $old && $old != $new ) {
-		delete_option( 'edd_sample_license_status' ); // new license has been entered, so must reactivate
+		delete_option( 'cdash_mu_edd_license_status' ); // new license has been entered, so must reactivate
 	}
 	return $new;
 }
@@ -75,29 +85,29 @@ function edd_sanitize_license( $new ) {
 * a license key
 *************************************/
 
-function edd_sample_activate_license() {
+function cdash_mu_edd_activate_license() {
 
 	// listen for our activate button to be clicked
 	if( isset( $_POST['edd_license_activate'] ) ) {
 
 		// run a quick security check
-	 	if( ! check_admin_referer( 'edd_sample_nonce', 'edd_sample_nonce' ) )
+	 	if( ! check_admin_referer( 'cdash_mu_edd_nonce', 'cdash_mu_edd_nonce' ) )
 			return; // get out if we didn't click the Activate button
 
 		// retrieve the license from the database
-		$license = trim( get_option( 'edd_sample_license_key' ) );
+		$license = trim( get_option( 'cdash_mu_edd_license_key' ) );
 
 
 		// data to send in our API request
 		$api_params = array(
 			'edd_action' => 'activate_license',
 			'license'    => $license,
-			'item_name'  => urlencode( EDD_SAMPLE_ITEM_NAME ), // the name of our product in EDD
+			'item_name'  => urlencode( CDASHMU_EDD_ITEM_NAME ), // the name of our product in EDD
 			'url'        => home_url()
 		);
 
 		// Call the custom API.
-		$response = wp_remote_post( EDD_SAMPLE_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$response = wp_remote_post( CDASH_MU_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
@@ -142,7 +152,7 @@ function edd_sample_activate_license() {
 
 					case 'item_name_mismatch' :
 
-						$message = sprintf( __( 'This appears to be an invalid license key for %s.' ), EDD_SAMPLE_ITEM_NAME );
+						$message = sprintf( __( 'This appears to be an invalid license key for %s.' ), CDASHMU_EDD_ITEM_NAME );
 						break;
 
 					case 'no_activations_left':
@@ -162,7 +172,7 @@ function edd_sample_activate_license() {
 
 		// Check if anything passed on a message constituting a failure
 		if ( ! empty( $message ) ) {
-			$base_url = admin_url( 'plugins.php?page=' . EDD_SAMPLE_PLUGIN_LICENSE_PAGE );
+			$base_url = admin_url( 'admin.php?page=' . CDASHMU_EDD_PLUGIN_LICENSE_PAGE );
 			$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
 
 			wp_redirect( $redirect );
@@ -171,12 +181,12 @@ function edd_sample_activate_license() {
 
 		// $license_data->license will be either "valid" or "invalid"
 
-		update_option( 'edd_sample_license_status', $license_data->license );
-		wp_redirect( admin_url( 'plugins.php?page=' . EDD_SAMPLE_PLUGIN_LICENSE_PAGE ) );
+		update_option( 'cdash_mu_edd_license_status', $license_data->license );
+		wp_redirect( admin_url( 'admin.php?page=' . CDASHMU_EDD_PLUGIN_LICENSE_PAGE ) );
 		exit();
 	}
 }
-add_action('admin_init', 'edd_sample_activate_license');
+add_action('admin_init', 'cdash_mu_edd_activate_license');
 
 
 /***********************************************
@@ -184,29 +194,29 @@ add_action('admin_init', 'edd_sample_activate_license');
 * This will decrease the site count
 ***********************************************/
 
-function edd_sample_deactivate_license() {
+function cdash_mu_edd_deactivate_license() {
 
 	// listen for our activate button to be clicked
 	if( isset( $_POST['edd_license_deactivate'] ) ) {
 
 		// run a quick security check
-	 	if( ! check_admin_referer( 'edd_sample_nonce', 'edd_sample_nonce' ) )
+	 	if( ! check_admin_referer( 'cdash_mu_edd_nonce', 'cdash_mu_edd_nonce' ) )
 			return; // get out if we didn't click the Activate button
 
 		// retrieve the license from the database
-		$license = trim( get_option( 'edd_sample_license_key' ) );
+		$license = trim( get_option( 'cdash_mu_edd_license_key' ) );
 
 
 		// data to send in our API request
 		$api_params = array(
 			'edd_action' => 'deactivate_license',
 			'license'    => $license,
-			'item_name'  => urlencode( EDD_SAMPLE_ITEM_NAME ), // the name of our product in EDD
+			'item_name'  => urlencode( CDASHMU_EDD_ITEM_NAME ), // the name of our product in EDD
 			'url'        => home_url()
 		);
 
 		// Call the custom API.
-		$response = wp_remote_post( EDD_SAMPLE_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$response = wp_remote_post( CDASH_MU_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
@@ -217,7 +227,7 @@ function edd_sample_deactivate_license() {
 				$message = __( 'An error occurred, please try again.' );
 			}
 
-			$base_url = admin_url( 'plugins.php?page=' . EDD_SAMPLE_PLUGIN_LICENSE_PAGE );
+			$base_url = admin_url( 'admin.php?page=' . CDASHMU_EDD_PLUGIN_LICENSE_PAGE );
 			$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
 
 			wp_redirect( $redirect );
@@ -229,15 +239,15 @@ function edd_sample_deactivate_license() {
 
 		// $license_data->license will be either "deactivated" or "failed"
 		if( $license_data->license == 'deactivated' ) {
-			delete_option( 'edd_sample_license_status' );
+			delete_option( 'cdash_mu_edd_license_status' );
 		}
 
-		wp_redirect( admin_url( 'plugins.php?page=' . EDD_SAMPLE_PLUGIN_LICENSE_PAGE ) );
+		wp_redirect( admin_url( 'admin.php?page=' . CDASHMU_EDD_PLUGIN_LICENSE_PAGE ) );
 		exit();
 
 	}
 }
-add_action('admin_init', 'edd_sample_deactivate_license');
+add_action('admin_init', 'cdash_mu_edd_deactivate_license');
 
 
 /************************************
@@ -248,21 +258,21 @@ add_action('admin_init', 'edd_sample_deactivate_license');
 * want to do something custom
 *************************************/
 
-function edd_sample_check_license() {
+function cdash_mu_edd_check_license() {
 
 	global $wp_version;
 
-	$license = trim( get_option( 'edd_sample_license_key' ) );
+	$license = trim( get_option( 'cdash_mu_edd_license_key' ) );
 
 	$api_params = array(
 		'edd_action' => 'check_license',
 		'license' => $license,
-		'item_name' => urlencode( EDD_SAMPLE_ITEM_NAME ),
+		'item_name' => urlencode( CDASHMU_EDD_ITEM_NAME ),
 		'url'       => home_url()
 	);
 
 	// Call the custom API.
-	$response = wp_remote_post( EDD_SAMPLE_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+	$response = wp_remote_post( CDASH_MU_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 
 	if ( is_wp_error( $response ) )
 		return false;
@@ -281,7 +291,7 @@ function edd_sample_check_license() {
 /**
  * This is a means of catching errors from the activation method above and displaying it to the customer
  */
-function edd_sample_admin_notices() {
+function cdash_mu_edd_admin_notices() {
 	if ( isset( $_GET['sl_activation'] ) && ! empty( $_GET['message'] ) ) {
 
 		switch( $_GET['sl_activation'] ) {
@@ -303,6 +313,6 @@ function edd_sample_admin_notices() {
 		}
 	}
 }
-add_action( 'admin_notices', 'edd_sample_admin_notices' );
+add_action( 'admin_notices', 'cdash_mu_edd_admin_notices' );
 
 ?>

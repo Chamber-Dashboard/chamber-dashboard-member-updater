@@ -6,7 +6,7 @@ Description: Enables members to update their businesses
 Version: 1.0
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
-Text Domain: cdash
+Text Domain: cdash-mu
 */
 
 /*  Copyright 2016 Morgan Kay, Chandrika Guntur and Chamber Dashboard (email : info@chamberdashboard.com)
@@ -35,6 +35,23 @@ define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-u
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
 define('CDASHMU_VERSION',   				'1.0');
 
+// ------------------------------------------------------------------------
+// ADD THE EDD LICENSE INFORMATION
+// ------------------------------------------------------------------------
+
+// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
+define( 'CDASH_MU_STORE_URL', 'https://chamberdashboard.com/' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
+
+// the name of your product. This should match the download name in EDD exactly
+define( 'CDASHMU_EDD_ITEM_NAME', 'Member Updater' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
+
+// the name of the settings page for the license input to be displayed
+define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'member-updater-license' );
+
+if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+	// load our custom updater
+	include( dirname( __FILE__ ) . '/cdash_mu_plugin_updater.php' );
+}
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:                                               
@@ -111,40 +128,23 @@ function cdashmu_language_init() {
 add_action('init', 'cdashmu_language_init');
 
 
-// ------------------------------------------------------------------------
-// ADD THE EDD LICENSE INFORMATION
-// ------------------------------------------------------------------------
-
-// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
-define( 'EDD_SAMPLE_STORE_URL', 'http://easydigitaldownloads.com' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
-
-// the name of your product. This should match the download name in EDD exactly
-define( 'EDD_SAMPLE_ITEM_NAME', 'Sample Plugin' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
-
-// the name of the settings page for the license input to be displayed
-define( 'EDD_SAMPLE_PLUGIN_LICENSE_PAGE', 'pluginname-license' );
-
-if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-	// load our custom updater
-	include( dirname( __FILE__ ) . '/EDD_SL_Plugin_Updater.php' );
-}
-
-function edd_sl_sample_plugin_updater() {
+function cdash_mu_edd_plugin_updater() {
 
 	// retrieve our license key from the DB
-	$license_key = trim( get_option( 'edd_sample_license_key' ) );
+	$license_key = trim( get_option( 'cdash_mu_edd_license_key' ) );
 
 	// setup the updater
-	$edd_updater = new EDD_SL_Plugin_Updater( EDD_SAMPLE_STORE_URL, __FILE__, array(
+	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
 			'version'   => '1.0',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
-			'item_name' => EDD_SAMPLE_ITEM_NAME, // name of this plugin
-			'author'    => 'Pippin Williamson'   // author of this plugin
+			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
+			'author'    => 'Chandrika Guntur',   // author of this plugin
+            'url'       => home_url()
 		)
 	);
 
 }
-add_action( 'admin_init', 'edd_sl_sample_plugin_updater', 0 );
+add_action( 'admin_init', 'cdash_mu_edd_plugin_updater', 0 );
 
 
 
@@ -365,11 +365,11 @@ function cdashmu_add_lost_password_link() {
 add_action('wp_logout','cdashmu_auto_redirect_after_logout');
 function cdashmu_auto_redirect_after_logout(){
     wp_redirect( home_url() );
-    //cdash_custom_logout_message();
+    //cdashmu_custom_logout_message();
     exit();
 }
 
-function cdash_custom_logout_message(){
+function cdashmu_custom_logout_message(){
     echo "You have been logged out as you do no have permissions. Please contact the administrator";
 }
 // ------------------------------------------------------------------------
