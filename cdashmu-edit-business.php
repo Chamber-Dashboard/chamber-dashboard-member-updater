@@ -73,17 +73,13 @@ function cdashmu_business_update_form(){
         $taxonomy = 'business_category';
         $current_terms = wp_get_post_terms( $business_id, $taxonomy); 
     ?>
-    <!--<p>
-        <label for="bus_cat">Current Business Category</label>
-        <div class="current_category_list">
-        <?php 
-          foreach($current_terms as $single_biz_category) {
-                echo $single_biz_category->name; //do something here
-                echo "<br />";
-          }
-        ?>
-        </div><!--end of current category list-->
-    <!--</p>-->
+    
+    <?php 
+      foreach($current_terms as $single_biz_category) {
+            echo $single_biz_category->name; //do something here
+            echo "<br />";
+      }
+    ?>
     
     <p>
         <label for="bus_cat"><?php echo __('Business Categories')?></label>
@@ -138,11 +134,7 @@ function cdashmu_business_update_form(){
         $logoattr = array(
             'class'	=> 'logo',
         );
-    	/*if( $single_link == "yes" ) {
-    		$logo = "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
-		} else {*/
 		$logo= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
-    	//}
 	}
     else{
         $logo = "There is no logo set for your business.";
@@ -158,7 +150,6 @@ function cdashmu_business_update_form(){
         // check if the post has a Post Thumbnail assigned to it.
         if ( has_post_thumbnail() ) {
             $thumbnail = get_the_post_thumbnail( $business_id, 'thumbnail' ); 
-        	//$thumbnail_image = "<a href='" . get_the_permalink() . "'>" . $thumbnail . "</a>";
         }
         else{
             $thumbnail_image = "There is no featured image set for your business.";

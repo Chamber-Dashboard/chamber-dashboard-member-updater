@@ -1,15 +1,10 @@
 <?php
 /* Options Page */
 
-
 // Add menu page
 function cdmu_add_settings_page() {
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater License', 'cdmu'), __('Member Updater License', 'cdmu'), 'manage_options', 'member-updater-license', 'cdmu_render_license_key_form' );
 }
-
-// --------------------------------------------------------------------------------------
-// CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdashmu_add_new_user_role')
-// --------------------------------------------------------------------------------------
 
 // Add a new user role when the plugin is activated
 function cdashmu_add_new_user_role() {
@@ -26,6 +21,7 @@ function cdashmu_add_new_user_role() {
     )
     );
 }
+
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options')
 // --------------------------------------------------------------------------------------

@@ -50,7 +50,7 @@ define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'member-updater-license' );
 
 if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 	// load our custom updater
-	include( dirname( __FILE__ ) . '/cdash_mu_plugin_updater.php' );
+	include( dirname( __FILE__ ) . '/includes/cdash_mu_plugin_updater.php' );
 }
 
 // ------------------------------------------------------------------------
@@ -168,8 +168,8 @@ function cdashmu_user_registration_form( $first_name, $last_name, $username, $pa
 			echo '</div>';
 			 
 		} 
-	}
-	
+	}   
+    
     echo '
     <form action="' . $_SERVER['REQUEST_URI'] . '" method="post" id="cdashmu_user_registration_form" class="cdash_form">
 	
@@ -178,7 +178,8 @@ function cdashmu_user_registration_form( $first_name, $last_name, $username, $pa
     
 	<p>
 		<label>' . __( 'First Name', 'cdashmu' ) . ' *</label>
-		<input type="text" name="fname" id="first_name" value="' . ( isset( $first_name) ? $first_name : null ) . '">
+		<input type="text" name="fname" id="first_name" value="' . ( isset( $first_name) ? $first_name : null ) . '">       
+        
     </p>
 	
 	<p>
