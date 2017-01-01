@@ -21,19 +21,10 @@ jQuery(document).ready(function ($) {
 	// when a business is selected, fill in the form
     $('#business-picker').on('change', 'input[name=business_id]:radio', function (evt) {
         var url = userregistrationformajax.ajaxurl;
-        var business_id = $('input[name=business_id]:checked', '#cdashmu_user_registration_form').val()
-        var nonce = $('#cdashmu_user_registration_nonce').val();
-        var data = {
-            'action': 'cdashmu_prefill_user_registration_form',
-            'nonce': nonce,
-            'business_id': business_id,
-        };
-        // fill in the form
-        $.post(url, data, function (response) {
-            $("#business_id").val(response.business_id);
-            $("#bus_name").val(response.business_name);
-        });       
-        
+        var business_id = $('input[name=business_id]:checked', '#cdashmu_user_registration_form').val();
+        var business_name = $('input[name=business_id]:checked', '#cdashmu_user_registration_form').next().text();
+        $("#business_id").val(business_id);
+        $("#bus_name").val(business_name);
     });
     
     //Copy the location address to the billing address based on which button is clicked.

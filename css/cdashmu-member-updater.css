@@ -39,3 +39,8 @@
     font-size:18px;
     font-weight: bold;
 }
+
+.cdash_form span.errors{
+    color:#EB272B;
+    display:block;
+}

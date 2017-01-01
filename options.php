@@ -9,16 +9,16 @@ function cdmu_add_settings_page() {
 // Add a new user role when the plugin is activated
 function cdashmu_add_new_user_role() {
 	add_role(
-    'business_editor',
-    __( 'Business Editor' ),
-    array(
-        'read'         => true,  // true allows this capability
-        'edit_posts'   => true,
-        'delete_posts' => false, // Use false to explicitly deny
-        'delete_published_posts' => false,
-        'upload_files' => true,
-        'publish_posts'=> true
-    )
+        'cdashmu_business_editor',
+        __( 'Business Editor' ),
+        array(
+            'read'         => true,  // true allows this capability
+            'edit_posts'   => true,
+            'delete_posts' => false, // Use false to explicitly deny
+            'delete_published_posts' => false,
+            'upload_files' => true,
+            'publish_posts'=> true
+        )
     );
 }
 

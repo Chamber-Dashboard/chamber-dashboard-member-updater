@@ -19,7 +19,14 @@ function cdashmu_business_update_form(){
     $person_id = cdashmu_get_person_id_from_user_id($user_id, false);
     $business_id = cdashmu_get_business_id_from_person_id($person_id, false);  
     if(!$business_id){
-        echo "You are not connected to a business. Please contact your Chamber of Commerce.";
+        $person_id = cdashmu_get_person_id_from_user_id($user_id, true);
+        $business_id = cdashmu_get_business_id_from_person_id($person_id, true);  
+        if($business_id){
+            echo "Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.";
+        }
+        else{
+            echo "You are not connected to a business. Please contact your Chamber of Commerce.";            
+        }        
         return;
     }
     
@@ -72,13 +79,7 @@ function cdashmu_business_update_form(){
     <?php 
         $taxonomy = 'business_category';
         $current_terms = wp_get_post_terms( $business_id, $taxonomy); 
-    ?>
-    
-    <?php 
-      foreach($current_terms as $single_biz_category) {
-            echo $single_biz_category->name; //do something here
-            echo "<br />";
-      }
+
     ?>
     
     <p>

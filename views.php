@@ -22,17 +22,17 @@ function cdashmu_get_current_user_id(){
 add_filter('login_redirect', 'cdashmu_user_login_redirect', 10, 3 );
 function cdashmu_user_login_redirect( $url, $request, $user ){
     if( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
-        if( $user->has_cap( 'administrator' ) ) {
+        /*if( $user->has_cap( 'administrator' ) ) {
             $url = admin_url();    
         }
-        else if( $user->has_cap( 'business_editor' ) ) {
+        else*/ 
+        if( $user->has_cap( 'cdashmu_business_editor' ) ) {
             $user_id = $user->ID;
-            $url = cdashmu_get_business_url($user_id, false);
-            if($url == null){
-                    wp_logout();                    
+            $business_url = cdashmu_get_business_url($user_id, true);
+            if($business_url != null){
+                    //$url = home_url();                    
+                return $business_url;
             }
-        }else{
-            wp_logout();
         }
     }
     return $url;
@@ -255,12 +255,40 @@ function cdashmu_get_business_edit_link(){
 }//cdashmu_business_edit_link
 
 
+function cdashmu_display_business_edit_link($business_id){
+    $member_options = get_option('cdashmm_options');
+    if(is_user_logged_in()){
+            $user = wp_get_current_user();   
+            $user_id = $user->ID;        
+            //return $user_id;     
+            
+            $user_can_update_approved = cdashmu_can_user_update_business($user_id, $business_id, false);
+            if(!$user_can_update_approved){
+                $user_can_update_pending = cdashmu_can_user_update_business($user_id, $business_id, true);
+                if(!$user_can_update_pending){
+                    return null;    
+                }
+                else{
+                    return "<br />Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.";
+                }
+                
+            }else{
+                $link = cdashmu_get_business_edit_link();        
+                return $link;
+            }
+        }
+        else{
+            $login_link = "<br />Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
+            return $login_link;
+        }
+}
+
 // ------------------------------------------------------------------------
 // CHECKING TO SEE IF THE CURRENT USER CAN UPDATE THIS BUSINESS
 // ------------------------------------------------------------------------
 
-function cdashmu_can_user_update_business($user_id, $business_id){
-    $url = cdashmu_get_business_url($user_id, false);
+function cdashmu_can_user_update_business($user_id, $business_id, $include_pending){
+    $url = cdashmu_get_business_url($user_id, $include_pending);
     $business_url = cdashmu_get_business_url_from_business_id($business_id);   
     
     if ($url == $business_url){
