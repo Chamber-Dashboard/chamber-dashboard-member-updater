@@ -153,7 +153,7 @@ function cdashmu_get_business_url_from_business_id($business_id) {
     }
     $business = get_post($business_id);
     $business_slug = $business->post_name;    
-    return home_url() . '/' . $business_slug;    
+    return home_url() . '/business/' . $business_slug;    
 }
 
 //given a business id, get the business email and return
@@ -243,23 +243,28 @@ function cdashmu_get_business_email_from_business_id($business_id) {
 // ------------------------------------------------------------------------
 // GENERATING THE BUSINESS EDIT LINK
 // ------------------------------------------------------------------------
-function cdashmu_get_business_edit_link(){
+function cdashmu_get_business_edit_link($user_id){
     $member_options = get_option('cdashmm_options');
+    $user = get_userdata( $user_id );
     $business_edit_url = $member_options['business_update_page'];
-    //$business_edit_url = plugins_url('cdashmu-edit-business.php', __FILE__);;
-    //$edit_post = add_query_arg( 'post', get_the_ID(), get_permalink(  + $_POST['_wp_http_referer'] ) );
-    $business_edit_link = '<a href="' . $business_edit_url . '">Edit Your Business Listing</a>'; 
+    $logout_url = wp_logout_url();
+    $business_edit_link .= '<br />Hello ' . $user->first_name . ', <a href="' . $business_edit_url . '">click here to edit your business listing</a>';
+    $business_edit_link .= '<br /></br />All done with editing? <a href="' . $logout_url . '">Click here to logout.</a>';
 
     return $business_edit_link;
     
 }//cdashmu_business_edit_link
 
 
+// ------------------------------------------------------------------------
+// DISPLAYING THE BUSINESS EDIT LINK
+// ------------------------------------------------------------------------
 function cdashmu_display_business_edit_link($business_id){
     $member_options = get_option('cdashmm_options');
     if(is_user_logged_in()){
             $user = wp_get_current_user();   
             $user_id = $user->ID;        
+            $logout_url = wp_logout_url();
             //return $user_id;     
             
             $user_can_update_approved = cdashmu_can_user_update_business($user_id, $business_id, false);
@@ -269,13 +274,17 @@ function cdashmu_display_business_edit_link($business_id){
                     return null;    
                 }
                 else{
-                    return "<br />Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.";
+                    $message .= '<br />Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.';
+                    $message .= '<br /><br /><a href="' . $logout_url . '">Click here to logout.</a>';
+                    return $message;
+                    //return '<br />Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.' . $logout_link;
                 }
                 
             }else{
-                $link = cdashmu_get_business_edit_link();        
-                return $link;
+                $link = cdashmu_get_business_edit_link($user_id);        
+                return $link;   
             }
+                        
         }
         else{
             $login_link = "<br />Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
@@ -297,6 +306,14 @@ function cdashmu_can_user_update_business($user_id, $business_id, $include_pendi
     else{
         return false;
     }
+}
+
+// ------------------------------------------------------------------------
+// DISPLAYINGTHE LOGOUT LINK
+// ------------------------------------------------------------------------
+function cdashmu_logout_link(){
+    //$logout_link = wp_logout_url();
+    echo "Logout";
 }
 
 

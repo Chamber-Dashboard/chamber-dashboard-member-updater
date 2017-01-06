@@ -188,7 +188,7 @@ function cdashmu_options_init(  ) {
 		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
-			__( 'If you would like the new user registration emails to go to a different email than the admin email, please enter it here.', 'cdashmu' )
+			__( 'When a new Business Editor registers, an email will be sent to the Business Owner AND the Chamber/Site Owner.  Enter the Chamber/Site Owner\'s email address here. (If blank, this will default to site\'s admin email.)', 'cdashmu' )
 		)
 	);
 }

@@ -233,7 +233,7 @@ function cdashmu_user_registration_form( $first_name, $last_name, $username, $pa
     </p>
 	
 	<p>
-		<label><?= __( 'Business Name', 'cdashmu' ) ?> *</label><span>Please enter your business name and press tab to select your business from the list.</span>
+        <label><?= __( 'Business Name', 'cdashmu' ) ?> *</label><span><?= __('Please enter your business name and press tab to select your business from the list.')?> <small><?= __('(Your business needs to be already registered with our chamber.)') ?></small></span>
 		<input name="bus_name" type="text" id="bus_name" required value="<?= ( $business_id ? $bus_name : null ) ?>">
         <?= cdashmu_display_error('business_name', $reg_errors) ?>
 	</p>
@@ -472,7 +472,7 @@ function cdashmu_find_existing_business() {
     	$results .= '<div class="alert"><p>' . __( 'It looks like your business is already in our database!  To verify, select your business below:', 'cdashmu' ) . '</p>';
 	    while ( $bus_query->have_posts() ) : $bus_query->the_post();
 	    	$results .= '<div><input type="radio" name="business_id" class="business_id" value="' . get_the_id() . '"><span>' . get_the_title() . '</span></div>';
-	    endwhile;
+	    endwhile;        
 	    $results .= '</div>';
     endif;
     

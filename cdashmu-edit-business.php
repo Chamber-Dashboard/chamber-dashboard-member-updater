@@ -58,7 +58,6 @@ function cdashmu_business_update_form(){
    
     <p>
         <label for="bus_name"><?php echo __('Business Name')?></label>
-        <!--<input type="text" name="bname" id="bname" required value="<?php echo $bus_title; ?>">-->
         <?php echo $bus_title; ?>
     </p>
     
@@ -116,7 +115,6 @@ function cdashmu_business_update_form(){
         <?php
 
         $level = 'membership_level';
-        //$terms = get_terms($taxonomy); // Get all terms of a taxonomy
         $terms = wp_get_post_terms( $business_id, $level, $args );     
         if ( $terms && !is_wp_error( $terms ) ) :
             foreach ( $terms as $term ) { 
@@ -222,7 +220,6 @@ function cdashmu_business_update_form(){
         <div style="float:left; width:50%;">
         <h6>Phone Numbers</h6>
         <?php
-        //if( is_array( $location_info['phone'] ) ) {
             $loop_index_phone = 0;
             foreach($location_info['phone'] as $phone_info) {
         ?>
@@ -248,7 +245,6 @@ function cdashmu_business_update_form(){
                 $loop_index_phone++;
             }
             
-        //}
         ?>
         </div>
         <div style="float:left; width:50%;">
@@ -283,8 +279,6 @@ function cdashmu_business_update_form(){
         ?>    
         
         </div>        
-        <!--<label><?php echo __('Use this for the billing address.')?></label>-->
-        <!--<input type="checkbox" name="same_billing_address_<?php echo $i; ?>" />-->
              <button type="button" id="copy_billing_address_<?php echo $i; ?>" name="copy_billing_address_<?php echo $i; ?>" class="copy_billing_address"><?php echo __('Set as Billing Address'); ?></button><span id="billing_copy_message_<?php echo $i; ?>" class="message"></span>
         <br /><br />
     </fieldset>       
