@@ -1,5 +1,5 @@
 <?php
-/* Options Page */
+/* Settings Page */
 
 
 function cdmu_render_license_key_form(){      
