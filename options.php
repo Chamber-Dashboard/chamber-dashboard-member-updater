@@ -6,6 +6,22 @@ function cdmu_add_settings_page() {
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater License', 'cdmu'), __('Member Updater License', 'cdmu'), 'manage_options', 'member-updater-license', 'cdmu_render_license_key_form' );
 }
 
+function cdashmu_plugin_activate(){
+    add_option('cdashmu_do_activation_redirect', true);
+}
+
+function cdashmu_plugin_redirect(){
+    if (get_option('cdashmu_do_activation_redirect', false)) {
+        delete_option('cdashmu_do_activation_redirect');
+        if(!isset($_GET['activate-multi']))
+        {
+            wp_safe_redirect(admin_url('admin.php?page=member-updater-license'));
+            //wp_redirect("admin.php?page=member-updater-license");
+        }
+    }
+}
+
+
 // Add a new user role when the plugin is activated
 function cdashmu_add_new_user_role() {
 	add_role(

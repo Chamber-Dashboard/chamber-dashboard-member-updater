@@ -125,7 +125,9 @@ add_action('show_admin_bar', '__return_false');
 //What to do when the plugin is activated
 register_activation_hook(__FILE__, 'cdashmu_add_defaults');
 register_activation_hook(__FILE__, 'cdashmu_add_new_user_role');
+register_activation_hook(__FILE__, 'cdashmu_plugin_activate');
 
+add_action('admin_init', 'cdashmu_plugin_redirect');
 add_action('admin_menu', 'cdmu_add_settings_page');
 
 //What to do when the plugin is uninstalled
