@@ -1,20 +1,10 @@
 <?php
-/* Options Page for Chamber Dashboard Member Updater */
-
-// ------------------------------------------------------------------------------
-// CALLBACK FUNCTION FOR: add_action('admin_menu', 'cdashmu_add_options_page');
-// ------------------------------------------------------------------------------
+/* Options Page */
 
 // Add menu page
-function cdashmu_add_options_page() {
-	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater Options', 'cdashmu'), __('Member Updater Options', 'cdmu'), 'manage_options', 'cdash-mu', 'cdashmu_render_form' );
+function cdmu_add_settings_page() {
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater License', 'cdmu'), __('Member Updater License', 'cdmu'), 'manage_options', 'member-updater-license', 'cdmu_render_license_key_form' );
 }
-
-
-// --------------------------------------------------------------------------------------
-//  REDIRECTING THE PLUGIN TO THE LICENSE PAGE AFTER ACTIVATION
-// --------------------------------------------------------------------------------------
-
 
 function cdashmu_plugin_activate(){
     add_option('cdashmu_do_activation_redirect', true);
@@ -25,8 +15,7 @@ function cdashmu_plugin_redirect(){
         delete_option('cdashmu_do_activation_redirect');
         if(!isset($_GET['activate-multi']))
         {
-            wp_safe_redirect(admin_url('admin.php?page=cdash-mu&tab=cdashmu_license_page'));
-            //wp_save_redirect(admin_url('?page=cdash-mu&tab=cdashmu_license_page'));
+            wp_safe_redirect(admin_url('admin.php?page=member-updater-license'));
             //wp_redirect("admin.php?page=member-updater-license");
         }
     }
@@ -49,7 +38,6 @@ function cdashmu_add_new_user_role() {
     );
 }
 
-
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options')
 // --------------------------------------------------------------------------------------
@@ -67,7 +55,7 @@ function cdashmu_delete_plugin_options() {
 
 // Define default option settings
 function cdashmu_add_defaults() {
-	$tmp = get_option('cdashmu_options');
+	$tmp = get_option('cdashmm_options');
 	
 	if( !isset( $tmp['user_registration_page'] ) ) {
 		$tmp['user_registration_page'] = get_bloginfo( 'home' );
@@ -105,23 +93,8 @@ function cdashmu_add_defaults() {
         $tmp['additional_admin_email'] = '';
     }
 	
-	update_option( 'cdashmu_options', $tmp );
+	update_option( 'cdashmm_options', $tmp );
 }
-
-// ------------------------------------------------------------------------------
-// CALLBACK FUNCTION FOR: add_action('admin_init', 'cdcrm_init' )
-// ------------------------------------------------------------------------------
-// THIS FUNCTION RUNS WHEN THE 'admin_init' HOOK FIRES, AND REGISTERS YOUR PLUGIN
-// SETTING WITH THE WORDPRESS SETTINGS API. YOU WON'T BE ABLE TO USE THE SETTINGS
-// API UNTIL YOU DO.
-// ------------------------------------------------------------------------------
-
-// Init plugin options to white list our options
-function cdashmu_init(){
-	register_setting( 'cdashmu_plugin_options', 'cdashmu_options');
-    register_setting( 'cdashmu_licence_page', 'cdashmu_options' );
-}
-
 
 add_action( 'admin_init', 'cdashmu_options_init' );
 
@@ -131,14 +104,14 @@ function cdashmu_options_init(  ) {
 		'cdashmu_options_section', 
 		__( 'Member Updater Settings', 'cdashmu' ), 
 		'cdashmu_options_section_callback', 
-		'cdashmu_plugin_options'
+		'cdashmm_plugin_options'
 	);
 	
 	add_settings_field( 
 		'user_registration_page', 
 		__( 'User Registration Page', 'cdashmu' ), 
 		'cdashmu_user_registration_page_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'Enter the url for your user registration page. Members will be directed to this page after they join.', 'cdashmu' )
@@ -149,7 +122,7 @@ function cdashmu_options_init(  ) {
 		'custom_registration_message', 
 		__( 'Custom Registration Message', 'cdashmu' ), 
 		'cdashmu_custom_registration_message_page_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'Enter the message you would like your users to see after they sign up as a user connected to a business.', 'cdashmu' )
@@ -160,7 +133,7 @@ function cdashmu_options_init(  ) {
 		'user_login_page', 
 		__( 'User Login Page', 'cdashmu' ), 
 		'cdashmu_user_login_page_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'Enter the url for your user login page. Members will be directed to this page after they register as a user.', 'cdashmu' )
@@ -171,7 +144,7 @@ function cdashmu_options_init(  ) {
 		'business_update_page', 
 		__( 'Business Update Page', 'cdashmu' ), 
 		'cdashmu_business_update_page_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'Enter the url for your business update page. Members will be able to edit/update their business here after they login.', 'cdashmu' )
@@ -182,7 +155,7 @@ function cdashmu_options_init(  ) {
 		'bus_logo_image_width', 
 		__( 'Business Logo Image Width', 'cdashmu' ), 
 		'cdashmu_business_logo_image_width_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'Here you can specify the maximum width of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
@@ -193,7 +166,7 @@ function cdashmu_options_init(  ) {
 		'bus_logo_image_height', 
 		__( 'Business Logo Image Height', 'cdashmu' ), 
 		'cdashmu_business_logo_image_height_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'Here you can specify the maximum height of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
@@ -204,7 +177,7 @@ function cdashmu_options_init(  ) {
 		'bus_featured_image_width', 
 		__( 'Business Featured Image Width', 'cdashmu' ), 
 		'cdashmu_business_featured_image_width_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'Here you can specify the maximum width of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
@@ -215,7 +188,7 @@ function cdashmu_options_init(  ) {
 		'bus_featured_image_height', 
 		__( 'Business Featured Image height', 'cdashmu' ), 
 		'cdashmu_business_featured_image_height_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'Here you can specify the maximum height of the featured image that the businesses can upload. The default is \400px.', 'cdashmu' )
@@ -228,27 +201,19 @@ function cdashmu_options_init(  ) {
 		'additional_admin_email', 
 		__( 'Additional Admin Email', 'cdashmu' ), 
 		'cdashmu_additional_admin_email_page_render', 
-		'cdashmu_plugin_options', 
+		'cdashmm_plugin_options', 
 		'cdashmu_options_section',
 		array(
 			__( 'When a new Business Editor registers, an email will be sent to the Business Owner AND the Chamber/Site Owner.  Enter the Chamber/Site Owner\'s email address here. (If blank, this will default to site\'s admin email.)', 'cdashmu' )
 		)
 	);
-    
-    // license tab
-	add_settings_section(
-		'cdashmu_license_page_section', 
-		__( 'License', 'cdashmu' ), 
-		'cdashmu_license_section_callback', 
-		'cdashmu_licence_page'
-	);
 }
 
 function cdashmu_user_registration_page_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<input type='text' name='cdashmu_options[user_registration_page]' value='<?php echo $options['user_registration_page']; ?>'>
+	<input type='text' name='cdashmm_options[user_registration_page]' value='<?php echo $options['user_registration_page']; ?>'>
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
@@ -256,13 +221,13 @@ function cdashmu_user_registration_page_render( $args ) {
 
 function cdashmu_custom_registration_message_page_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<!--<input type='textarea' name='cdashmu_options[custom_registration_message]' value='<?php echo $options['custom_registration_message']; ?>'>
+	<!--<input type='textarea' name='cdashmm_options[custom_registration_message]' value='<?php echo $options['custom_registration_message']; ?>'>
 	<br />--><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
-		$args = array("wpautop" => false, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_registration_message]", "textarea_rows" => "5");
+		$args = array("wpautop" => false, "media_buttons" => true, "textarea_name" => "cdashmm_options[custom_registration_message]", "textarea_rows" => "5");
 
 		wp_editor( $options['custom_registration_message'], "registration", $args );
 
@@ -273,9 +238,9 @@ function cdashmu_custom_registration_message_page_render( $args ) {
 
 function cdashmu_user_login_page_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<input type='text' name='cdashmu_options[user_login_page]' value='<?php echo $options['user_login_page']; ?>'>
+	<input type='text' name='cdashmm_options[user_login_page]' value='<?php echo $options['user_login_page']; ?>'>
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
@@ -283,9 +248,9 @@ function cdashmu_user_login_page_render( $args ) {
 
 function cdashmu_business_update_page_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<input type='text' name='cdashmu_options[business_update_page]' value='<?php echo $options['business_update_page']; ?>'>
+	<input type='text' name='cdashmm_options[business_update_page]' value='<?php echo $options['business_update_page']; ?>'>
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
@@ -293,9 +258,9 @@ function cdashmu_business_update_page_render( $args ) {
 
 function cdashmu_business_logo_image_width_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<input type='text' name='cdashmu_options[bus_logo_image_width]' value='<?php echo $options['bus_logo_image_width']; ?>' style="width:50px;">
+	<input type='text' name='cdashmm_options[bus_logo_image_width]' value='<?php echo $options['bus_logo_image_width']; ?>' style="width:50px;">
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
@@ -303,9 +268,9 @@ function cdashmu_business_logo_image_width_render( $args ) {
 
 function cdashmu_business_logo_image_height_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<input type='text' name='cdashmu_options[bus_logo_image_height]' value='<?php echo $options['bus_logo_image_height']; ?>' style="width:50px;">
+	<input type='text' name='cdashmm_options[bus_logo_image_height]' value='<?php echo $options['bus_logo_image_height']; ?>' style="width:50px;">
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
@@ -313,9 +278,9 @@ function cdashmu_business_logo_image_height_render( $args ) {
 
 function cdashmu_business_featured_image_width_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<input type='text' name='cdashmu_options[bus_featured_image_width]' value='<?php echo $options['bus_featured_image_width']; ?>' style="width:50px;">
+	<input type='text' name='cdashmm_options[bus_featured_image_width]' value='<?php echo $options['bus_featured_image_width']; ?>' style="width:50px;">
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
@@ -323,9 +288,9 @@ function cdashmu_business_featured_image_width_render( $args ) {
 
 function cdashmu_business_featured_image_height_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<input type='text' name='cdashmu_options[bus_featured_image_height]' value='<?php echo $options['bus_featured_image_height']; ?>' style="width:50px;">
+	<input type='text' name='cdashmm_options[bus_featured_image_height]' value='<?php echo $options['bus_featured_image_height']; ?>' style="width:50px;">
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
@@ -334,56 +299,20 @@ function cdashmu_business_featured_image_height_render( $args ) {
 
 function cdashmu_additional_admin_email_page_render( $args ) { 
 
-	$options = get_option( 'cdashmu_options' );
+	$options = get_option( 'cdashmm_options' );
 	?>
-	<input type='email' name='cdashmu_options[additional_admin_email]' value='<?php echo $options['additional_admin_email']; ?>'">
+	<input type='email' name='cdashmm_options[additional_admin_email]' value='<?php echo $options['additional_admin_email']; ?>'">
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
 }
 
 
-/*function cdashmu_license_section_callback() {
-	do_action( 'cdashmu_license_page');
+
+function cdashmu_options_section_callback(  ) { 
+
+	echo __( 'Chamber Dashboard Member Updater General Settings', 'cdashmu' );
+
 }
-add_action( 'cdashmu_license_page', 'cdmu_render_license_key_form', 10 ); */
 
-// Render the Plugin options form
-function cdashmu_render_form() {
 ?>
-    <div class="wrap">
-       <!-- Display Plugin Icon, Header, and Description -->
-       <div class="icon32" id="icon-options-general"><br></div>
- 	    <h2><?php _e('Chamber Dashboard Member Updater Settings', 'cdashmu'); ?></h2>
-		<?php settings_errors(); ?>
-      <?php  
-            $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cdashmu_plugin_options';  
-        ?> 
-
-        <h2 class="nav-tab-wrapper">  
-            <a href="?page=cdash-mu&tab=cdashmu_plugin_options" class="nav-tab <?php echo $active_tab == 'cdashmu_plugin_options' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Settings', 'cdashmu' ); ?></a>  
-            <a href="?page=cdash-mu&tab=cdashmu_license_page" class="nav-tab <?php echo $active_tab == 'cdashmu_license_page' ? 'nav-tab-active' : ''; ?>"><?php _e( 'License', 'cdashmu' ); ?></a>  
-        </h2>
-        
-        <div id="main" style="width: 70%; min-width: 350px; float: left;">
-        <!-- Beginning of the Plugin Options Form -->
-           <?php
-            if( $active_tab == 'cdashmu_plugin_options' ) 
-            { ?>
-	            <form method="post" action="options.php">
-	                <?php settings_fields( 'cdashmu_plugin_options' );
-					do_settings_sections( 'cdashmu_plugin_options' ); 
-					submit_button(); ?>
-				</form>
-       <?php
-            }else if($active_tab == 'cdashmu_license_page'){
-                //echo "Display license here";
-                cdmu_render_license_key_form();
-            }
-        ?>
-        </div><!--end of #main-->
-    </div><!--end of wrap-->	
-<?php
-}
-?>
-

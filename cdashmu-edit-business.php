@@ -11,7 +11,7 @@ function cdashmu_business_update_form(){
 	wp_localize_script( 'user-registration-form', 'userregistrationformajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
     
     $user_id = cdashmu_get_current_user_id();
-    $member_options = get_option('cdashmm_options');
+    $member_options = get_option('cdashmu_options');
     if(!$user_id){
         echo "Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
         return;
@@ -139,7 +139,7 @@ function cdashmu_business_update_form(){
         $logo = "There is no logo set for your business.";
     }
     ?><br />
-       <?php $member_options = get_option('cdashmm_options');  ?>
+       <?php $member_options = get_option('cdashmu_options');  ?>
         <label for="bus_logo"><?php echo __('Logo')?></label><?php echo $logo; ?> <br />If you wish, you can upload a new logo (<?php echo $member_options['bus_logo_image_width']; ?>px X <?php echo $member_options['bus_logo_image_height']; ?>px ).
         <input type="file" name="bus_logo" value=""/>
     </p>

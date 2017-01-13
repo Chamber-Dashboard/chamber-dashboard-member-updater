@@ -23,8 +23,8 @@ function cdash_mu_edd_license_page() {
 	$status  = get_option( 'cdash_mu_edd_license_status' );
 	?>
 	<div class="wrap">
-		<h2><?php _e('Member Updater License Options'); ?></h2>
-		<form method="post" action="options.php">
+		<h2><?php _e('Member Updater License'); ?></h2>
+		<form method="post" action="options-old.php">
 
 			<?php settings_fields('cdash_mu_edd_license'); ?>
 

@@ -128,7 +128,7 @@ register_activation_hook(__FILE__, 'cdashmu_add_new_user_role');
 register_activation_hook(__FILE__, 'cdashmu_plugin_activate');
 
 add_action('admin_init', 'cdashmu_plugin_redirect');
-add_action('admin_menu', 'cdmu_add_settings_page');
+add_action('admin_menu', 'cdashmu_add_options_page');
 
 //What to do when the plugin is uninstalled
 register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options');
@@ -302,7 +302,7 @@ function cdashmu_user_registration_validation( $first_name, $last_name, $usernam
 }
 
 function cdashmu_complete_user_registration($first_name, $last_name, $username, $password, $email, $bus_name, $business_id) {
-	$options = get_option( 'cdashmm_options' );
+	$options = get_option( 'cdashmu_options' );
         $userdata = array(
 		'first_name'    =>   $first_name,
         'last_name'     =>   $last_name,

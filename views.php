@@ -188,7 +188,7 @@ function cdashmu_get_business_email_from_business_id($business_id) {
  */
  function cdashmu_wp_new_user_notification($user_id, $business_id, $bus_name, $name) {
      
-     $member_options = get_option('cdashmm_options');
+     $member_options = get_option('cdashmu_options');
 	 $user = get_userdata( $user_id );
      $bus_email1 = cdashmu_get_business_email_from_business_id($business_id);    
      $bus_email = cdashmu_get_business_email_from_business_id($business_id);
@@ -244,7 +244,7 @@ function cdashmu_get_business_email_from_business_id($business_id) {
 // GENERATING THE BUSINESS EDIT LINK
 // ------------------------------------------------------------------------
 function cdashmu_get_business_edit_link($user_id){
-    $member_options = get_option('cdashmm_options');
+    $member_options = get_option('cdashmu_options');
     $user = get_userdata( $user_id );
     $business_edit_url = $member_options['business_update_page'];
     $logout_url = wp_logout_url();
@@ -260,7 +260,7 @@ function cdashmu_get_business_edit_link($user_id){
 // DISPLAYING THE BUSINESS EDIT LINK
 // ------------------------------------------------------------------------
 function cdashmu_display_business_edit_link($business_id){
-    $member_options = get_option('cdashmm_options');
+    $member_options = get_option('cdashmu_options');
     if(is_user_logged_in()){
             $user = wp_get_current_user();   
             $user_id = $user->ID;        
