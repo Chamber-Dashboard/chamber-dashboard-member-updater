@@ -129,6 +129,7 @@ register_activation_hook(__FILE__, 'cdashmu_plugin_activate');
 
 add_action('admin_init', 'cdashmu_plugin_redirect');
 add_action('admin_menu', 'cdashmu_add_options_page');
+add_action( 'admin_init', 'cdashmu_init' );
 
 //What to do when the plugin is uninstalled
 register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options');

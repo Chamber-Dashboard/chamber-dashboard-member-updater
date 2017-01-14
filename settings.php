@@ -24,7 +24,7 @@ function cdash_mu_edd_license_page() {
 	?>
 	<div class="wrap">
 		<h2><?php _e('Member Updater License'); ?></h2>
-		<form method="post" action="options-old.php">
+		<form method="post" action="options.php">
 
 			<?php settings_fields('cdash_mu_edd_license'); ?>
 
