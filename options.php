@@ -7,7 +7,7 @@
 
 // Delete options table entries ONLY when plugin deactivated AND deleted
 function cdashmu_delete_plugin_options() {
-	delete_option('cdashmu_options');
+	//delete_option('cdashmu_options');
     delete_option( 'cdash_mu_edd_license_key' );
 	delete_option( 'cdash_mu_edd_license_status' );
 }
@@ -61,7 +61,7 @@ function cdashmu_add_defaults() {
 	$tmp = get_option('cdashmu_options');
 	
 	if( !isset( $tmp['user_registration_page'] ) ) {
-		$tmp['user_registration_page'] = get_bloginfo( 'home' );
+		$tmp['user_registration_page'] = '';
 	}
     
     if(!isset($tmp['custom_registration_message'])){
