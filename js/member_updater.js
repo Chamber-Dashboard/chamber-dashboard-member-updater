@@ -48,7 +48,7 @@ jQuery(document).ready(function ($) {
         $("#billing_phone").val(phone_number);
         $("#billing_email").val(email_address);
         var success_message = " Successfully copied to billing!";
-        $("#billing_copy_message_"+ last_element).text($success_message).show().delay(5000).fadeOut();
+        $("#billing_copy_message_"+ last_element).text(success_message).show().delay(5000).fadeOut();
     });
     
     //Adding social media fields from the front end    

@@ -278,14 +278,20 @@ function cdash_mu_edd_check_license() {
 		return false;
 
 	$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+    
+    return $license_data;
 
-	if( $license_data->license == 'valid' ) {
-		echo 'valid'; exit;
+	/*if( $license_data->license == 'valid' ) {
+		//echo 'valid'; 
+        return 'valid';
+        exit;
 		// this license is still valid
 	} else {
-		echo 'invalid'; exit;
+		//echo 'invalid'; 
+        return 'invalid';
+        exit;
 		// this license is no longer valid
-	}
+	}*/
 }
 
 /**

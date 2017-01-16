@@ -46,7 +46,8 @@ define( 'CDASH_MU_STORE_URL', 'https://chamberdashboard.com/' ); // you should u
 define( 'CDASHMU_EDD_ITEM_NAME', 'Member Updater' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
 
 // the name of the settings page for the license input to be displayed
-define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'member-updater-license' );
+//define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'cdash-mu' );
+define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'cdash-mu&tab=cdashmu_license_page' );
 
 if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 	// load our custom updater

@@ -148,16 +148,15 @@ function cdashmu_business_update_form(){
     <?php
         // check if the post has a Post Thumbnail assigned to it.
         if ( has_post_thumbnail() ) {
-            $thumbnail = get_the_post_thumbnail( $business_id, 'thumbnail' ); 
+            $thumbnail_image = get_the_post_thumbnail( $business_id, 'thumbnail' ); 
         }
         else{
             $thumbnail_image = "There is no featured image set for your business.";
         }
     ?>
-        <label for="featured_image"><?php echo __('Featured Image')?></label><br />
-        <div id="featured_image">
+        <label for="featured_image"><?php echo __('Featured Image')?></label>
             <?php echo $thumbnail_image; ?>
-        </div><br />
+        <br />
         If you wish, you can upload a new featured image (<?php echo $member_options['bus_featured_image_width']; ?>px X <?php echo $member_options['bus_featured_image_height']; ?>px).  
         <input type="file" name="featured_image" id="featured_image_upload" value=""/>            
     </p>

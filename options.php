@@ -126,7 +126,8 @@ function cdashmu_options_init(  ) {
 		//'cdashmu_options_section', 
         'cdashmu_settings_page_section',
 		__( 'Member Updater Settings', 'cdashmu' ), 
-		'cdashmu_settings_page_section_callback', 
+		//'cdashmu_settings_page_section_callback', 
+        '',
 		'cdashmu_settings_page'
 	);
 	
@@ -406,15 +407,24 @@ function cdashmu_render_form() {
         <!-- Beginning of the Plugin Options Form -->
            <?php
             if( $active_tab == 'cdashmu_settings_page' ) 
-            { ?>
-	            <form method="post" action="options.php">
-	                <?php settings_fields( 'cdashmu_settings_page' );
-					do_settings_sections( 'cdashmu_settings_page' ); 
-					submit_button(); ?>
-				</form>
-       <?php
+            {                
+                $check_license_status = cdash_mu_edd_check_license();
+                if($check_license_status == 'valid' ){
+                ?>  
+                   <form method="post" action="options.php">
+                        <?php settings_fields( 'cdashmu_settings_page' );
+                        do_settings_sections( 'cdashmu_settings_page' ); 
+                        submit_button(); ?>
+                    </form>      
+                    
+                <?php    
+                }else{
+                    echo "<h3>Your license is invalid. Please check your license again or contact our <a href='https://chamberdashboard.com/chamber-dashboard-support/' target='_blank'>support</a>. <br /><br />";
+                    echo "Click <a href=admin.php?page=" . CDASHMU_EDD_PLUGIN_LICENSE_PAGE . ">here</a> to enter your correct license number.</h3>";                
+                }                
+            
             }else if($active_tab == 'cdashmu_license_page'){
-                cdmu_render_license_key_form();
+                cdash_mu_edd_license_page();
             }
         ?>
         </div><!--end of #main-->
@@ -422,4 +432,3 @@ function cdashmu_render_form() {
 <?php
 }
 ?>
-
