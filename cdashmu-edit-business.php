@@ -468,11 +468,12 @@ function cdashmu_business_update_form_shortcode(){
      // update social
      $social_array = [];
      $social = $_POST['buscontact_meta']['social'];    //$social[0] = first social, $social[1] = second social
-     foreach($social as $social_element){
-         $social_array[] = $social_element;
+     if(!empty($social)){
+         foreach($social as $social_element){
+             $social_array[] = $social_element;
+         }
+         update_post_meta($business_id, '_cdash_social', $social_array);         
      }
-     update_post_meta($business_id, '_cdash_social', $social_array);
-
      
      //UPDATING THE BILLING ADDRESS FIELDS
      
