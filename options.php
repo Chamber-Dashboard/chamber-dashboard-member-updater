@@ -26,9 +26,8 @@ function cdashmu_plugin_redirect(){
         delete_option('cdashmu_do_activation_redirect');
         if(!isset($_GET['activate-multi']))
         {
-            wp_safe_redirect(admin_url('admin.php?page=cdash-mu&tab=cdashmu_license_page'));
-            //wp_save_redirect(admin_url('?page=cdash-mu&tab=cdashmu_license_page'));
-            //wp_redirect("admin.php?page=member-updater-license");
+            //wp_safe_redirect(admin_url('admin.php?page=cdash-mu&tab=cdashmu_license_page'));
+            wp_safe_redirect(admin_url('admin.php?page=chamber_dashboard_license'));
         }
     }
 }
@@ -400,7 +399,7 @@ function cdashmu_render_form() {
 
         <h2 class="nav-tab-wrapper">  
             <a href="?page=cdash-mu&tab=cdashmu_settings_page" class="nav-tab <?php echo $active_tab == 'cdashmu_settings_page' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Settings', 'cdashmu' ); ?></a>  
-            <a href="?page=cdash-mu&tab=cdashmu_license_page" class="nav-tab <?php echo $active_tab == 'cdashmu_license_page' ? 'nav-tab-active' : ''; ?>"><?php _e( 'License', 'cdashmu' ); ?></a>  
+            <!--<a href="?page=cdash-mu&tab=cdashmu_license_page" class="nav-tab <?php echo $active_tab == 'cdashmu_license_page' ? 'nav-tab-active' : ''; ?>"><?php _e( 'License', 'cdashmu' ); ?></a>-->  
         </h2>
         
         <div id="main" style="width: 70%; min-width: 350px; float: left;">
@@ -408,24 +407,19 @@ function cdashmu_render_form() {
            <?php
             if( $active_tab == 'cdashmu_settings_page' ) 
             {                
-                $check_license_status = cdash_mu_edd_check_license();
-                if($check_license_status == 'valid' ){
-                ?>  
-                   <form method="post" action="options.php">
-                        <?php settings_fields( 'cdashmu_settings_page' );
-                        do_settings_sections( 'cdashmu_settings_page' ); 
-                        submit_button(); ?>
-                    </form>      
+            ?>  
+               <form method="post" action="options.php">
+                    <?php settings_fields( 'cdashmu_settings_page' );
+                    do_settings_sections( 'cdashmu_settings_page' ); 
+                    submit_button(); ?>
+                </form>      
                     
                 <?php    
-                }else{
-                    echo "<h3>Your license is invalid. Please check your license again or contact our <a href='https://chamberdashboard.com/chamber-dashboard-support/' target='_blank'>support</a>. <br /><br />";
-                    echo "Click <a href=admin.php?page=" . CDASHMU_EDD_PLUGIN_LICENSE_PAGE . ">here</a> to enter your correct license number.</h3>";                
-                }                
             
-            }else if($active_tab == 'cdashmu_license_page'){
-                cdash_mu_edd_license_page();
             }
+            /*else if($active_tab == 'cdashmu_license_page'){
+                cdash_mu_edd_license_page();
+            }*/
         ?>
         </div><!--end of #main-->
     </div><!--end of wrap-->	

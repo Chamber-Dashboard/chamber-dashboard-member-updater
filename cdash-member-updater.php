@@ -47,11 +47,12 @@ define( 'CDASHMU_EDD_ITEM_NAME', 'Member Updater' ); // you should use your own 
 
 // the name of the settings page for the license input to be displayed
 //define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'cdash-mu' );
-define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'cdash-mu&tab=cdashmu_license_page' );
+//define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'cdash-mu&tab=cdashmu_license_page' );
+define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'chamber_dashboard_license' );
 
 if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 	// load our custom updater
-	include( dirname( __FILE__ ) . '/includes/cdash_mu_plugin_updater.php' );
+	include( dirname( __FILE__ ) . '/includes/EDD_SL_Plugin_Updater.php' );
 }
 
 // ------------------------------------------------------------------------
@@ -376,7 +377,7 @@ function custom_registration_shortcode() {
 
 function cdashmu_member_login_form_shortcode() {
 	if ( is_user_logged_in() )
-		return '';
+		return 'You are already logged in. You can go to your business page to edit your listing.';
 		
 	/* Set up some defaults. */
 	$defaults = array(

@@ -23,7 +23,7 @@ function cdash_mu_edd_license_page() {
 	$status  = get_option( 'cdash_mu_edd_license_status' );
 	?>
 	<div class="wrap">
-		<h2><?php _e('Member Updater License'); ?></h2>
+		<!--<h2><?php _e('Member Updater License'); ?></h2>-->
 		<form method="post" action="options.php">
 
 			<?php settings_fields('cdash_mu_edd_license'); ?>
@@ -32,7 +32,7 @@ function cdash_mu_edd_license_page() {
 				<tbody>
 					<tr valign="top">
 						<th scope="row" valign="top">
-							<?php _e('License Key'); ?>
+							<?php _e('Member Updater License Key'); ?>
 						</th>
 						<td>
 							<input id="cdash_mu_edd_license_key" name="cdash_mu_edd_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" />
@@ -280,13 +280,11 @@ function cdash_mu_edd_check_license() {
 	$license_data = json_decode( wp_remote_retrieve_body( $response ) );
     
 	if( $license_data->license == 'valid' ) {
-		//echo 'valid'; 
-        return 'valid';
+		echo 'valid'; 
         exit;
 		// this license is still valid
 	} else {
-		//echo 'invalid'; 
-        return 'invalid';
+		echo 'invalid'; 
         exit;
 		// this license is no longer valid
 	}
