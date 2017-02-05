@@ -48,10 +48,10 @@ function cdash_mu_edd_license_page() {
 								<?php if( $status !== false && $status == 'valid' ) { ?>
 									<span style="color:green;"><?php _e('active'); ?></span>
 									<?php wp_nonce_field( 'cdash_mu_edd_nonce', 'cdash_mu_edd_nonce' ); ?>
-									<input type="submit" class="button-secondary" name="edd_license_deactivate" value="<?php _e('Deactivate License'); ?>"/>
+									<input type="submit" class="button-secondary" name="cdash_mu_edd_license_deactivate" value="<?php _e('Deactivate License'); ?>"/>
 								<?php } else {
 									wp_nonce_field( 'cdash_mu_edd_nonce', 'cdash_mu_edd_nonce' ); ?>
-									<input type="submit" class="button-secondary" name="edd_license_activate" value="<?php _e('Activate License'); ?>"/>
+									<input type="submit" class="button-secondary" name="cdash_mu_edd_license_activate" value="<?php _e('Activate License'); ?>"/>
 								<?php } ?>
 							</td>
 						</tr>
@@ -66,11 +66,11 @@ function cdash_mu_edd_license_page() {
 
 function cdash_mu_edd_register_option() {
 	// creates our settings in the options table
-	register_setting('cdash_mu_edd_license', 'cdash_mu_edd_license_key', 'edd_sanitize_license' );
+	register_setting('cdash_mu_edd_license', 'cdash_mu_edd_license_key', 'cdash_mu_edd_sanitize_license' );
 }
 add_action('admin_init', 'cdash_mu_edd_register_option');
 
-function edd_sanitize_license( $new ) {
+function cdash_mu_edd_sanitize_license( $new ) {
 	$old = get_option( 'cdash_mu_edd_license_key' );
 	if( $old && $old != $new ) {
 		delete_option( 'cdash_mu_edd_license_status' ); // new license has been entered, so must reactivate
@@ -88,7 +88,7 @@ function edd_sanitize_license( $new ) {
 function cdash_mu_edd_activate_license() {
 
 	// listen for our activate button to be clicked
-	if( isset( $_POST['edd_license_activate'] ) ) {
+	if( isset( $_POST['cdash_mu_edd_license_activate'] ) ) {
 
 		// run a quick security check
 	 	if( ! check_admin_referer( 'cdash_mu_edd_nonce', 'cdash_mu_edd_nonce' ) )
@@ -197,7 +197,7 @@ add_action('admin_init', 'cdash_mu_edd_activate_license');
 function cdash_mu_edd_deactivate_license() {
 
 	// listen for our activate button to be clicked
-	if( isset( $_POST['edd_license_deactivate'] ) ) {
+	if( isset( $_POST['cdash_mu_edd_license_deactivate'] ) ) {
 
 		// run a quick security check
 	 	if( ! check_admin_referer( 'cdash_mu_edd_nonce', 'cdash_mu_edd_nonce' ) )

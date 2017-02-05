@@ -406,8 +406,8 @@ function cdashmu_render_form() {
         <!-- Beginning of the Plugin Options Form -->
            <?php
             if( $active_tab == 'cdashmu_settings_page' ) 
-            {                
-            ?>  
+            {     
+            ?>
                <form method="post" action="options.php">
                     <?php settings_fields( 'cdashmu_settings_page' );
                     do_settings_sections( 'cdashmu_settings_page' ); 
