@@ -87,7 +87,12 @@ function cdashmu_business_update_form(){
         <?php
             $taxonomy = 'business_category';
             $current_terms = wp_get_post_terms( $business_id, $taxonomy, $args ); 
-            $terms = get_terms('business_category');
+			$terms = get_terms( 'business_category', array(
+			'hide_empty' => false,
+			) );
+            /*$terms = get_terms('business_category',
+							  array(
+    							'hide_empty' => false));*/
             foreach($terms as $single_category){
             $category_slug = $single_category->slug;    
         ?>

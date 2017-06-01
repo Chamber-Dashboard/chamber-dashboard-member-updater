@@ -3,13 +3,13 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.0
+Version: 1.1
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
 */
 
-/*  Copyright 2016 Morgan Kay, Chandrika Guntur and Chamber Dashboard (email : info@chamberdashboard.com)
+/*  Copyright 2017 Chandrika Guntur and Chamber Dashboard (email : info@chamberdashboard.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -114,10 +114,6 @@ function cdashmu_require_crm() {
 function cdashmu_crm_notice(){
     ?><div class="error"><p><?php _e('Sorry, but the Chamber Dashboard Member Updater requires the <a href="https://wordpress.org/plugins/chamber-dashboard-crm/" target="_blank">Chamber Dashboard CRM</a> to be installed and active.', 'cdashmu' ); ?></p></div><?php
 }
-
-
-add_action('show_admin_bar', '__return_false');
-
 
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:

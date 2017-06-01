@@ -1,6 +1,10 @@
 <?php
 /* Options Page for Chamber Dashboard Member Updater */
 
+//Disable the admin bar for non-admin users
+cdashmu_remove_admin_bar();
+
+
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options')
 // --------------------------------------------------------------------------------------
@@ -18,7 +22,16 @@ function cdashmu_delete_plugin_options() {
 
 
 function cdashmu_plugin_activate(){
-    add_option('cdashmu_do_activation_redirect', true);
+    add_option('cdashmu_do_activation_redirect', true);	
+}
+
+function cdashmu_remove_admin_bar() {
+	if(!function_exists('wp_get_current_user')) {
+    	include(ABSPATH . "wp-includes/pluggable.php");
+	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+    	add_filter('show_admin_bar', '__return_false');
+	}
 }
 
 function cdashmu_plugin_redirect(){
@@ -46,10 +59,22 @@ function cdashmu_add_new_user_role() {
             'delete_posts' => false, // Use false to explicitly deny
             'delete_published_posts' => false,
             'upload_files' => true,
-            'publish_posts'=> true
+            'publish_posts'=> true,
         )
     );
 }
+
+function cdashmu_add_role_cap(){
+	$role = get_role( 'business-editor' );
+	//$role->add_cap( 'edit_published_pages' ); 
+	//$role->add_cap( 'edit_published_posts' );
+  	//$role->add_cap('delete_posts');
+  	//$role->add_cap('edit_posts');
+  	$role->add_cap('upload_files');
+    // editor caps
+	//$role->add_cap('edit_others_posts');
+}
+//add_action( 'admin_init', 'cdashmu_add_role_cap');
 
 // ------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_activation_hook(__FILE__, 'cdashmu_add_defaults')

@@ -3,8 +3,8 @@ Contributors: cguntur
 Tags: Chamber of Commerce, business directory, businesses, membership, update members
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 4.7.1
-Stable tag: 1.0
+Tested up to: 4.7.5
+Stable tag: 1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -43,6 +43,10 @@ None yet
 
 
 == Changelog ==
+
+== 1.1 ==
+* All the categories show up on the edit page
+* The admin bar will be hidden only for non admin users on the front end
 
 = 1.0 =
 * First release
