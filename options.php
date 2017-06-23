@@ -407,7 +407,7 @@ function cdashmu_validate_options($input) {
 
 // Add menu page
 function cdashmu_add_options_page() {
-	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater Settings', 'cdashmu'), __('Member Updater Settings', 'cdmu'), 'manage_options', 'cdash-mu', 'cdashmu_render_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater Settings', 'cdashmu'), __('Member Updater Settings', 'cdashmu'), 'manage_options', 'cdash-mu', 'cdashmu_render_form' );
 }
 
 // Render the Plugin options form
