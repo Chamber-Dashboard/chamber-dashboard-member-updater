@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.2
+Version: 1.3.1
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
@@ -33,7 +33,7 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.2');
+define('CDASHMU_VERSION',   				'1.3');
 
 // ------------------------------------------------------------------------
 // ADD THE EDD LICENSE INFORMATION
@@ -158,7 +158,7 @@ function cdash_mu_edd_plugin_updater() {
 
 	// setup the updater
 	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.2',                // current version number
+			'version'   => '1.3',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
 			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
 			'author'    => 'Chandrika Guntur',   // author of this plugin
@@ -372,9 +372,17 @@ function custom_registration_shortcode() {
 // ------------------------------------------------------------------------
 
 function cdashmu_member_login_form_shortcode() {
-	if ( is_user_logged_in() )
-		return 'You are already logged in. You can go to your business page to edit your listing.';
-		
+	if ( is_user_logged_in() ){
+        //redirect to business update page
+        $user = wp_get_current_user();   
+        $user_id = $user->ID;
+        $member_options = get_option('cdashmu_options');
+        //$user = get_userdata( $user_id );
+        $business_edit_url = $member_options['business_update_page'];
+        $business_edit_link = "<a href='". $business_edit_url . "'>Click here to edit your business</a>";
+		return 'You are already logged in.' . $business_edit_link;
+        
+    }
 	/* Set up some defaults. */
 	$defaults = array(
 		'label_username' => 'Username',
@@ -382,12 +390,12 @@ function cdashmu_member_login_form_shortcode() {
 	);
 	
 	/* Merge the user input arguments with the defaults. */
-	$attr = shortcode_atts( $defaults, $attr );
+	//$attr = shortcode_atts( $defaults, $attr );
 	
 	/* Set 'echo' to 'false' because we want it to always return instead of print for shortcodes. */
 	$attr['echo'] = false;
 	$attr['redirect'] = site_url();
-
+    $attr = shortcode_atts( $defaults, $attr );
 	return wp_login_form( $attr );
 }
 

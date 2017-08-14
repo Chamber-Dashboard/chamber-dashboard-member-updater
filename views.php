@@ -202,9 +202,7 @@ function cdashmu_get_business_email_from_business_id($business_id) {
          $admin_email = $member_options['additional_admin_email'];
      }
      
-     
-
-	 // The blogname option is escaped with esc_html on the way into the database in sanitize_option
+     // The blogname option is escaped with esc_html on the way into the database in sanitize_option
 	 // we want to reverse this for the plain text arena of emails.
      //This email goes to the admin 
 	 $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
@@ -244,6 +242,7 @@ function cdashmu_get_business_email_from_business_id($business_id) {
 // GENERATING THE BUSINESS EDIT LINK
 // ------------------------------------------------------------------------
 function cdashmu_get_business_edit_link($user_id){
+    $business_edit_link = "";
     $member_options = get_option('cdashmu_options');
     $user = get_userdata( $user_id );
     $business_edit_url = $member_options['business_update_page'];
