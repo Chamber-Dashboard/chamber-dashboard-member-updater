@@ -33,7 +33,7 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.3');
+define('CDASHMU_VERSION',   				'1.3.1');
 
 // ------------------------------------------------------------------------
 // ADD THE EDD LICENSE INFORMATION
@@ -56,7 +56,7 @@ if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 }
 
 // ------------------------------------------------------------------------
-// REQUIRE MINIMUM VERSION OF WORDPRESS:                                               
+// REQUIRE MINIMUM VERSION OF WORDPRESS:
 // ------------------------------------------------------------------------
 
 function cdashmu_requires_wordpress_version() {
@@ -82,7 +82,7 @@ function cdashmu_require_member_manager() {
     if ( is_admin() && current_user_can( 'activate_plugins' ) &&  !function_exists( 'cdashmm_requires_wordpress_version' ) ) {
         add_action( 'admin_notices', 'cdashmu_member_manager_notice' );
 
-        deactivate_plugins( plugin_basename( __FILE__ ) ); 
+        deactivate_plugins( plugin_basename( __FILE__ ) );
 
         if ( isset( $_GET['activate'] ) ) {
             unset( $_GET['activate'] );
@@ -103,7 +103,7 @@ function cdashmu_require_crm() {
     if ( is_admin() && current_user_can( 'activate_plugins' ) &&  !function_exists( 'cdcrm_requires_wordpress_version' ) ) {
         add_action( 'admin_notices', 'cdashmu_crm_notice' );
 
-        deactivate_plugins( plugin_basename( __FILE__ ) ); 
+        deactivate_plugins( plugin_basename( __FILE__ ) );
 
         if ( isset( $_GET['activate'] ) ) {
             unset( $_GET['activate'] );
@@ -158,7 +158,7 @@ function cdash_mu_edd_plugin_updater() {
 
 	// setup the updater
 	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.3',                // current version number
+			'version'   => '1.3.1',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
 			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
 			'author'    => 'Chandrika Guntur',   // author of this plugin
@@ -196,52 +196,52 @@ function cdashmu_user_registration_form( $first_name, $last_name, $username, $pa
 
 	if ( is_wp_error( $reg_errors ) ) {
         echo "<span class='errors'>There are some errors in the form. Please check below.</span>";
-	}   
+	}
 
-    ?>    
-	
+    ?>
+
 	<p class="explain"><?= __( '* = Required') ?></p>
 	<input name="cdashmu_user_registration_nonce" id="cdashmu_user_registration_nonce" type="hidden" value="<?= wp_create_nonce( 'cdashmu_user_registration_nonce' ) ?>">
-    
+
 	<p>
 		<label><?= __( 'First Name', 'cdashmu' ) ?> *</label>
 		<input type="text" name="fname" id="first_name" value="<?= $first_name ?>">
         <?= cdashmu_display_error('First Name', $reg_errors) ?>
     </p>
-	
+
 	<p>
 		<label><?= __( 'Last Name', 'cdashmu' ) ?> *</label>
 		<input type="text" name="lname" id="last_name" value="<?= $last_name ?>">
         <?= cdashmu_display_error('Last Name', $reg_errors) ?>
     </p>
-	
+
 	<p>
 		<label><?= __( 'User Name', 'cdashmu' ) ?> *</label>
 		<input type="text" name="username" id="user_name" value="<?= $username ?>">
         <?= cdashmu_display_error('User Name', $reg_errors) ?>
     </p>
-     
+
     <p>
 		<label><?= __( 'Password', 'cdashmu' ) ?> *</label>
 		<input type="password" name="password" id="password" value="<?= $password ?>">
         <?= cdashmu_display_error('Password', $reg_errors) ?>
     </p>
-     
+
     <p>
 		<label><?= __( 'Email', 'cdashmu' ) ?> *</label>
 		<input type="text" name="email" id="email" value="<?= $email ?>">
         <?= cdashmu_display_error('Email', $reg_errors) ?>
     </p>
-	
+
 	<p>
         <label><?= __( 'Business Name', 'cdashmu' ) ?> *</label><span><?= __('Please enter your business name and press tab to select your business from the list.')?> <small><?= __('(Your business needs to be already registered with our chamber.)') ?></small></span>
 		<input name="bus_name" type="text" id="bus_name" required value="<?= ( $business_id ? $bus_name : null ) ?>">
         <?= cdashmu_display_error('business_name', $reg_errors) ?>
 	</p>
-    
+
     <div id="business-picker"></div>
 	    <input name="business_id" type="hidden" id="business_id" value="<?= $business_id ?>">
-		
+
 	<input type="submit" name="submit" value="Register"/>
     </form>
     <?php
@@ -255,8 +255,8 @@ function cdashmu_check_empty($field, $field_name, $reg_errors){
 
 function cdashmu_user_registration_validation( $first_name, $last_name, $username, $password, $email, $bus_name, $business_id )  {
 	$reg_errors = new WP_Error;
-	
-	//Check if Username, Password and Email are not empty	
+
+	//Check if Username, Password and Email are not empty
     cdashmu_check_empty($username, 'User Name', $reg_errors);
     cdashmu_check_empty($password, 'Password', $reg_errors);
     cdashmu_check_empty($email, 'Email', $reg_errors);
@@ -267,67 +267,72 @@ function cdashmu_user_registration_validation( $first_name, $last_name, $usernam
 	if ( 4 > strlen( $username ) ) {
     	$reg_errors->add( 'User Name', 'Username too short. At least 4 characters is required' );
 	}
-	
+
 	//Check if username is already registered
 	if ( username_exists( $username ) ){
     	$reg_errors->add('User Name', 'Sorry, that username already exists!');
 	}
-	
+
 	//Check if username is valid
 	if ( ! validate_username( $username ) ) {
  	   $reg_errors->add( 'User Name', 'Sorry, the username you entered is not valid' );
 	}
-	
+
 	//Check if password is greater than 5 characters
 	if ( 5 > strlen( $password ) ) {
         $reg_errors->add( 'Password', 'Password length must be greater than 5' );
     }
-	
+
 	//Check if email is valid
 	if ( !is_email( $email ) ) {
     	$reg_errors->add( 'Email', 'Email is not valid' );
 	}
-	
+
 	//Check if email is already registered
 	if ( email_exists( $email ) ) {
     	$reg_errors->add( 'Email', 'Email Already in use' );
 	}
-    
+
     if( empty( $business_id)){
         $reg_errors->add('business_name', 'Please select a business.');
     }
-	
+
 	return $reg_errors;
 }
 
-function cdashmu_complete_user_registration($first_name, $last_name, $username, $password, $email, $bus_name, $business_id) {
+function cdashmu_complete_user_registration($first_name, $last_name, $username, $password, $email, $bus_name, $business_id, $show_registration_message) {
 	$options = get_option( 'cdashmu_options' );
         $userdata = array(
-		'first_name'    =>   $first_name,
+				'first_name'    =>   $first_name,
         'last_name'     =>   $last_name,
         'user_login'    =>   $username,
         'user_pass'     =>   $password,
         'user_email'    =>   $email,
-        'role'          =>   'cdashmu_business_editor'    
-        );		
+        'role'          =>   'cdashmu_business_editor'
+        );
         $user = wp_insert_user( $userdata );
 		$name = $first_name . ' ' . $last_name;
 		$person_details = array(
 			'post_type' => 'person',
  		    'post_title' => $name,
-		    'post_content' => '',
+		    'post_content' => 'This was created by the Member Updater.',
 		    'post_status' => 'pending'
 		);
- 
+
 		$person = wp_insert_post( $person_details );
         p2p_type('businesses_to_people')->connect($business_id, $person, array('date' => current_time('mysql')));
         cdashmu_connect_user_to_people($user, $person);
-		
-	        //echo 'Registration complete. Goto <a href="' . $options['user_login_page'] . '">Login page</a>.';   
-            echo $options['custom_registration_message'];
+
+	        //echo 'Registration complete. Goto <a href="' . $options['user_login_page'] . '">Login page</a>.';
+					if($show_registration_message){
+						echo $options['custom_registration_message'];
+					}
+
 			// send an email to the admin alerting them of the registration
             //$user_id =  $user->ID;
 			cdashmu_wp_new_user_notification($user, $business_id, $bus_name, $name);
+
+			return $user;
 }
 
 function cdashmu_member_custom_registration_function() {
@@ -338,7 +343,7 @@ function cdashmu_member_custom_registration_function() {
         $username   =   sanitize_user( $_POST['username'] );
         $password   =   esc_attr( $_POST['password'] );
         $email      =   sanitize_email( $_POST['email'] );
-		$bus_name	=	$_POST['bus_name'];	
+		$bus_name	=	$_POST['bus_name'];
         $business_id =  $_POST['business_id'];
 
         $reg_errors = cdashmu_user_registration_validation($first_name, $last_name, $username, $password, $email, $bus_name, $business_id);
@@ -346,20 +351,20 @@ function cdashmu_member_custom_registration_function() {
         // call @function complete_registration to create the user
         // only when no WP_error is found
 		if(count($reg_errors -> get_error_messages()) < 1) {
-            cdashmu_complete_user_registration($first_name, $last_name, $username, $password, $email, $bus_name, $business_id);
+            cdashmu_complete_user_registration($first_name, $last_name, $username, $password, $email, $bus_name, $business_id, true);
 		}
 		else {
    		    cdashmu_user_registration_form($first_name, $last_name, $username, $password, $email, $bus_name, $business_id, $reg_errors);
 		}
     }
-    else { 
+    else {
         cdashmu_user_registration_form(null, null, null, null, null, null, null, null);
 	}
 }
 
 // Register a new shortcode: [cdashmu_registration_form]
 add_shortcode( 'cdashmu_registration_form', 'custom_registration_shortcode' );
- 
+
 
 function custom_registration_shortcode() {
     ob_start();
@@ -374,24 +379,24 @@ function custom_registration_shortcode() {
 function cdashmu_member_login_form_shortcode() {
 	if ( is_user_logged_in() ){
         //redirect to business update page
-        $user = wp_get_current_user();   
+        $user = wp_get_current_user();
         $user_id = $user->ID;
         $member_options = get_option('cdashmu_options');
         //$user = get_userdata( $user_id );
         $business_edit_url = $member_options['business_update_page'];
         $business_edit_link = "<a href='". $business_edit_url . "'>Click here to edit your business</a>";
 		return 'You are already logged in.' . $business_edit_link;
-        
+
     }
 	/* Set up some defaults. */
 	$defaults = array(
 		'label_username' => 'Username',
 		'label_password' => 'Password'
 	);
-	
+
 	/* Merge the user input arguments with the defaults. */
 	//$attr = shortcode_atts( $defaults, $attr );
-	
+
 	/* Set 'echo' to 'false' because we want it to always return instead of print for shortcodes. */
 	$attr['echo'] = false;
 	$attr['redirect'] = site_url();
@@ -453,41 +458,41 @@ if( defined( 'CDASH_PATH' ) ) {
 }
 
 function cdashmu_connect_user_to_people($user, $people) {
-    p2p_type('people_to_user')->connect($people, $user, array('date' => current_time('mysql')));	
+    p2p_type('people_to_user')->connect($people, $user, array('date' => current_time('mysql')));
 }
 
 // AJAX - when a business name is entered, check whether the business is already in the database
 function cdashmu_find_existing_business() {
-	
+
     if ( !wp_verify_nonce( $_POST['nonce'], "cdashmu_user_registration_nonce")) {
         exit( "There was an error." );
     }
- 
+
     $bus_name = $_POST['bus_name'];
     $results = '';
 
-    $args = array( 
+    $args = array(
         'post_type' => 'business',
         'post_title_like' => $bus_name,
         'posts_per_page' => -1,
         'orderby' => 'title',
         'order' => 'ASC',
     );
-    
+
     $bus_query = new WP_Query( $args );
-    
+
     // The Loop
     if ( $bus_query->have_posts() ) :
     	$results .= '<div class="alert"><p>' . __( 'It looks like your business is already in our database!  To verify, select your business below:', 'cdashmu' ) . '</p>';
 	    while ( $bus_query->have_posts() ) : $bus_query->the_post();
 	    	$results .= '<div><input type="radio" name="business_id" class="business_id" value="' . get_the_id() . '"><span>' . get_the_title() . '</span></div>';
-	    endwhile;        
+	    endwhile;
 	    $results .= '</div>';
     endif;
-    
+
     // Reset Post Data
     wp_reset_postdata();
-    
+
     die($results);
 }
 add_action( 'wp_ajax_cdashmu_find_existing_business', 'cdashmu_find_existing_business' );
@@ -496,24 +501,24 @@ add_action( 'wp_ajax_nopriv_cdashmu_find_existing_business', 'cdashmu_find_exist
 
 // AJAX - when an existing business is selected, fill in the form
 function cdashmu_prefill_user_registration_form() {
-	
+
     if ( !wp_verify_nonce( $_POST['nonce'], "cdashmu_user_registration_nonce")) {
         exit( "There was an error." );
     }
- 
+
     $business_id = $_POST['business_id'];
     if( "new" == $_POST['business_id'] ) {
     	die();
     }
     $results = array();
 
-    $args = array( 
+    $args = array(
         'post_type' => 'business',
         'p' => $business_id,
     );
-    
+
     $bus_query = new WP_Query( $args );
-    
+
     // The Loop
     if ( $bus_query->have_posts() ) :
 	    while ( $bus_query->have_posts() ) : $bus_query->the_post();
@@ -521,13 +526,13 @@ function cdashmu_prefill_user_registration_form() {
 			$results['business_name'] = get_the_title();
 	    endwhile;
     endif;
-    
+
     // Reset Post Data
     wp_reset_postdata();
 
     // $results = json_encode($results);
    	wp_send_json($results);
-    
+
     die();
 }
 add_action( 'wp_ajax_nopriv_cdashmu_prefill_user_registration_form', 'cdashmu_prefill_user_registration_form' );

@@ -43,8 +43,11 @@ None yet
 
 
 == Changelog ==
+== 1.3.2 ==
+* Made it compatible with WC Payments
+
 == 1.3.1 ==
-* Fixed somme php warnings and notices
+* Fixed some php warnings and notices
 
 == 1.3 ==
 * Updating business listing updates the map correctly.
