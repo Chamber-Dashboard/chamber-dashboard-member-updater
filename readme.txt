@@ -3,8 +3,8 @@ Contributors: cguntur
 Tags: Chamber of Commerce, business directory, businesses, membership, update members
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 4.8.1
-Stable tag: 1.3.1
+Tested up to: 4.9
+Stable tag: 1.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,7 +44,7 @@ None yet
 
 == Changelog ==
 == 1.3.2 ==
-* Made it compatible with WC Payments
+* Works with the new improved Join Now form in Chamber Dashboard Member Manager
 
 == 1.3.1 ==
 * Fixed some php warnings and notices
