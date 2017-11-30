@@ -41,6 +41,7 @@ You can learn more at [Chamber Dashboard](https://chamberdashboard.com)
 == Frequently Asked Questions ==
 None yet
 
+== Screenshots ==
 
 == Changelog ==
 == 1.3.2 ==
