@@ -3,7 +3,7 @@ Contributors: cguntur
 Tags: Chamber of Commerce, business directory, businesses, membership, update members
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 4.9
+Tested up to: 4.9.1
 Requires PHP: 5.4
 Stable tag: 1.3.2
 License: GPLv3
