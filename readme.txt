@@ -4,6 +4,7 @@ Tags: Chamber of Commerce, business directory, businesses, membership, update me
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
 Tested up to: 4.9
+Requires PHP: 5.4
 Stable tag: 1.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -44,19 +45,39 @@ None yet
 == Screenshots ==
 
 == Changelog ==
-== 1.3.2 ==
+= 1.3.2 =
 * Works with the new improved Join Now form in Chamber Dashboard Member Manager
 
-== 1.3.1 ==
+= 1.3.1 =
 * Fixed some php warnings and notices
 
-== 1.3 ==
+= 1.3 =
 * Updating business listing updates the map correctly.
 
-== 1.2 ==
+= 1.2 =
 * Fixed the error with the menu
 
-== 1.1 ==
+= 1.1 =
+* All the categories show up on the edit page
+* The admin bar will be hidden only for non admin users on the front end
+
+= 1.0 =
+* First release
+
+== Upgrade Notice ==
+= 1.3.2 =
+* Works with the new improved Join Now form in Chamber Dashboard Member Manager
+
+= 1.3.1 =
+* Fixed some php warnings and notices
+
+= 1.3 =
+* Updating business listing updates the map correctly.
+
+= 1.2 =
+* Fixed the error with the menu
+
+= 1.1 =
 * All the categories show up on the edit page
 * The admin bar will be hidden only for non admin users on the front end
 
