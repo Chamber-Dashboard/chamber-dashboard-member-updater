@@ -39,6 +39,11 @@
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_zip" name="buscontact_meta[location][<?php echo $i; ?>][zip]" value="<?php if(isset($location_info['zip'])) echo $location_info['zip']; ?>"/>
 </p>
 
+<p>
+    <label for="bus_country"><?php echo __('Country')?></label>
+    <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_country" name="buscontact_meta[location][<?php echo $i; ?>][country]" value="<?php if(isset($location_info['country'])) echo $location_info['country']; ?>"/>
+</p>
+
 <!-- Set latitude and logintude to update the map when the address is updated-->
 
 <p>

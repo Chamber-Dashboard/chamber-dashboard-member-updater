@@ -183,112 +183,9 @@ function cdashmu_business_update_form(){
     	 }
      }
     ?>
-    <fieldset>
-        <legend>Social Media Links</legend>
-        <div id="social_media" class="social_media_div">
-            <?php
-                //$social_media_list = "";
-                $social_media_list = array(
-                        "avvo"  => "Avvo",
-                        "facebook"  =>  "Facebook",
-                        "flickr"    =>  "Flickr",
-                        "google"  =>  "Google +",
-                        "instagram"  =>  "Instagram",
-                        "linkedin"  =>  "LinkedIn",
-                        "pinterest"  =>  "Pinterest",
-                        "tripadvisor"  =>  "Trip Advisor",
-                        "tumblr"  =>  "Tumblr",
-                        "twitter"  =>  "Twitter",
-                        "urbanspoon"  =>  "Urbanspoon",
-                        "vimeo" =>  "Vimeo",
-                        "website"   =>  "Website",
-                        "youtube"   =>  "YouTube",
-                        "yelp"  =>  "Yelp"
-                    );
-            ?>
-            <div id="buscontact_meta_social_template_socialservice" class="social_media_child" style="display:none;">
-                <label for="buscontact_meta_social_template_socialservice">Social Media Service</label>
-                <select name="buscontact_meta_social_template_socialservice">
-                    <option value=""></option>
-                    <?php
-                    foreach($social_media_list as $key=>$value){
-                    ?>
-                    <option value="<?php echo $key; ?>" <?php if( isset($social_info['socialservice']) && $social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
-                    <?php
-                    }
-                    ?>
-                </select>
-
-                <label for="buscontact_meta_social_template_socialurl">Social Media Url</label>
-                <input type="text" name="buscontact_meta_social_template_socialurl" value="<?php if(isset($social_info['socialurl'])) echo $social_info['socialurl']; ?>" /><br />
-                <span class="remove">
-                    <input type="checkbox" name="social_media_remove_template" class="social_media_remove" id="social_media_remove_template" value="" />Delete
-                </span> <br /><br />
-            </div>
-            <?php
-				$i = 0;
-                if(isset($contactmeta['social'])){
-					//echo "Social media is set.";
-					$business_data['social'] = $contactmeta['social'];
-
-					foreach( $contactmeta['social'] as $social_info ) {
-					$selected = ' selected="selected"';
-				?>
-				<div id="buscontact_meta_social_<?php echo $i; ?>_socialservice" class="social_media_child">
-					<label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]">Social Media Service</label>
-					<select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
-						<option value=""></option>
-						<?php
-						foreach($social_media_list as $key=>$value){
-						?>
-						<option value="<?php echo $key; ?>" <?php if($social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
-						<?php
-						}
-						?>
-					</select>
-
-					<label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
-					<input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $social_info['socialurl']; ?>" /><br />
-					<span class="remove">
-						<input type="checkbox" name="social_media_remove_<?php echo $i; ?>" class="social_media_remove" id="social_media_remove_<?php echo $i; ?>" value="" />Delete
-					</span> <br /><br />
-				</div>
-				<?php
-						$i++;
-					}
-				}else{
-					//echo "Social media is not set.";
-					$selected = ' selected="selected"';
-				?>
-				<div id="buscontact_meta_social_<?php echo $i; ?>_socialservice" class="social_media_child">
-					<label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]">Social Media Service</label>
-					<select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
-						<option value=""></option>
-						<?php
-						foreach($social_media_list as $key=>$value){
-						?>
-						<option value="<?php echo $key; ?>" <?php if($social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
-						<?php
-						}
-						?>
-					</select>
-
-					<label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
-					<input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $social_info['socialurl']; ?>" /><br />
-					<span class="remove">
-						<input type="checkbox" name="social_media_remove_<?php echo $i; ?>" class="social_media_remove" id="social_media_remove_<?php echo $i; ?>" value="" />Delete
-					</span> <br /><br />
-				</div>
-			<?php
-				}
-            if(empty($social_media_list)){
-                echo "There are no social media links selected. Click here to add social media links to your business.";
-            }
-
-            ?>
-        </div><!--end of social media div-->
-        <button type="button" id="add_social_media" class="button">Add Social Media Links</button>
-    </fieldset>
+    <?php
+      include 'cdashmu-social-media-fields.php';
+    ?>
 
     <fieldset>
         <legend>Billing Address</legend>
@@ -314,6 +211,11 @@ function cdashmu_business_update_form(){
         <p>
             <label for="billing_zip">Zip</label>
             <input type="text" id="billing_zip" name="billing_zip" value="<?php if(isset($billingmeta['billing_zip'])) echo $billingmeta['billing_zip']; ?>"/>
+        </p>
+
+        <p>
+            <label for="billing_zip">Country</label>
+            <input type="text" id="billing_country" name="billing_country" value="<?php if(isset($billingmeta['billing_country'])) echo $billingmeta['billing_country']; ?>"/>
         </p>
 
         <p>
@@ -406,6 +308,7 @@ function cdashmu_business_update_form_shortcode(){
      $billing_city = $_POST['billing_city'];
      $billing_state = $_POST['billing_state'];
      $billing_zip = $_POST['billing_zip'];
+     $billing_country = $_POST['billing_country'];
      $billing_email = $_POST['billing_email'];
      $billing_phone = $_POST['billing_phone'];
 
@@ -416,7 +319,8 @@ function cdashmu_business_update_form_shortcode(){
 			'_cdash_billing_city',
 			'_cdash_billing_state',
 			'_cdash_billing_zip',
-            '_cdash_billing_email',
+      '_cdash_billing_country',
+      '_cdash_billing_email',
 			'_cdash_billing_phone'
 		);
 		$str = $fields;
@@ -427,7 +331,8 @@ function cdashmu_business_update_form_shortcode(){
 		update_post_meta( $business_id, '_cdash_billing_city', $billing_city );
 		update_post_meta( $business_id, '_cdash_billing_state', $billing_state );
 		update_post_meta( $business_id, '_cdash_billing_zip', $billing_zip );
-        update_post_meta( $business_id, '_cdash_billing_email', $billing_email );
+    update_post_meta( $business_id, '_cdash_billing_country', $billing_country );
+    update_post_meta( $business_id, '_cdash_billing_email', $billing_email );
 		update_post_meta( $business_id, '_cdash_billing_phone', $billing_phone );
 
      cdash_store_geolocation_data($business_id);
