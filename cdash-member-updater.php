@@ -76,10 +76,9 @@ add_action( 'admin_init', 'cdashmu_requires_wordpress_version' );
 // ------------------------------------------------------------------------
 // REQUIRE CHAMBER DASHBOARD MEMBER MANAGER
 // ------------------------------------------------------------------------
-
 add_action( 'admin_init', 'cdashmu_require_member_manager' );
 function cdashmu_require_member_manager() {
-    if ( is_admin() && current_user_can( 'activate_plugins' ) &&  !function_exists( 'cdashmm_requires_wordpress_version' ) ) {
+    if ( is_admin() && current_user_can( 'activate_plugins' ) &&  !function_exists( 'cdashmm_requires_wordpress_version' )  ) {
         add_action( 'admin_notices', 'cdashmu_member_manager_notice' );
 
         deactivate_plugins( plugin_basename( __FILE__ ) );
@@ -91,7 +90,7 @@ function cdashmu_require_member_manager() {
 }
 
 function cdashmu_member_manager_notice(){
-    ?><div class="error"><p><?php _e('Sorry, but the Chamber Dashboard Member Updater requires the <a href="https://wordpress.org/plugins/chamber-dashboard-member-manager/" target="_blank">Chamber Dashboard Member Manager</a> to be installed and active.', 'cdashmu' ); ?></p></div><?php
+    ?><div class="error"><p><?php _e('Sorry, but the Chamber Dashboard Member Updater requires the <a href="https://wordpress.org/plugins/chamber-dashboard-member-manager/" target="_blank">Chamber Dashboard Member Manager</a> or <a href="https://chamberdashboard.com/downloads/member-manager-pro/" target="_blank">Chamber Dashboard Member Manager Pro</a> to be installed and active.', 'cdashmu' ); ?></p></div><?php
 }
 
 // ------------------------------------------------------------------------
@@ -314,9 +313,9 @@ function cdashmu_complete_user_registration($first_name, $last_name, $username, 
 		$name = $first_name . ' ' . $last_name;
 		$person_details = array(
 			'post_type' => 'person',
- 		    'post_title' => $name,
-		    'post_content' => 'This was created by the Member Updater.',
-		    'post_status' => 'pending'
+		  'post_title' => $name,
+	    'post_content' => 'This was created by the Member Updater.',
+	    'post_status' => 'pending'
 		);
 
 		$person = wp_insert_post( $person_details );

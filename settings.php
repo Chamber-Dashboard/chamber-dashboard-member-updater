@@ -1,14 +1,18 @@
 <?php
 /* Settings Page */
 
+if ( version_compare(CDASHMU_VERSION, "1.3.2", ">" ) ) {
+  add_action('cdash_licence_page_hook', 'cdmu_render_license_key_form');
+}
 
-function cdmu_render_license_key_form(){      
+
+function cdmu_render_license_key_form(){
 ?>
     <div class="wrap">
         <!--<h1><?= esc_html(get_admin_page_title()); ?></h1>-->
         <?php cdash_mu_edd_license_page(); ?>
     </div>
-    
+
 <?php
 }
 ?>
@@ -278,13 +282,13 @@ function cdash_mu_edd_check_license() {
 		return false;
 
 	$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-    
+
 	if( $license_data->license == 'valid' ) {
-		echo 'valid'; 
+		echo 'valid';
         exit;
 		// this license is still valid
 	} else {
-		echo 'invalid'; 
+		echo 'invalid';
         exit;
 		// this license is no longer valid
 	}
