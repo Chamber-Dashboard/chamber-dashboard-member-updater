@@ -44,3 +44,8 @@
     color:#EB272B;
     display:block;
 }
+
+.cdash_update_notice button.notice-dismiss{
+	background:#B1304D;
+	right:0;
+}

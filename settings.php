@@ -284,11 +284,13 @@ function cdash_mu_edd_check_license() {
 	$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 	if( $license_data->license == 'valid' ) {
-		echo 'valid';
+		//echo 'valid';
+    return true;
         exit;
 		// this license is still valid
 	} else {
-		echo 'invalid';
+		//echo 'invalid';
+    return false;
         exit;
 		// this license is no longer valid
 	}

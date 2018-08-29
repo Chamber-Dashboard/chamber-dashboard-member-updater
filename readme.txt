@@ -3,9 +3,9 @@ Contributors: cguntur
 Tags: Chamber of Commerce, business directory, businesses, membership, update members
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 4.9.1
-Requires PHP: 5.4
-Stable tag: 1.3.2
+Tested up to: 4.9.8
+Requires PHP: 5.6
+Stable tag: 1.3.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,13 @@ None yet
 == Screenshots ==
 
 == Changelog ==
+= 1.3.4 =
+* Business editors cannot access the admin Dashboard
+* Added a license update reminder
+
+= 1.3.3 =
+* Fixed the issue of images and content styles not saving in the custom messages.
+
 = 1.3.2 =
 * Works with the new improved Join Now form in Chamber Dashboard Member Manager
 
