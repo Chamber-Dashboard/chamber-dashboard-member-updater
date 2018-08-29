@@ -67,7 +67,7 @@ function cdashmu_business_update_form(){
 
             $content = $bus_content;
             $editor_id = 'bdesc';
-            $settings = array( 'editor_height' => '300', 'media_buttons' => false );
+            $settings = array( "wpautop" => true, 'editor_height' => '300', 'media_buttons' => false );
             wp_editor( $content, $editor_id, $settings );
         ?>
     </p>

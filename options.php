@@ -24,6 +24,7 @@ function cdashmu_delete_plugin_options() {
 function cdashmu_plugin_activate(){
   //cdash_license_page();
   add_option('cdashmu_do_activation_redirect', true);
+  //cdashmu_plugin_redirect();
 }
 
 function cdashmu_remove_admin_bar() {
@@ -38,11 +39,12 @@ function cdashmu_remove_admin_bar() {
 function cdashmu_plugin_redirect(){
     if (get_option('cdashmu_do_activation_redirect', false)) {
         delete_option('cdashmu_do_activation_redirect');
-        if(!isset($_GET['activate-multi']))
-        {
-            //wp_safe_redirect(admin_url('admin.php?page=cdash-mu&tab=cdashmu_license_page'));
-            wp_safe_redirect(admin_url('admin.php?page=chamber_dashboard_license'));
-        }
+    }else{
+      if(!isset($_GET['activate-multi']))
+      {
+          //wp_safe_redirect(admin_url('admin.php?page=cdash-mu&tab=cdashmu_license_page'));
+          wp_safe_redirect(admin_url('admin.php?page=chamber_dashboard_license'));
+      }
     }
 }
 
@@ -66,7 +68,7 @@ function cdashmu_add_new_user_role() {
 }
 
 function cdashmu_add_role_cap(){
-	$role = get_role( 'business-editor' );
+	$role = get_role( 'cdashmu_business_editor' );
 	//$role->add_cap( 'edit_published_pages' );
 	//$role->add_cap( 'edit_published_posts' );
   	//$role->add_cap('delete_posts');
@@ -75,11 +77,11 @@ function cdashmu_add_role_cap(){
     // editor caps
 	//$role->add_cap('edit_others_posts');
 }
-//add_action( 'admin_init', 'cdashmu_add_role_cap');
+add_action( 'admin_init', 'cdashmu_add_role_cap');
 
-// ------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_activation_hook(__FILE__, 'cdashmu_add_defaults')
-// ------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 
 // Define default option settings
 function cdashmu_add_defaults() {
@@ -102,7 +104,7 @@ function cdashmu_add_defaults() {
     }
 
     if(!isset($tmp['custom_user_message'])){
-        $tmp['custom_user_message'] = 'You have been successfully registered as a user for (add business name here)';
+        $tmp['custom_user_message'] = 'You have been successfully registered as a user for ' . bloginfo('name');
     }
 
 	if( !isset( $tmp['user_login_page'] ) ) {
@@ -136,6 +138,11 @@ function cdashmu_add_defaults() {
 
 	update_option( 'cdashmu_options', $tmp );
 }
+
+add_action('admin_enqueue_scripts', function()
+{
+    wp_enqueue_media();
+});
 
 // ------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: add_action('admin_init', 'cdashmu_init' )
@@ -186,7 +193,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_settings_page_section',
 		array(
-			__( 'Enter the message you would like your users to see after they sign up as a user connected to a business.', 'cdashmu' )
+			__( 'Enter the message you would like your users to see <b>on your website</b> after they sign up as a user connected to a business.', 'cdashmu' )
 		)
 	);
 
@@ -197,7 +204,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_settings_page_section',
 		array(
-			__( 'Enter the message you would like to send to the admin email when a new user is registered.', 'cdashmu' )
+			__( 'Enter the message you would like to add to the admin email message when a new user is registered.', 'cdashmu' )
 		)
 	);
 
@@ -208,7 +215,8 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_settings_page_section',
 		array(
-			__( 'Enter the message you would like to send to the business when a new user is registered.', 'cdashmu' )
+			__( 'Enter the message you would like to add to the default business email when a new user is registered.
+', 'cdashmu' )
 		)
 	);
 
@@ -219,7 +227,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_settings_page_section',
 		array(
-			__( 'Enter the message you would like to send to the new user when they register on your site.', 'cdashmu' )
+			__( 'Enter the message you would like to add to the default new user email when they register on your site.', 'cdashmu' )
 		)
 	);
 
@@ -331,7 +339,7 @@ function cdashmu_custom_registration_message_page_render( $args ) {
 	<br />--><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
-		$args = array("wpautop" => false, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_registration_message]", "textarea_rows" => "5");
+		$args = array("wpautop" => true, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_registration_message]", "textarea_rows" => "5");
 
 		wp_editor( $options['custom_registration_message'], "registration", $args );
 
@@ -348,7 +356,7 @@ function cdashmu_custom_admin_message_page_render( $args ) {
 	<br />--><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
-		$args = array("wpautop" => false, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_admin_message]", "textarea_rows" => "5");
+		$args = array("wpautop" => true, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_admin_message]", "textarea_rows" => "5");
 
 		wp_editor( $options['custom_admin_message'], "admin", $args );
 
@@ -365,7 +373,7 @@ function cdashmu_custom_business_message_page_render( $args ) {
 	<br />--><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
-		$args = array("wpautop" => false, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_business_message]", "textarea_rows" => "5");
+		$args = array("wpautop" => true, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_business_message]", "textarea_rows" => "5");
 
 		wp_editor( $options['custom_business_message'], "business", $args );
 
@@ -382,7 +390,7 @@ function cdashmu_custom_user_message_page_render( $args ) {
 	<br />--><span class="description"><?php echo $args[0]; ?></span>
 	<?php
 
-		$args = array("wpautop" => false, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_user_message]", "textarea_rows" => "5");
+		$args = array("wpautop" => true, "media_buttons" => true, "textarea_name" => "cdashmu_options[custom_user_message]", "textarea_rows" => "5");
 
 		wp_editor( $options['custom_user_message'], "user", $args );
 
@@ -471,16 +479,17 @@ function cdashmu_validate_options($input) {
     	$input['user_registration_page'] = wp_filter_nohtml_kses( $input['user_registration_page'] );
     }
     if( isset( $input['custom_registration_message'] ) ) {
-    	$input['custom_registration_message'] = wp_filter_nohtml_kses( $input['custom_registration_message'] );
+    	//$input['custom_registration_message'] = wp_filter_nohtml_kses( $input['custom_registration_message'] );
+      $input['custom_registration_message'] = wp_kses_post( $input['custom_registration_message'] );
     }
     if( isset( $input['custom_admin_message'] ) ) {
-    	$input['custom_admin_message'] = wp_filter_nohtml_kses( $input['custom_admin_message'] );
+    	$input['custom_admin_message'] = wp_kses_post( $input['custom_admin_message'] );
     }
     if( isset( $input['custom_business_message'] ) ) {
-    	$input['custom_business_message'] = wp_filter_nohtml_kses( $input['custom_business_message'] );
+    	$input['custom_business_message'] = wp_kses_post( $input['custom_business_message'] );
     }
     if( isset( $input['custom_user_message'] ) ) {
-    	$input['custom_user_message'] = wp_filter_nohtml_kses( $input['custom_user_message'] );
+    	$input['custom_user_message'] = wp_kses_post( $input['custom_user_message'] );
     }
     if( isset( $input['user_login_page'] ) ) {
     	$input['user_login_page'] = wp_filter_nohtml_kses( $input['user_login_page'] );

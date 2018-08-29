@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.3.2
+Version: 1.3.4
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
@@ -33,7 +33,7 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.3.2');
+define('CDASHMU_VERSION',   				'1.3.4');
 
 // ------------------------------------------------------------------------
 // ADD THE EDD LICENSE INFORMATION
@@ -120,28 +120,20 @@ function cdashmu_crm_notice(){
 
 // Set-up Action and Filter Hooks
 //What to do when the plugin is activated
+register_activation_hook(__FILE__, 'cdashmu_plugin_activate');
 register_activation_hook(__FILE__, 'cdashmu_add_defaults');
 register_activation_hook(__FILE__, 'cdashmu_add_new_user_role');
-register_activation_hook(__FILE__, 'cdashmu_plugin_activate');
+register_activation_hook(__FILE__, 'cdashmu_set_plugin_active');
 
-add_action('admin_init', 'cdashmu_plugin_redirect');
+//add_action('admin_init', 'cdashmu_plugin_redirect');
 add_action('admin_menu', 'cdashmu_add_options_page');
 add_action( 'admin_init', 'cdashmu_init' );
 
 //What to do when the plugin is uninstalled
 register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options');
 
-// Require options stuff
-require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
-
-// Require Settings Page
-require_once( plugin_dir_path( __FILE__ ) . 'settings.php' );
-
-// Require views
-require_once( plugin_dir_path( __FILE__ ) . 'views.php' );
-
-// Require business update form
-require_once( plugin_dir_path( __FILE__ ) . 'cdashmu-edit-business.php' );
+//Required Files
+require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
 
 // Initialize language so it can be translated
 function cdashmu_language_init() {
@@ -157,18 +149,32 @@ function cdash_mu_edd_plugin_updater() {
 
 	// setup the updater
 	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.3.2',                // current version number
+			'version'   => '1.3.4',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
 			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
 			'author'    => 'Chandrika Guntur',   // author of this plugin
-            'url'       => home_url()
+      'url'       => home_url()
 		)
 	);
 
 }
 add_action( 'admin_init', 'cdash_mu_edd_plugin_updater', 0 );
 
+//Adding settings link on the plugins page
+function cdashmu_plugin_action_links( $links ) {
+  //Check transient. If it is available, display the settings and license link
+  if(get_transient('cdashmu_active')){
+    $settings_url = get_admin_url() . 'admin.php?page=cdash-mu';
+    $settings_link = '<a href="' . $settings_url . '">' . __('Settings', 'cdash-mu') . '</a>';
+    array_unshift( $links, $settings_link );
 
+  	$license_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
+    $license_link = '<a href="' . $license_url . '">' . __('License', 'cdash-mu') . '</a>';
+    array_unshift( $links, $license_link );
+  }
+  return $links;
+}
+add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'cdashmu_plugin_action_links' );
 
 // ------------------------------------------------------------------------
 // MEMBER REGISTRATION FORM
@@ -179,7 +185,7 @@ function cdashmu_display_error($code, $reg_errors){
     if ( is_wp_error( $reg_errors ) ) {
         foreach ( $reg_errors->get_error_messages($code) as $error ) {
             $retval .= "<span class='errors'>" . $error . '</span>';
-		}
+				}
     }
     return $retval;
 }
@@ -484,7 +490,7 @@ function cdashmu_find_existing_business() {
     if ( $bus_query->have_posts() ) :
     	$results .= '<div class="alert"><p>' . __( 'It looks like your business is already in our database!  To verify, select your business below:', 'cdashmu' ) . '</p>';
 	    while ( $bus_query->have_posts() ) : $bus_query->the_post();
-	    	$results .= '<div><input type="radio" name="business_id" class="business_id" value="' . get_the_id() . '"><span>' . get_the_title() . '</span></div>';
+	    	$results .= '<div><input type="radio" name="business_id" class="business_id" value="' . get_the_id() . '"><span>&nbsp;' . get_the_title() . '</span></div>';
 	    endwhile;
 	    $results .= '</div>';
     endif;
