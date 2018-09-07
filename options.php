@@ -107,14 +107,13 @@ function cdashmu_add_defaults() {
         $tmp['custom_user_message'] = 'You have been successfully registered as a user for ' . bloginfo('name');
     }
 
-	if( !isset( $tmp['user_login_page'] ) ) {
-		$tmp['user_login_page'] = '';
-
-	}
+  	if( !isset( $tmp['user_login_page'] ) ) {
+  	   $tmp['user_login_page'] = '';
+  	}
 
     if( !isset( $tmp['business_update_page'] ) ) {
-		$tmp['business_update_page'] = '';
-	}
+		    $tmp['business_update_page'] = '';
+	  }
 
     if( !isset($tmp['bus_logo_image_width'])){
         $tmp['bus_logo_image_width'] = '200';
@@ -465,10 +464,9 @@ function cdashmu_additional_admin_email_page_render( $args ) {
 
 	$options = get_option( 'cdashmu_options' );
 	?>
-	<input type='email' name='cdashmu_options[additional_admin_email]' value='<?php echo $options['additional_admin_email']; ?>'">
+	<input type='email' name='cdashmu_options[additional_admin_email]' value='<?php echo $options['additional_admin_email']; ?>'>
 	<br /><span class="description"><?php echo $args[0]; ?></span>
 	<?php
-
 }
 
 // Sanitize and validate input.
@@ -543,27 +541,46 @@ function cdashmu_render_form() {
             <!--<a href="?page=cdash-mu&tab=cdashmu_license_page" class="nav-tab <?php echo $active_tab == 'cdashmu_license_page' ? 'nav-tab-active' : ''; ?>"><?php _e( 'License', 'cdashmu' ); ?></a>-->
         </h2>
 
-        <div id="main" style="width: 70%; min-width: 350px; float: left;">
-        <!-- Beginning of the Plugin Options Form -->
-           <?php
-            if( $active_tab == 'cdashmu_settings_page' )
-            {
+        <div id="main" style="width: 90%; min-width: 350px; float: left;">
+          <div class="cdash_column_left">
+            <!-- Beginning of the Plugin Options Form -->
+               <?php
+                if( $active_tab == 'cdashmu_settings_page' )
+                {
+                ?>
+                   <form method="post" action="options.php">
+                        <?php settings_fields( 'cdashmu_settings_page' );
+                        do_settings_sections( 'cdashmu_settings_page' );
+                        submit_button(); ?>
+                    </form>
+
+                    <?php
+
+                }
+                /*else if($active_tab == 'cdashmu_license_page'){
+                    cdash_mu_edd_license_page();
+                }*/
             ?>
-               <form method="post" action="options.php">
-                    <?php settings_fields( 'cdashmu_settings_page' );
-                    do_settings_sections( 'cdashmu_settings_page' );
-                    submit_button(); ?>
-                </form>
+          </div><!--end of left_column-->
+          <div class="cdash_sidebar">
+            <?php
+              cdashmu_quick_setup_guide();
+            ?>
+          </div><!--end of sidebar-->
 
-                <?php
-
-            }
-            /*else if($active_tab == 'cdashmu_license_page'){
-                cdash_mu_edd_license_page();
-            }*/
-        ?>
         </div><!--end of #main-->
     </div><!--end of wrap-->
 <?php
+}
+
+function cdashmu_quick_setup_guide(){
+  $cdashmu_quick_setup_guide = '';
+  $cdashmu_quick_setup_guide .='
+    <h2>Quick Setup Guide</h2>
+    <p><b>[cdashmu_registration_form]</b> - Displays the member registation form</p>
+    <p><b>[cdashmu_member_login_form]</b> - Displays the member login form</p>
+    <p><b>[cdashmu_update_business]</b> - Displays the member/business update form</p>
+  ';
+  echo $cdashmu_quick_setup_guide;
 }
 ?>
