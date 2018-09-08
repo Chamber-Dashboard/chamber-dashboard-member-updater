@@ -165,6 +165,9 @@ function cdashmu_get_business_email_from_business_id($business_id) {
     global $buscontact_metabox;
     $contactmeta = $buscontact_metabox->the_meta($business_id);
 
+    global $billing_metabox;
+    $billingmeta = $billing_metabox->the_meta($business_id);
+
     if(isset($contactmeta['location'])){
        if( is_array( $contactmeta['location'] ) && !empty( $contactmeta['location'] ) ) {
            $location = $contactmeta['location'][0];
@@ -174,6 +177,8 @@ function cdashmu_get_business_email_from_business_id($business_id) {
                }
            }
        }
+    }else{
+      $business_email = $billingmeta['billing_email'];
     }
     return $business_email;
 }
