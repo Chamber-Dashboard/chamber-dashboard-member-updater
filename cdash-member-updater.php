@@ -307,15 +307,15 @@ function cdashmu_user_registration_validation( $first_name, $last_name, $usernam
 
 function cdashmu_complete_user_registration($first_name, $last_name, $username, $password, $email, $bus_name, $business_id, $show_registration_message) {
 	$options = get_option( 'cdashmu_options' );
-        $userdata = array(
-				'first_name'    =>   $first_name,
-        'last_name'     =>   $last_name,
-        'user_login'    =>   $username,
-        'user_pass'     =>   $password,
-        'user_email'    =>   $email,
-        'role'          =>   'cdashmu_business_editor'
-        );
-        $user = wp_insert_user( $userdata );
+      $userdata = array(
+			'first_name'    =>   $first_name,
+      'last_name'     =>   $last_name,
+      'user_login'    =>   $username,
+      'user_pass'     =>   $password,
+      'user_email'    =>   $email,
+      'role'          =>   'cdashmu_business_editor'
+      );
+    $user = wp_insert_user( $userdata );
 		$name = $first_name . ' ' . $last_name;
 		$person_details = array(
 			'post_type' => 'person',
@@ -330,7 +330,7 @@ function cdashmu_complete_user_registration($first_name, $last_name, $username, 
 
 	        //echo 'Registration complete. Goto <a href="' . $options['user_login_page'] . '">Login page</a>.';
 					if($show_registration_message){
-						echo $options['custom_registration_message'];
+						echo nl2br($options['custom_registration_message']);
 					}
 
 			// send an email to the admin alerting them of the registration
