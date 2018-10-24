@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.3.4
+Version: 1.3.5
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
@@ -33,7 +33,14 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.3.4');
+define('CDASHMU_VERSION',   				'1.3.5');
+
+//Display Member Updater version in the technical details tab
+//add_action('cdash_technical_details_hook', 'cdmu_render_technical_details');
+
+function cdmu_render_technical_details(){
+  echo "<h4>Member Updater Version: " . CDASHMU_VERSION . "</h4>";
+}
 
 // ------------------------------------------------------------------------
 // ADD THE EDD LICENSE INFORMATION
@@ -76,9 +83,18 @@ add_action( 'admin_init', 'cdashmu_requires_wordpress_version' );
 // ------------------------------------------------------------------------
 // REQUIRE CHAMBER DASHBOARD MEMBER MANAGER
 // ------------------------------------------------------------------------
+function cdashmu_check_member_manager(){
+	if(function_exists('cdashmm_requires_wordpress_version')){
+		return true;
+	}else if(function_exists('cdashmm_pro_require_business_directory')){
+		return true;
+	}else{
+		return false;
+	}
+}
 add_action( 'admin_init', 'cdashmu_require_member_manager' );
 function cdashmu_require_member_manager() {
-    if ( is_admin() && current_user_can( 'activate_plugins' ) &&  !function_exists( 'cdashmm_requires_wordpress_version' )  ) {
+    if ( ( is_admin() && current_user_can( 'activate_plugins' ) ) &&  !cdashmu_check_member_manager()  ) {
         add_action( 'admin_notices', 'cdashmu_member_manager_notice' );
 
         deactivate_plugins( plugin_basename( __FILE__ ) );
@@ -149,7 +165,7 @@ function cdash_mu_edd_plugin_updater() {
 
 	// setup the updater
 	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.3.4',                // current version number
+			'version'   => '1.3.5',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
 			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
 			'author'    => 'Chandrika Guntur',   // author of this plugin

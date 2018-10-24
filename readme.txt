@@ -5,7 +5,7 @@ Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
 Tested up to: 4.9.8
 Requires PHP: 7.0
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,9 @@ None yet
 == Screenshots ==
 
 == Changelog ==
+= 1.3.5 =
+* Updated to work with the new versions of member manager and member manager pro
+
 = 1.3.4 =
 * Business editors cannot access the admin Dashboard
 * Added a license update reminder
