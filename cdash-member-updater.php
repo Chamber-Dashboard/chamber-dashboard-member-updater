@@ -364,7 +364,7 @@ function cdashmu_member_custom_registration_function() {
         $username   =   sanitize_user( $_POST['username'] );
         $password   =   esc_attr( $_POST['password'] );
         $email      =   sanitize_email( $_POST['email'] );
-		$bus_name	=	$_POST['bus_name'];
+				$bus_name	=	$_POST['bus_name'];
         $business_id =  $_POST['business_id'];
 
         $reg_errors = cdashmu_user_registration_validation($first_name, $last_name, $username, $password, $email, $bus_name, $business_id);
