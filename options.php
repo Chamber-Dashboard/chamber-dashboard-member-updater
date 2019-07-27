@@ -402,9 +402,18 @@ function cdashmu_custom_user_message_page_render( $args ) {
 function cdashmu_user_login_page_render( $args ) {
 
 	$options = get_option( 'cdashmu_options' );
+  $cdashmm_options = get_option('cdashmm_options');
+  $cdashmm_login_page = $cdashmm_options['cdashmm_member_login_form'];
+  if($cdashmm_login_page != ''){
+    $disabled = "disabled";
+    $description = __("Login page is already set in the Chamber Dashboard Member Manager settings.", "cdashmu");
+  }else{
+    $disabled = '';
+    $description = __( 'Enter the url for your user login page. Members will be directed to this page after they register as a user.', 'cdashmu' );
+  }
 	?>
-	<input type='text' name='cdashmu_options[user_login_page]' value='<?php echo $options['user_login_page']; ?>'>
-	<br /><span class="description"><?php echo $args[0]; ?></span>
+	<input type='text' name='cdashmu_options[user_login_page]' value='<?php echo $options['user_login_page']; ?>' <?php echo $disabled; ?>>
+	<br /><span class="description"><?php echo $description; ?></span>
 	<?php
 
 }

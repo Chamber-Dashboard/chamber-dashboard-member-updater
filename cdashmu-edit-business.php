@@ -12,9 +12,23 @@ function cdashmu_business_update_form(){
 
     $user_id = cdashmu_get_current_user_id();
     $member_options = get_option('cdashmu_options');
+    $mm_options = get_option('cdashmm_options');
+    $login_page = '';
+    if(isset($mm_options['cdashmm_member_login_form'])){
+      $login_page = $member_options['user_login_page'];
+    }else{
+      if(isset($member_options['user_login_page'])){
+        $login_page = $member_options['user_login_page'];
+      }
+    }
+
     if(!$user_id){
-        echo "Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
+        echo __("Please login <a href='" . $login_page . "'>here</a> to update your business", "cdashmu");
         return;
+    }
+    if(!cdashmu_is_business_editor($user_id)){
+      echo __("You are not authorized to edit your business. Please contact your site admin for more details.", "cdashmu");
+      return;
     }
     $person_id = cdashmu_get_person_id_from_user_id($user_id, false);
     $business_id = cdashmu_get_business_id_from_person_id($person_id, false);
@@ -22,10 +36,10 @@ function cdashmu_business_update_form(){
         $person_id = cdashmu_get_person_id_from_user_id($user_id, true);
         $business_id = cdashmu_get_business_id_from_person_id($person_id, true);
         if($business_id){
-            echo "Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.";
+            echo __("Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.", "cdashmu");
         }
         else{
-            echo "You are not connected to a business. Please contact your Chamber of Commerce.";
+            echo __("You are not connected to a business. Please contact your Chamber of Commerce.", "cdashmu");
         }
         return;
     }

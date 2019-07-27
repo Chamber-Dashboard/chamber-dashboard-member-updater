@@ -58,4 +58,17 @@ function cdashmu_admin_access_handler() {
       }
    }
 }
+
+
+function cdashmu_is_business_editor($user_id){
+	$member_options = get_option('cdashmu_options');
+	$user_meta=get_userdata($user_id);
+	$user_roles=$user_meta->roles;
+	if ( in_array( 'cdashmu_business_editor', $user_roles, true ) ) {
+    // Do something.
+		return true;
+	}else{
+		return false;
+	}
+}
 ?>

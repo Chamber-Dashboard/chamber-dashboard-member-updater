@@ -200,7 +200,7 @@ function cdashmu_get_business_email_from_business_id($business_id) {
      $user_email = $user->user_email;
      $user_login = $user->user_login;
      //$headers = array('Content-Type: text/html; charset=UTF-8');
-     $headers .= "MIME-Version: 1.0\r\n";
+     $headers = "MIME-Version: 1.0\r\n";
      $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 
      if($member_options['additional_admin_email'] == ""){
