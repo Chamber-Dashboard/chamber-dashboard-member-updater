@@ -15,11 +15,9 @@ function cdashmu_business_update_form(){
     $mm_options = get_option('cdashmm_options');
     $login_page = '';
     if(isset($mm_options['cdashmm_member_login_form'])){
+      $login_page = cdashmm_get_login_page_url();
+    }elseif(isset($member_options['user_login_page'])){
       $login_page = $member_options['user_login_page'];
-    }else{
-      if(isset($member_options['user_login_page'])){
-        $login_page = $member_options['user_login_page'];
-      }
     }
 
     if(!$user_id){

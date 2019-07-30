@@ -305,7 +305,12 @@ function cdashmu_display_business_edit_link($business_id){
 
         }
         else{
-            $login_link = "<br />Please login <a href='" . $member_options['user_login_page'] . "'>here</a> to update your business";
+          if(isset($mm_options['cdashmm_member_login_form'])){
+            $login_page = cdashmm_get_login_page_url();
+          }elseif(isset($member_options['user_login_page'])){
+            $login_page = $member_options['user_login_page'];
+          }
+            $login_link = "<br />Please login <a href='" . $login_page . "'>here</a> to update your business";
             return $login_link;
         }
 }
