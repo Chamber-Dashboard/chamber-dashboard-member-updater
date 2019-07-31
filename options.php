@@ -586,10 +586,10 @@ function cdashmu_quick_setup_guide(){
   $cdashmu_quick_setup_guide = '';
   $cdashmu_quick_setup_guide .='
     <h2>Quick Setup Guide</h2>
-    <p><b>[cdashmu_registration_form]</b> - Displays the member registation form</p>
-    <p><b>[cdashmu_member_login_form]</b> - Displays the member login form</p>
-    <p><b>[cdashmu_update_business]</b> - Displays the member/business update form</p>
-  ';
+    <p><b>[cdashmu_registration_form]</b> - ' . __('Displays the member registation form', 'cdashmu') .'</p>
+    <p><b>[cdashmu_member_login_form]</b> - ' . __('Displays the member login form', 'cdashmu') . '</p>
+    <p><b>[cdashmu_update_business]</b> - ' . __('Displays the member/business update form', 'cdashmu') . '</p>
+    <h4><a href="https://chamberdashboard.com/docs/plugin-features/member-claimed-listings/" target="_blank">' . __('Member Updater Documentation', 'cdashmu') . '</h4>';
   echo $cdashmu_quick_setup_guide;
 }
 ?>
