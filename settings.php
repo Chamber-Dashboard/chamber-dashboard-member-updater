@@ -39,14 +39,17 @@ function cdash_mu_edd_license_page() {
 							<?php _e('Member Updater License Key'); ?>
 						</th>
 						<td>
-							<input id="cdash_mu_edd_license_key" name="cdash_mu_edd_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" />
-							<label class="description" for="cdash_mu_edd_license_key"><?php _e('Enter your license key'); ?></label>
+							<input id="cdash_mu_edd_license_key" name="cdash_mu_edd_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" placeholder="<?php esc_attr_e('Enter your license key'); ?>" /><br />
+                            <?php $message = cdash_mu_edd_check_license();
+                                  echo $message;
+                            ?>
+							<!--<label class="description" for="cdash_mu_edd_license_key"><?php _e('Enter your license key'); ?></label>-->
 						</td>
 					</tr>
 					<?php if( false !== $license ) { ?>
 						<tr valign="top">
 							<th scope="row" valign="top">
-								<?php _e('Activate License'); ?>
+								<?php _e('License Action'); ?>
 							</th>
 							<td>
 								<?php if( $status !== false && $status == 'valid' ) { ?>
@@ -263,17 +266,24 @@ add_action('admin_init', 'cdash_mu_edd_deactivate_license');
 *************************************/
 
 function cdash_mu_edd_check_license() {
+    $site_count = '';
+    $license_limit = '';
+    $license_info = '';
+    $license_expiry_date = false;
 
 	global $wp_version;
 
 	$license = trim( get_option( 'cdash_mu_edd_license_key' ) );
-
-	$api_params = array(
-		'edd_action' => 'check_license',
-		'license' => $license,
-		'item_name' => urlencode( CDASHMU_EDD_ITEM_NAME ),
-		'url'       => home_url()
-	);
+    if($license){
+        $api_params = array(
+    		'edd_action' => 'check_license',
+    		'license' => $license,
+    		'item_name' => urlencode( CDASHMU_EDD_ITEM_NAME ),
+    		'url'       => home_url()
+    	);
+    }else{
+      return;
+    }
 
 	// Call the custom API.
 	$response = wp_remote_post( CDASH_MU_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
@@ -282,18 +292,34 @@ function cdash_mu_edd_check_license() {
 		return false;
 
 	$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+    // Get site counts
+    //$site_count = '';
+    if($license_data){
+      if(!isset($site_count) || ($site_count == '')){
+        $site_count = $license_data->site_count;
+      }
 
-	if( $license_data->license == 'valid' ) {
-		//echo 'valid';
-    return true;
-        exit;
-		// this license is still valid
-	} else {
-		//echo 'invalid';
-    return false;
-        exit;
-		// this license is no longer valid
-	}
+      if(!isset($license_limit) || ($license_limit == '')){
+        $license_limit = $license_data->license_limit;
+      }
+
+      if(!isset($license_expiry_date) || ($license_expiry_date == '')){
+        $license_expiry_date = $license_data->expires;
+      }
+    }else{
+      return;
+    }
+
+    // If unlimited
+  	if ( 0 == $license_limit ) {
+  		$license_limit = 'unlimited';
+  	}
+    if( $license_data !== false && $license_data->license == 'valid' ) {
+      $message = cdashmu_check_license_message('valid', $site_count, $license_limit, $license_expiry_date);
+  	} else {
+      $message = cdashmu_check_license_message('invalid', $site_count, $license_limit, $license_expiry_date);
+  	}
+    return $message;
 }
 
 /**

@@ -130,6 +130,32 @@ function cdashmu_crm_notice(){
     ?><div class="error"><p><?php _e('Sorry, but the Chamber Dashboard Member Updater requires the <a href="https://wordpress.org/plugins/chamber-dashboard-crm/" target="_blank">Chamber Dashboard CRM</a> to be installed and active.', 'cdashmu' ); ?></p></div><?php
 }
 
+$file   = plugin_basename( __FILE__ );
+$folder = dirname(__FILE__);
+$hook = "in_plugin_update_message-{$folder}/{$file}";
+
+function cdashmu_add_license( $plugin_file, $plugin_data, $status ){
+	$license = get_option( 'cdash_mu_edd_license_key' );
+	$status  = get_option( 'cdash_mu_edd_license_status' );
+	$license_url = get_admin_url() . 'admin.php?page=cdash-about&tab=chamber_dashboard_license';
+	if(!$license || $license == ''){
+		?>
+		<tr class="cd_license_key_notice" style="background-color:#f0d99c;"><td>&nbsp;</td><td colspan="2">
+        <?php echo __("<a href='$license_url'><b>Enter License Key</b></a> | Please enter your license key to receive plugin updates.", "cdexport"); ?>
+        </td></tr>';
+		<?php
+	}else{
+		if($status != "valid"){
+			?>
+			<tr class="cd_license_key_notice" style="background-color:#f0d99c;"><td>&nbsp;</td><td colspan="2">
+	        <?php echo __("<a href='$license_url'><b>Activate License Key</b></a> | Please make sure your license key is valid and active to receive plugin updates.", "cdexport"); ?>
+	        </td></tr>';
+			<?php
+		}
+	}
+}
+add_action( "after_plugin_row_{$file}", "cdashmu_add_license", 10, 3 );
+
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:
 // ------------------------------------------------------------------------
@@ -403,10 +429,16 @@ function cdashmu_member_login_form_shortcode() {
         $user = wp_get_current_user();
         $user_id = $user->ID;
         $member_options = get_option('cdashmu_options');
+		$cdashmm_options = get_option('cdashmm_options');
         //$user = get_userdata( $user_id );
         $business_edit_url = $member_options['business_update_page'];
-        $business_edit_link = "<a href='". $business_edit_url . "'>Click here to edit your business</a>";
-		return 'You are already logged in.' . $business_edit_link;
+		if(function_exists('cdashmm_display_member_info')){
+			return cdashmm_display_member_info();
+		}else{
+			$business_edit_link = "<a href='". $business_edit_url . "'>Click here to edit your business</a>";
+			return __('You are already logged in.', 'cdash-mu') . $business_edit_link;	
+		}
+
 
     }
 	/* Set up some defaults. */

@@ -71,4 +71,25 @@ function cdashmu_is_business_editor($user_id){
 		return false;
 	}
 }
+
+function cdashmu_check_license_message($license_validity, $site_count, $license_limit, $license_expiry_date){
+  $message = '';
+  if($license_validity == 'valid'){
+    $message .= '<p class="license_information" style="font-style:italic; font-size:12px;"><span class="cdash_active_license" style="color:green;">';
+    $message .= __( 'Your license key is active. ' );
+    $message .= '</span>';
+
+    if(isset($license_expiry_date) && $license_expiry_date != 'lifetime'){
+      $message .= __( 'It expires on ' . date_i18n( get_option( 'date_format' ), strtotime( $license_expiry_date, current_time( 'timestamp' ) ) ) );
+    }
+     $message .=  __(' You have ' . $site_count .'/' .$license_limit . ' sites active.' );
+     $message .= '</p>';
+  }elseif($license_validity == 'invalid'){
+    $message .= '<p class="license_information" style="font-style:italic; font-size:12px;"><span class="cdash_inactive_license" style="color:red;">';
+    $message .= __( 'Your license key is not active.' );
+    $message .= '</span></p>';
+  }
+  return $message;
+}
+
 ?>

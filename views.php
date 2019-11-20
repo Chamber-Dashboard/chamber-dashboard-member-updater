@@ -19,7 +19,7 @@ function cdashmu_get_current_user_id(){
 // ------------------------------------------------------------------------
 // WORDPRESS FUNCTION TO REDIRECT USERS ON LOGIN BASED ON USER ROLE
 // ------------------------------------------------------------------------
-add_filter('login_redirect', 'cdashmu_user_login_redirect', 10, 3 );
+//add_filter('login_redirect', 'cdashmu_user_login_redirect', 10, 3 );
 function cdashmu_user_login_redirect( $url, $request, $user ){
     if( $user && is_object( $user ) && is_a( $user, 'WP_User' ) ) {
         /*if( $user->has_cap( 'administrator' ) ) {
@@ -126,14 +126,13 @@ function cdashmu_get_business_id_from_person_id($person_id, $include_pending) {
     }
     $connected = new WP_Query( $connection_params);
 
-
     // Get the business ID
     if ( $connected->have_posts() ) :
 
     while ( $connected->have_posts() ) : $connected->the_post();
-        //get the business connected to the person
-        $business_id = get_the_ID();
-        break;
+            //get the business connected to the person
+            $business_id = get_the_ID();
+            break;
     endwhile;
 
     // Prevent weirdness
@@ -266,8 +265,8 @@ function cdashmu_get_business_edit_link($user_id){
     $user = get_userdata( $user_id );
     $business_edit_url = $member_options['business_update_page'];
     $logout_url = wp_logout_url();
-    $business_edit_link .= '<br />Hello ' . $user->first_name . ', <a href="' . $business_edit_url . '">click here to edit your business listing</a>';
-    $business_edit_link .= '<br /></br />All done with editing? <a href="' . $logout_url . '">Click here to logout.</a>';
+    $business_edit_link .= '<p class="cdashmu_bus_edit_link"><a href="' . $business_edit_url . '">'. __('Edit your business listing', 'cdash-mu').'</a><p>';
+    //$business_edit_link .= '<br /></br />All done with editing? <a href="' . $logout_url . '">Click here to logout.</a>';
 
     return $business_edit_link;
 
@@ -292,7 +291,7 @@ function cdashmu_display_business_edit_link($business_id){
                     return null;
                 }
                 else{
-                    $message .= '<br />Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.';
+                    $message .= '<br />' . __('Your connection to the business has not been approved yet. Please contact your site admin.', 'cdash-mu');
                     $message .= '<br /><br /><a href="' . $logout_url . '">Click here to logout.</a>';
                     return $message;
                     //return '<br />Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.' . $logout_link;
@@ -303,8 +302,7 @@ function cdashmu_display_business_edit_link($business_id){
                 return $link;
             }
 
-        }
-        else{
+        }else{
           if(isset($mm_options['cdashmm_member_login_form'])){
             $login_page = cdashmm_get_login_page_url();
           }elseif(isset($member_options['user_login_page'])){

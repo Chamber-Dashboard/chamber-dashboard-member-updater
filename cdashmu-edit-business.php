@@ -14,7 +14,7 @@ function cdashmu_business_update_form(){
     $member_options = get_option('cdashmu_options');
     $mm_options = get_option('cdashmm_options');
     $login_page = '';
-    if(isset($mm_options['cdashmm_member_login_form'])){
+    if(isset($mm_options['cdashmm_member_login_form']) && $mm_options['cdashmm_member_login_form'] != ''){
       $login_page = cdashmm_get_login_page_url();
     }elseif(isset($member_options['user_login_page'])){
       $login_page = $member_options['user_login_page'];
@@ -62,7 +62,8 @@ function cdashmu_business_update_form(){
             cdashmu_update_business_data($business_id);
         ?>
           <p>Your business has been successfully updated.<br />
-          <p>View your business here: <a href="<?php echo $business_url; ?> "><?php echo $business_url; ?></a></p>
+          <p><?php  echo __('View your business here:', 'cdash-mu'); ?> <a href="<?php echo $business_url; ?> "><?php echo $business_url; ?></a></p>          
+          <p><a href='<?php echo $login_page;?>'><?php echo __('View your Account', 'cdash-mu'); ?></a></p>
         <?php
             return;
         }
