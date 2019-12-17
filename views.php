@@ -7,7 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 // ------------------------------------------------------------------------
 
 function cdashmu_get_current_user_id(){
-    if(is_user_logged_in()){
+    //if(is_user_logged_in()){
+    if ( function_exists('cdashmm_is_user_logged_in') && cdashmm_is_user_logged_in() ){
         $user = wp_get_current_user();
         $user_id = $user->ID;
         return $user_id;
@@ -278,6 +279,7 @@ function cdashmu_get_business_edit_link($user_id){
 // ------------------------------------------------------------------------
 function cdashmu_display_business_edit_link($business_id){
     $member_options = get_option('cdashmu_options');
+    $mm_options = get_option('cdashmm_options');
     if(is_user_logged_in()){
             $user = wp_get_current_user();
             $user_id = $user->ID;

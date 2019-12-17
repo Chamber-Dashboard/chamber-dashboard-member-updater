@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.3.6
+Version: 1.3.7
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
@@ -33,7 +33,7 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.3.6');
+define('CDASHMU_VERSION',   				'1.3.7');
 
 //Display Member Updater version in the technical details tab
 //add_action('cdash_technical_details_hook', 'cdmu_render_technical_details');
@@ -191,7 +191,7 @@ function cdash_mu_edd_plugin_updater() {
 
 	// setup the updater
 	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.3.6',                // current version number
+			'version'   => '1.3.7',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
 			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
 			'author'    => 'Chandrika Guntur',   // author of this plugin
@@ -424,7 +424,8 @@ function custom_registration_shortcode() {
 // ------------------------------------------------------------------------
 
 function cdashmu_member_login_form_shortcode() {
-	if ( is_user_logged_in() ){
+	//if ( is_user_logged_in() ){
+	if ( function_exists('cdashmm_is_user_logged_in') && cdashmm_is_user_logged_in() ){
         //redirect to business update page
         $user = wp_get_current_user();
         $user_id = $user->ID;
@@ -436,7 +437,7 @@ function cdashmu_member_login_form_shortcode() {
 			return cdashmm_display_member_info();
 		}else{
 			$business_edit_link = "<a href='". $business_edit_url . "'>Click here to edit your business</a>";
-			return __('You are already logged in.', 'cdash-mu') . $business_edit_link;	
+			return __('You are already logged in.', 'cdash-mu') . $business_edit_link;
 		}
 
 
@@ -468,8 +469,8 @@ add_action( 'init', 'cdashmu_add_login_shortcode' );
 // ADDING LOST PASSWORD TO THE LOGIN FORM
 // ------------------------------------------------------------------------
 
-add_action( 'login_form_middle', 'cdashmu_add_lost_password_link' );
-function cdashmu_add_lost_password_link() {
+//add_action( 'login_form_middle', 'cdashmu_add_lost_password_link' );
+/*function cdashmu_add_lost_password_link() {
 	return '<a href="/wp-login.php?action=lostpassword">Lost Password?</a>';
 }
 
@@ -479,7 +480,7 @@ function cdashmu_auto_redirect_after_logout(){
     wp_redirect( home_url() );
     //cdashmu_custom_logout_message();
     exit();
-}
+}*/
 
 function cdashmu_custom_logout_message(){
     echo __('You have been logged out as you do no have permissions. Please contact the administrator', 'cdashmu');

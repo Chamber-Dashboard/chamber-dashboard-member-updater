@@ -92,7 +92,7 @@ function cdashmu_add_defaults() {
 	}
 
     if(!isset($tmp['custom_registration_message'])){
-        $tmp['custom_registration_message'] = 'Thank you for registering as a member. You will be able to update your business after you have been approved by the chamber admin. If you have questions, please contact us.';
+        $tmp['custom_registration_message'] = 'Thank you for registering as a member. You will be able to update your business after you have been approved by the site admin. If you have questions, please contact us.';
     }
 
     if(!isset($tmp['custom_admin_message'])){
@@ -403,8 +403,14 @@ function cdashmu_user_login_page_render( $args ) {
 
 	$options = get_option( 'cdashmu_options' );
   $cdashmm_options = get_option('cdashmm_options');
+  if(isset($options['user_login_page'])){
+      $cdashmu_login_page = $options['user_login_page'];
+    }else{
+        $cdashmu_login_page = '';
+    }
+
   $cdashmm_login_page = $cdashmm_options['cdashmm_member_login_form'];
-  if($cdashmm_login_page != ''){
+  if(isset($cdashmm_login_page) && $cdashmm_login_page != ''){
     $disabled = "disabled";
     $description = __("Login page is already set in the Chamber Dashboard Member Manager settings.", "cdashmu");
   }else{
@@ -412,7 +418,7 @@ function cdashmu_user_login_page_render( $args ) {
     $description = __( 'Enter the url for your user login page. Members will be directed to this page after they register as a user.', 'cdashmu' );
   }
 	?>
-	<input type='text' name='cdashmu_options[user_login_page]' value='<?php echo $options['user_login_page']; ?>' <?php echo $disabled; ?>>
+	<input type='text' name='cdashmu_options[user_login_page]' value='<?php echo $cdashmu_login_page; ?>' <?php echo $disabled; ?>>
 	<br /><span class="description"><?php echo $description; ?></span>
 	<?php
 
