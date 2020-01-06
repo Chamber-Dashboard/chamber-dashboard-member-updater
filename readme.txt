@@ -46,7 +46,7 @@ None yet
 
 == Changelog ==
 = 1.3.7 =
-* Member account page shows the link to edit member profiles
+* Member account page shows the link to edit member profile
 
 = 1.3.6 =
 * Updated to work with the members only feature in MM and MM Pro

@@ -293,8 +293,8 @@ function cdashmu_display_business_edit_link($business_id){
                     return null;
                 }
                 else{
-                    $message .= '<br />' . __('Your connection to the business has not been approved yet. Please contact your site admin.', 'cdash-mu');
-                    $message .= '<br /><br /><a href="' . $logout_url . '">Click here to logout.</a>';
+                    $message .= '<br />' . __('<p>Your connection to the business has not been approved yet. Please contact your site admin.</p>', 'cdash-mu');
+                    $message .= '<p><a href="' . $logout_url . '">Click here to logout.</a></p>';
                     return $message;
                     //return '<br />Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.' . $logout_link;
                 }
@@ -310,7 +310,7 @@ function cdashmu_display_business_edit_link($business_id){
           }elseif(isset($member_options['user_login_page'])){
             $login_page = $member_options['user_login_page'];
           }
-            $login_link = "<br />Please login <a href='" . $login_page . "'>here</a> to update your business";
+            $login_link = "<p>Please login <a href='" . $login_page . "'>here</a> to update your business.</p>";
             return $login_link;
         }
 }

@@ -10,7 +10,7 @@ function cdashmu_business_update_form(){
 	wp_enqueue_script( 'user-registration-form', plugin_dir_url(__FILE__) . 'js/member_updater.js', array( 'jquery' ) );
 	wp_localize_script( 'user-registration-form', 'userregistrationformajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
-    $user_id = cdashmu_get_current_user_id();
+    $user_id = cdashmm_get_current_user_id();
     $member_options = get_option('cdashmu_options');
     $mm_options = get_option('cdashmm_options');
     $login_page = '';
@@ -19,13 +19,14 @@ function cdashmu_business_update_form(){
     }elseif(isset($member_options['user_login_page'])){
       $login_page = $member_options['user_login_page'];
     }
+    $business_edit_page_slug = get_queried_object()->post_name;
 
     if(!$user_id){
-        echo __("Please login <a href='" . $login_page . "'>here</a> to update your business", "cdashmu");
+        echo __("<p>Please login <a href='" . $login_page . "'>here</a> to update your business.</p>", "cdashmu");
         return;
     }
     if(!cdashmu_is_business_editor($user_id)){
-      echo __("You are not authorized to edit your business. Please contact your site admin for more details.", "cdashmu");
+      echo __("<p>You are not authorized to edit your business. Please contact your site admin for more details.</p>", "cdashmu");
       return;
     }
     $person_id = cdashmu_get_person_id_from_user_id($user_id, false);
@@ -62,7 +63,7 @@ function cdashmu_business_update_form(){
             cdashmu_update_business_data($business_id);
         ?>
           <p>Your business has been successfully updated.<br />
-          <p><?php  echo __('View your business here:', 'cdash-mu'); ?> <a href="<?php echo $business_url; ?> "><?php echo $business_url; ?></a></p>          
+          <p><?php  echo __('View your business here:', 'cdash-mu'); ?> <a href="<?php echo $business_url; ?> "><?php echo $business_url; ?></a></p>
           <p><a href='<?php echo $login_page;?>'><?php echo __('View your Account', 'cdash-mu'); ?></a></p>
         <?php
             return;

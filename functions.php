@@ -92,4 +92,16 @@ function cdashmu_check_license_message($license_validity, $site_count, $license_
   return $message;
 }
 
+function cdashmu_login_page(){
+    $member_options = get_option('cdashmu_options');
+    $mm_options = get_option('cdashmm_options');
+       $login_page = '';
+    if(isset($mm_options['cdashmm_member_login_form']) && $mm_options['cdashmm_member_login_form'] !=''){
+      $login_page = cdashmm_get_login_page_url();
+    }elseif(isset($member_options['user_login_page'])){
+      $login_page = $member_options['user_login_page'];
+    }
+       return $login_page;
+}
+
 ?>
