@@ -44,7 +44,7 @@
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_country" name="buscontact_meta[location][<?php echo $i; ?>][country]" value="<?php if(isset($location_info['country'])) echo $location_info['country']; ?>"/>
 </p>
 
-<!-- Set latitude and logintude to update the map when the address is updated-->
+<!-- Set latitude and Longitude to update the map when the address is updated-->
 
 <p>
     <label for="bus_hours"><?php echo __('Hours')?></label>

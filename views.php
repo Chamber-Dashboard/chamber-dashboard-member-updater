@@ -260,7 +260,7 @@ function cdashmu_send_user_email($bus_name, $user_login, $user_email, $blogname,
 // ------------------------------------------------------------------------
 // GENERATING THE BUSINESS EDIT LINK
 // ------------------------------------------------------------------------
-function cdashmu_get_business_edit_link($user_id){
+/*function cdashmu_get_business_edit_link($user_id){
     $business_edit_link = "";
     $member_options = get_option('cdashmu_options');
     $user = get_userdata( $user_id );
@@ -271,8 +271,18 @@ function cdashmu_get_business_edit_link($user_id){
 
     return $business_edit_link;
 
-}//cdashmu_business_edit_link
-
+}*///cdashmu_business_edit_link
+//This function works with the cdashmm_member_account_hook to display the member info
+function cdashmu_get_business_edit_link($user_id){
+    $business_edit_link = "";
+    $member_options = get_option('cdashmu_options');
+    $user = get_userdata( $user_id );
+    $business_edit_url = $member_options['business_update_page'];
+    $logout_url = wp_logout_url();
+    echo '<p class="cdashmu_bus_edit_link"><a href="' . $business_edit_url . '">'. __('Edit your business listing', 'cdash-mu').'</a><p>';
+    //$business_edit_link .= '<br /></br />All done with editing? <a href="' . $logout_url . '">Click here to logout.</a>';
+    //return $business_edit_link;
+}
 
 // ------------------------------------------------------------------------
 // DISPLAYING THE BUSINESS EDIT LINK

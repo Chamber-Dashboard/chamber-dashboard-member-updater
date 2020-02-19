@@ -333,8 +333,8 @@ function cdashmu_business_update_form_shortcode(){
 			'_cdash_billing_city',
 			'_cdash_billing_state',
 			'_cdash_billing_zip',
-      '_cdash_billing_country',
-      '_cdash_billing_email',
+            '_cdash_billing_country',
+            '_cdash_billing_email',
 			'_cdash_billing_phone'
 		);
 		$str = $fields;
@@ -345,8 +345,8 @@ function cdashmu_business_update_form_shortcode(){
 		update_post_meta( $business_id, '_cdash_billing_city', $billing_city );
 		update_post_meta( $business_id, '_cdash_billing_state', $billing_state );
 		update_post_meta( $business_id, '_cdash_billing_zip', $billing_zip );
-    update_post_meta( $business_id, '_cdash_billing_country', $billing_country );
-    update_post_meta( $business_id, '_cdash_billing_email', $billing_email );
+        update_post_meta( $business_id, '_cdash_billing_country', $billing_country );
+        update_post_meta( $business_id, '_cdash_billing_email', $billing_email );
 		update_post_meta( $business_id, '_cdash_billing_phone', $billing_phone );
 
      cdash_store_geolocation_data($business_id);
