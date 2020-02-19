@@ -5,7 +5,7 @@ Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
 Tested up to: 5.3
 Requires PHP: 7.0
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,9 @@ None yet
 == Screenshots ==
 
 == Changelog ==
+= 1.3.8 =
+* Members can add their own events
+
 = 1.3.7 =
 * Member account page shows the link to edit member profile
 
