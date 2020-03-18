@@ -3,9 +3,9 @@ Contributors: cguntur
 Tags: Chamber of Commerce, business directory, businesses, membership, update members
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 7.0
-Stable tag: 1.3.8
+Stable tag: 1.3.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,9 @@ None yet
 == Screenshots ==
 
 == Changelog ==
+= 1.3.9 =
+* Updated the settings page
+
 = 1.3.8 =
 * Members can add their own events
 

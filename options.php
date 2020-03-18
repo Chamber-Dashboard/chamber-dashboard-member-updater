@@ -168,9 +168,24 @@ function cdashmu_options_init(  ) {
 	add_settings_section(
 		//'cdashmu_options_section',
         'cdashmu_settings_page_section',
-		__( 'Member Updater Settings', 'cdashmu' ),
-		//'cdashmu_settings_page_section_callback',
-        '',
+		__( 'General Settings', 'cdashmu' ),
+		'cdashmu_settings_page_section_callback',
+		'cdashmu_settings_page'
+	);
+
+    add_settings_section(
+		//'cdashmu_options_section',
+        'cdashmu_message_page_section',
+		__( 'Custom Messages', 'cdashmu' ),
+		'cdashmu_message_page_section_callback',
+		'cdashmu_settings_page'
+	);
+
+    add_settings_section(
+		//'cdashmu_options_section',
+        'cdashmu_form_page_section',
+		__( 'Form Details', 'cdashmu' ),
+		'cdashmu_form_page_section_callback',
 		'cdashmu_settings_page'
 	);
 
@@ -190,7 +205,7 @@ function cdashmu_options_init(  ) {
 		__( 'Custom Registration Message', 'cdashmu' ),
 		'cdashmu_custom_registration_message_page_render',
 		'cdashmu_settings_page',
-		'cdashmu_settings_page_section',
+		'cdashmu_message_page_section',
 		array(
 			__( 'Enter the message you would like your users to see <b>on your website</b> after they sign up as a user connected to a business.', 'cdashmu' )
 		)
@@ -201,7 +216,7 @@ function cdashmu_options_init(  ) {
 		__( 'Custom Message for admins when a new user is registered.', 'cdashmu' ),
 		'cdashmu_custom_admin_message_page_render',
 		'cdashmu_settings_page',
-		'cdashmu_settings_page_section',
+		'cdashmu_message_page_section',
 		array(
 			__( 'Enter the message you would like to add to the admin email message when a new user is registered.', 'cdashmu' )
 		)
@@ -212,7 +227,7 @@ function cdashmu_options_init(  ) {
 		__( 'Custom Message for businesses when a new user is registered.', 'cdashmu' ),
 		'cdashmu_custom_business_message_page_render',
 		'cdashmu_settings_page',
-		'cdashmu_settings_page_section',
+		'cdashmu_message_page_section',
 		array(
 			__( 'Enter the message you would like to add to the default business email when a new user is registered.
 ', 'cdashmu' )
@@ -224,7 +239,7 @@ function cdashmu_options_init(  ) {
 		__( 'Custom Message for the users when they register on your site.', 'cdashmu' ),
 		'cdashmu_custom_user_message_page_render',
 		'cdashmu_settings_page',
-		'cdashmu_settings_page_section',
+		'cdashmu_message_page_section',
 		array(
 			__( 'Enter the message you would like to add to the default new user email when they register on your site.', 'cdashmu' )
 		)
@@ -257,7 +272,7 @@ function cdashmu_options_init(  ) {
 		__( 'Business Logo Image Width', 'cdashmu' ),
 		'cdashmu_business_logo_image_width_render',
 		'cdashmu_settings_page',
-		'cdashmu_settings_page_section',
+		'cdashmu_form_page_section',
 		array(
 			__( 'Here you can specify the maximum width of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
 		)
@@ -268,7 +283,7 @@ function cdashmu_options_init(  ) {
 		__( 'Business Logo Image Height', 'cdashmu' ),
 		'cdashmu_business_logo_image_height_render',
 		'cdashmu_settings_page',
-		'cdashmu_settings_page_section',
+		'cdashmu_form_page_section',
 		array(
 			__( 'Here you can specify the maximum height of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
 		)
@@ -279,7 +294,7 @@ function cdashmu_options_init(  ) {
 		__( 'Business Featured Image Width', 'cdashmu' ),
 		'cdashmu_business_featured_image_width_render',
 		'cdashmu_settings_page',
-		'cdashmu_settings_page_section',
+		'cdashmu_form_page_section',
 		array(
 			__( 'Here you can specify the maximum width of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
 		)
@@ -290,13 +305,11 @@ function cdashmu_options_init(  ) {
 		__( 'Business Featured Image height', 'cdashmu' ),
 		'cdashmu_business_featured_image_height_render',
 		'cdashmu_settings_page',
-		'cdashmu_settings_page_section',
+		'cdashmu_form_page_section',
 		array(
 			__( 'Here you can specify the maximum height of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
 		)
 	);
-
-
 
     add_settings_field(
 		'additional_admin_email',
@@ -319,6 +332,18 @@ function cdashmu_options_init(  ) {
 }
 
 //All the Callback functions that render the fields
+
+function cdashmu_settings_page_section_callback(){
+    echo '<span class="desc"></span>';
+}
+
+function cdashmu_message_page_section_callback(){
+    echo '<span class="desc"></span>';
+}
+
+function cdashmu_form_page_section_callback(){
+    echo '<span class="desc"></span>';
+}
 
 function cdashmu_user_registration_page_render( $args ) {
 
@@ -536,66 +561,114 @@ function cdashmu_validate_options($input) {
 
 // Add menu page
 function cdashmu_add_options_page() {
-	add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater Settings', 'cdashmu'), __('Member Updater Settings', 'cdashmu'), 'manage_options', 'cdash-mu', 'cdashmu_render_form' );
+	//add_submenu_page( '/chamber-dashboard-business-directory/options.php', __('Member Updater Settings', 'cdashmu'), __('Member Updater Settings', 'cdashmu'), 'manage_options', 'cdash-mu', 'cdashmu_render_form' );
+}
+
+add_action( 'cdash_settings_tab', 'cdash_mu_tab', 50 );
+function cdash_mu_tab(){
+	global $cdash_active_tab; ?>
+    <a class="nav-tab <?php echo $cdash_active_tab == 'cdash-mu' ? 'nav-tab-active' : ''; ?>" href="<?php echo admin_url( 'admin.php?page=cd-settings&tab=cdash-mu' ); ?>"><?php _e( 'Member Updater', 'cdash' ); ?> </a>
+	<?php
+}
+
+add_action( 'cdash_settings_content', 'cdash_mu_settings' );
+function cdash_mu_settings(){
+    global $cdash_active_tab;
+
+	switch($cdash_active_tab){
+		case 'cdash-mu':
+		cdashmu_render_form();
+		break;
+	}
 }
 
 // Render the Plugin options form
 function cdashmu_render_form() {
 ?>
     <div class="wrap">
+        <?php
+        $page = $_GET['page'];
+        if(isset($_GET['tab'])){
+            $tab = $_GET['tab'];
+        }
+        if(isset($_GET['section'])){
+            $section = $_GET['section'];
+        }else{
+            $section = "cdmu_settings";
+        }
+        ?>
        <!-- Display Plugin Icon, Header, and Description -->
        <div class="icon32" id="icon-options-general"><br></div>
- 	    <h2><?php _e('Chamber Dashboard Member Updater Settings', 'cdashmu'); ?></h2>
+ 	    <h1><?php _e('Member Updater Settings', 'cdashmu'); ?></h1>
 		<?php settings_errors(); ?>
       <?php
-            $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cdashmu_settings_page';
+            //$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cdashmu_settings_page';
         ?>
-
-        <h2 class="nav-tab-wrapper">
-            <a href="?page=cdash-mu&tab=cdashmu_settings_page" class="nav-tab <?php echo $active_tab == 'cdashmu_settings_page' ? 'nav-tab-active' : ''; ?>"><?php _e( 'Settings', 'cdashmu' ); ?></a>
-            <!--<a href="?page=cdash-mu&tab=cdashmu_license_page" class="nav-tab <?php echo $active_tab == 'cdashmu_license_page' ? 'nav-tab-active' : ''; ?>"><?php _e( 'License', 'cdashmu' ); ?></a>-->
-        </h2>
-
-        <div id="main" style="width: 90%; min-width: 350px; float: left;">
-          <div class="cdash_column_left">
+        <div id="main" class="cd_settings_tab_group" style="width: 100%; float: left;">
+            <div class="cdash section_group">
+                <ul>
+                    <li class="<?php echo $section == 'cdmu_settings' ? 'section_active' : ''; ?>">
+                        <a href="?page=cd-settings&tab=cdash-mu&section=cdmu_settings" class="<?php echo $section == 'cdmu_settings' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Member Updater Settings', 'cdash' ); ?></a><span>|</span>
+                    </li>
+                    <li class="<?php echo $section == 'cdmu_docs' ? 'section_active' : ''; ?>">
+                        <a href="?page=cd-settings&tab=cdash-mu&section=cdmu_docs" class="<?php echo $section == 'cdmu_docs' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Quick Setup Guide', 'cdash' ); ?></a>
+                    </li>
+                </ul>
+            </div>
+          <div class="cdash_section_content">
             <!-- Beginning of the Plugin Options Form -->
-               <?php
-                if( $active_tab == 'cdashmu_settings_page' )
-                {
-                ?>
-                   <form method="post" action="options.php">
-                        <?php settings_fields( 'cdashmu_settings_page' );
-                        do_settings_sections( 'cdashmu_settings_page' );
-                        submit_button(); ?>
-                    </form>
-
-                    <?php
-
-                }
-                /*else if($active_tab == 'cdashmu_license_page'){
-                    cdash_mu_edd_license_page();
-                }*/
-            ?>
-          </div><!--end of left_column-->
-          <div class="cdash_sidebar">
             <?php
-              cdashmu_quick_setup_guide();
-            ?>
-          </div><!--end of sidebar-->
-
+            if( $section == 'cdmu_settings' )
+            {
+                cdmu_settings();
+            }else if($section == 'cdmu_docs'){
+                cdashmu_quick_setup_guide();
+            }
+          ?>
+          </div><!--end of cdash_section_content-->
         </div><!--end of #main-->
     </div><!--end of wrap-->
 <?php
 }
 
+function cdmu_settings(){
+    ?>
+	<div id="cdmu_settings" class="cdash_plugin_settings">
+		<form method="post" action="options.php">
+			<?php settings_fields( 'cdashmu_settings_page' );
+			?>
+			<div class="settings_sections">
+			<?php
+			do_settings_sections( 'cdashmu_settings_page' );
+			?>
+			</div>
+		<?php
+			submit_button(); ?>
+		</form>
+	</div>
+<?php
+}
+
 function cdashmu_quick_setup_guide(){
-  $cdashmu_quick_setup_guide = '';
-  $cdashmu_quick_setup_guide .='
-    <h2>Quick Setup Guide</h2>
-    <p><b>[cdashmu_registration_form]</b> - ' . __('Displays the member registation form', 'cdashmu') .'</p>
-    <p><b>[cdashmu_member_login_form]</b> - ' . __('Displays the member login form', 'cdashmu') . '</p>
-    <p><b>[cdashmu_update_business]</b> - ' . __('Displays the member/business update form', 'cdashmu') . '</p>
-    <h4><a href="https://chamberdashboard.com/docs/plugin-features/member-claimed-listings/" target="_blank">' . __('Member Updater Documentation', 'cdashmu') . '</h4>';
-  echo $cdashmu_quick_setup_guide;
+    ?>
+    <div id="sidebar">
+    	<div class="cdash_top_blocks">
+    		<div class="cdash_block">
+    			<h3><?php echo __('Member Registration Form', 'cdashmu'); ?></h3>
+    			<p><span class="bold">[cdashmu_registration_form]</span> - <?php echo __('Displays the member registation form', 'cdashmu'); ?><br />
+
+    			</p>
+    			<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/member-claimed-listings/"><?php echo __('Member Updater Docs', 'cdashmu'); ?></a></p>
+    		</div>
+            <div class="cdash_block">
+    			<h3><?php echo __('Member Update Business Form', 'cdashmu'); ?></h3>
+    			<p><span class="bold">[cdashmu_update_business]</span> - <?php echo __('Displays the member/business update form', 'cdashmu'); ?><br />
+
+    			</p>
+    			<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/member-claimed-listings/"><?php echo __('Member Updater Docs', 'cdashmu'); ?></a></p>
+    		</div>
+        </div>
+    </div>
+    <?php
 }
 ?>
