@@ -130,6 +130,23 @@ function cdashmu_crm_notice(){
     ?><div class="error"><p><?php _e('Sorry, but the Chamber Dashboard Member Updater requires the <a href="https://wordpress.org/plugins/chamber-dashboard-crm/" target="_blank">Chamber Dashboard CRM</a> to be installed and active.', 'cdashmu' ); ?></p></div><?php
 }
 
+function cdashmu_check_bd_version(){
+    if ( is_admin() && current_user_can( 'activate_plugins' ) && CDASH_BUS_VER < '3.1.9') {
+        add_action( 'admin_notices', 'cdashmu_update_bd_notice' );
+        deactivate_plugins( plugin_basename( __FILE__ ) );
+        if ( isset( $_GET['activate'] ) ) {
+            unset( $_GET['activate'] );
+        }    
+    }
+  }
+  add_action( 'admin_init', 'cdashmu_check_bd_version' );
+  add_action( 'upgrader_process_complete', 'cdashmu_check_bd_version');
+  function cdashmu_update_bd_notice(){
+    ?><div class="error"><p><?php _e('Please update Chamber Dashboard Business Directory to version 3.1.9 or later before updating the Member Updater.', 'cdashmu' ); ?></p></div>
+  <?php
+  } 
+  
+
 $file   = plugin_basename( __FILE__ );
 $folder = dirname(__FILE__);
 $hook = "in_plugin_update_message-{$folder}/{$file}";
