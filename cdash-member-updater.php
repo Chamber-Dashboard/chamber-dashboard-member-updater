@@ -131,12 +131,14 @@ function cdashmu_crm_notice(){
 }
 
 function cdashmu_check_bd_version(){
-    if ( is_admin() && current_user_can( 'activate_plugins' ) && CDASH_BUS_VER < '3.1.9') {
-        add_action( 'admin_notices', 'cdashmu_update_bd_notice' );
-        deactivate_plugins( plugin_basename( __FILE__ ) );
-        if ( isset( $_GET['activate'] ) ) {
-            unset( $_GET['activate'] );
-        }    
+    if ( is_admin() && current_user_can( 'activate_plugins' )){
+        if(defined('CDASH_BUS_VER') && CDASH_BUS_VER < '3.1.9'){
+            add_action( 'admin_notices', 'cdashmu_update_bd_notice' );
+            deactivate_plugins( plugin_basename( __FILE__ ) );
+            if ( isset( $_GET['activate'] ) ) {
+                unset( $_GET['activate'] );
+            }    
+        }
     }
   }
   add_action( 'admin_init', 'cdashmu_check_bd_version' );
@@ -159,14 +161,14 @@ function cdashmu_add_license( $plugin_file, $plugin_data, $status ){
 		?>
 		<tr class="cd_license_key_notice" style="background-color:#f0d99c;"><td>&nbsp;</td><td colspan="2">
         <?php echo __("<a href='$license_url'><b>Enter License Key</b></a> | Please enter your license key to receive plugin updates.", "cdexport"); ?>
-        </td></tr>';
+        </td></tr>
 		<?php
 	}else{
 		if($status != "valid"){
 			?>
 			<tr class="cd_license_key_notice" style="background-color:#f0d99c;"><td>&nbsp;</td><td colspan="2">
 	        <?php echo __("<a href='$license_url'><b>Activate License Key</b></a> | Please make sure your license key is valid and active to receive plugin updates.", "cdexport"); ?>
-	        </td></tr>';
+	        </td></tr>
 			<?php
 		}
 	}
