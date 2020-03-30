@@ -56,52 +56,52 @@
 <h6>Phone Numbers</h6>
 <?php
     $loop_index_phone = 0;
-if(isset($location_info['phone'])){
-foreach($location_info['phone'] as $phone_info) {
-?>
-<p>
-  <label for="bus_phone_1">Phone Number</label>
-  <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_phone_<?php echo $loop_index_phone; ?>_phonenumber" name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonenumber]" value="<?php if(isset($phone_info['phonenumber'])) echo $phone_info['phonenumber']; ?>" />
-</p>
+if(isset($location_info['phone']) && is_array($location_info['phone']) ){
+  foreach($location_info['phone'] as $phone_info) {
+  ?>
+  <p>
+    <label for="bus_phone_1">Phone Number</label>
+    <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_phone_<?php echo $loop_index_phone; ?>_phonenumber" name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonenumber]" value="<?php if(isset($phone_info['phonenumber'])) echo $phone_info['phonenumber']; ?>" />
+  </p>
 
-<p>
-  <label for="bus_phone_1_type">Phone Number Type</label>
-  <?php $selected = ' selected="selected"'; ?>
-  <select name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonetype]">
-    <option value=""></option>
-    <?php $options = get_option('cdash_directory_options');
-    $phonetypes = $options['bus_phone_type'];
-    $typesarray = explode( ",", $phonetypes);
-    foreach ($typesarray as $type) { ?>
-      <option value="<?php echo $type; ?>" <?php if ($phone_info['phonetype'] == $type) echo $selected; ?>><?php echo $type; ?></option>
-    <?php } ?>
-  </select>
-</p>
-<?php
-  $loop_index_phone++;
-}
+  <p>
+    <label for="bus_phone_1_type">Phone Number Type</label>
+    <?php $selected = ' selected="selected"'; ?>
+    <select name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonetype]">
+      <option value=""></option>
+      <?php $options = get_option('cdash_directory_options');
+      $phonetypes = $options['bus_phone_type'];
+      $typesarray = explode( ",", $phonetypes);
+      foreach ($typesarray as $type) { ?>
+        <option value="<?php echo $type; ?>" <?php if ($phone_info['phonetype'] == $type) echo $selected; ?>><?php echo $type; ?></option>
+      <?php } ?>
+    </select>
+  </p>
+  <?php
+    $loop_index_phone++;
+  }
 }else{
-?>
-<p>
-  <label for="bus_phone_1">Phone Number</label>
-  <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_phone_<?php echo $loop_index_phone; ?>_phonenumber" name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonenumber]" value="<?php if(isset($location_info['phonenumber'])) echo $location_info['phonenumber']; ?>" />
-</p>
+  ?>
+  <p>
+    <label for="bus_phone_1">Phone Number</label>
+    <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_phone_<?php echo $loop_index_phone; ?>_phonenumber" name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonenumber]" value="<?php if(isset($location_info['phonenumber'])) echo $location_info['phonenumber']; ?>" />
+  </p>
 
-<p>
-  <label for="bus_phone_1_type">Phone Number Type</label>
-  <?php $selected = ' selected="selected"'; ?>
-  <select name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonetype]">
-    <option value=""></option>
-    <?php $options = get_option('cdash_directory_options');
-    $phonetypes = $options['bus_phone_type'];
-    $typesarray = explode( ",", $phonetypes);
-    foreach ($typesarray as $type) { ?>
-      <option value="<?php echo $type; ?>" <?php if ( isset($location_info['phonetype']) && $location_info['phonetype'] == $type) echo $selected; ?>><?php if(isset($type)) echo $type; //echo $type; ?>
-      </option>
-    <?php } ?>
-  </select>
-</p>
-<?php
+  <p>
+    <label for="bus_phone_1_type">Phone Number Type</label>
+    <?php $selected = ' selected="selected"'; ?>
+    <select name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonetype]">
+      <option value=""></option>
+      <?php $options = get_option('cdash_directory_options');
+      $phonetypes = $options['bus_phone_type'];
+      $typesarray = explode( ",", $phonetypes);
+      foreach ($typesarray as $type) { ?>
+        <option value="<?php echo $type; ?>" <?php if ( isset($location_info['phonetype']) && $location_info['phonetype'] == $type) echo $selected; ?>><?php if(isset($type)) echo $type; //echo $type; ?>
+        </option>
+      <?php } ?>
+    </select>
+  </p>
+  <?php
 }
 
 ?>
@@ -114,7 +114,7 @@ foreach($location_info['phone'] as $phone_info) {
         <h6>Email Addresses</h6>
         <?php
             $loop_index_email = 0;
-			if(isset($location_info['email'])){
+			if(isset($location_info['email']) && is_array($location_info['email'])){
 				foreach($location_info['email'] as $email_info) {
 			?>
 			<p>
