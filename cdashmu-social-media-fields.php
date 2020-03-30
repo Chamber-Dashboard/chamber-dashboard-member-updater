@@ -80,16 +80,27 @@
       <select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
         <option value=""></option>
         <?php
+        if(isset($socialurl['socialservice'])){
+          $social_service = $socialurl['socialservice'];
+        }else{
+          $social_service = '';
+        }
         foreach($social_media_list as $key=>$value){
-        ?>
-        <option value="<?php echo $key; ?>" <?php if($social_info['socialservice'] == $key){ echo $selected;}?>><?php echo $value; ?></option>
-        <?php
+          ?>
+          <option value="<?php echo $key; ?>" <?php if($social_service == $key){ echo $selected;}?>><?php echo $value; ?></option>
+          <?php
         }
         ?>
       </select>
-
+      <?php 
+        if(isset($social_info['socialurl'])){
+          $socialurl = $social_info['socialurl'];
+        }else{
+          $socialurl = '';
+        }
+        ?>  
       <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
-      <input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $social_info['socialurl']; ?>" /><br />
+      <input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $socialurl; ?>" /><br />
       <span class="remove">
         <input type="checkbox" name="social_media_remove_<?php echo $i; ?>" class="social_media_remove" id="social_media_remove_<?php echo $i; ?>" value="" />Delete
       </span> <br /><br />
