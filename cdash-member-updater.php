@@ -35,6 +35,9 @@ define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-u
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
 define('CDASHMU_VERSION',   				'1.3.9');
 
+$license_page_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
+define('MU_IMPORT_LICENSE_PAGE_URL', $license_page_url);
+
 //Display Member Updater version in the technical details tab
 //add_action('cdash_technical_details_hook', 'cdmu_render_technical_details');
 
@@ -156,7 +159,7 @@ $hook = "in_plugin_update_message-{$folder}/{$file}";
 function cdashmu_add_license( $plugin_file, $plugin_data, $status ){
 	$license = get_option( 'cdash_mu_edd_license_key' );
 	$status  = get_option( 'cdash_mu_edd_license_status' );
-	$license_url = get_admin_url() . 'admin.php?page=cdash-about&tab=chamber_dashboard_license';
+	$license_url = MU_IMPORT_LICENSE_PAGE_URL;
 	if(!$license || $license == ''){
 		?>
 		<tr class="cd_license_key_notice" style="background-color:#f0d99c;"><td>&nbsp;</td><td colspan="2">
@@ -229,7 +232,7 @@ function cdashmu_plugin_action_links( $links ) {
     $settings_link = '<a href="' . $settings_url . '">' . __('Settings', 'cdash-mu') . '</a>';
     array_unshift( $links, $settings_link );
 
-  	$license_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
+  	$license_url = MU_IMPORT_LICENSE_PAGE_URL;
     $license_link = '<a href="' . $license_url . '">' . __('License', 'cdash-mu') . '</a>';
     array_unshift( $links, $license_link );
   }
