@@ -192,7 +192,7 @@ function cdashmu_get_business_email_from_business_id($business_id) {
  * Snippet URL: http://www.wpcustoms.net/snippets/customize-registration-emails-sent-to-new-users/
  */
  function cdashmu_wp_new_user_notification($user_id, $business_id, $bus_name, $name) {
-
+    $bus_name = wp_specialchars_decode($bus_name, ENT_QUOTES);
      $member_options = get_option('cdashmu_options');
 	   $user = get_userdata( $user_id );
      //$bus_email1 = cdashmu_get_business_email_from_business_id($business_id);
@@ -201,7 +201,8 @@ function cdashmu_get_business_email_from_business_id($business_id) {
      $user_login = $user->user_login;
      //$headers = array('Content-Type: text/html; charset=UTF-8');
      $headers = "MIME-Version: 1.0\r\n";
-     $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+     //$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+     $headers .= "Content-Type: text/html; charset=utf-8\r\n";
 
      if($member_options['additional_admin_email'] == ""){
          $admin_email = get_option('admin_email');
@@ -224,7 +225,7 @@ function cdashmu_get_business_email_from_business_id($business_id) {
 
 function cdashmu_send_admin_email($blogname, $name, $user_email, $bus_name, $bus_email, $admin_email, $headers){
   $member_options = get_option('cdashmu_options');
-  $message  = sprintf(__('You have a new user registered on your site %s:'), $blogname) . "<br />";
+  $message = sprintf(__('You have a new user registered on your site %s:'), $blogname) . "<br />";
   $message .= sprintf(__('Name: %s'), $name) . "<br />";
   $message .= sprintf(__('Registered E-mail: %s'), $user_email) . "<br />";
   $message .= sprintf(__('Business Connected to: %s'), $bus_name) . "<br />";
