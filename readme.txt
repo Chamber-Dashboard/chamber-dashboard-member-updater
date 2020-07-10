@@ -45,7 +45,7 @@ None yet
 == Screenshots ==
 
 == Changelog ==
-== 1.4.0 ==
+= 1.4.0 =
 * Fixed the weird characters showing up in the emails
 
 = 1.3.9 =
