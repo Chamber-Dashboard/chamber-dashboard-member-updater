@@ -39,7 +39,7 @@ $license_page_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license'
 define('MU_IMPORT_LICENSE_PAGE_URL', $license_page_url);
 
 //Display Member Updater version in the technical details tab
-//add_action('cdash_technical_details_hook', 'cdmu_render_technical_details');
+add_action('cdash_technical_details_hook', 'cdmu_render_technical_details');
 
 function cdmu_render_technical_details(){
   echo "<h4>Member Updater Version: " . CDASHMU_VERSION . "</h4>";

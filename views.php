@@ -174,11 +174,17 @@ function cdashmu_get_business_email_from_business_id($business_id) {
            if(isset($location) && is_array($location)){
                if( isset( $location['email'][0] ) && !empty( $location['email'][0] ) ) {
                    $business_email = $contactmeta['location'][0]['email'][0]['emailaddress'];
+               }else{
+                   $business_email = '';
                }
            }
        }
     }else{
-      $business_email = $billingmeta['billing_email'];
+        if(isset($billingmeta['billing_email'])){
+            $business_email = $billingmeta['billing_email'];
+        }else{
+            $business_email = '';
+        }
     }
     return $business_email;
 }
@@ -206,9 +212,10 @@ function cdashmu_get_business_email_from_business_id($business_id) {
 
      if($member_options['additional_admin_email'] == ""){
          $admin_email = get_option('admin_email');
-     }
-     else{
+         cd_debug("Admin email 1: ". $admin_email);
+     }else{
          $admin_email = $member_options['additional_admin_email'];
+         cd_debug("Admin email 2: ". $admin_email);
      }
    // The blogname option is escaped with esc_html on the way into the database in sanitize_option
 	 // we want to reverse this for the plain text arena of emails.
@@ -255,8 +262,10 @@ function cdashmu_send_user_email($bus_name, $user_login, $user_email, $blogname,
   $message .= sprintf(__('Here is your username: %s'), $user_login) . "<br />";
   $message .= sprintf(__('Registered E-mail: %s'), $user_email) . "<br />";
   $message .= nl2br($member_options['custom_user_message']);
+  add_filter('wp_mail_from', 'sushmasomu@gmail.com');
   @wp_mail($user_email, sprintf(__('[%s] Your Registration was Successful.'), $blogname), $message, $headers);
 }
+
 
 // ------------------------------------------------------------------------
 // GENERATING THE BUSINESS EDIT LINK
