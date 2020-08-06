@@ -303,7 +303,7 @@ function cdashmu_user_registration_form( $first_name, $last_name, $username, $pa
     </p>
 
 	<p>
-        <label><?= __( 'Business Name', 'cdashmu' ) ?> *</label><span><?= __('Please enter your business name and press tab to select your business from the list.')?> <small><?= __('(Your business needs to be already registered with our chamber.)') ?></small></span>
+        <label><?= __( 'Business Name', 'cdashmu' ) ?> *</label><span><?= __('Please enter your business name and press tab to select your business from the list.')?> <small><?= __('(Your business needs to be already registered with us.)') ?></small></span>
 		<input name="bus_name" type="text" id="bus_name" required value="<?= ( $business_id ? $bus_name : null ) ?>">
         <?= cdashmu_display_error('business_name', $reg_errors) ?>
 	</p>

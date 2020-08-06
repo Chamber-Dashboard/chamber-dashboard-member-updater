@@ -7,7 +7,6 @@
                     "avvo"  => "Avvo",
                     "facebook"  =>  "Facebook",
                     "flickr"    =>  "Flickr",
-                    "google"  =>  "Google +",
                     "instagram"  =>  "Instagram",
                     "linkedin"  =>  "LinkedIn",
                     "pinterest"  =>  "Pinterest",
