@@ -195,6 +195,8 @@ add_action( 'admin_init', 'cdashmu_init' );
 
 //What to do when the plugin is uninstalled
 register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options');
+register_deactivation_hook( __FILE__, 'remove_business_editor_role' );
+
 
 //Required Files
 require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
@@ -372,7 +374,7 @@ function cdashmu_user_registration_validation( $first_name, $last_name, $usernam
 function cdashmu_complete_user_registration($first_name, $last_name, $username, $password, $email, $bus_name, $business_id, $show_registration_message) {
 	$options = get_option( 'cdashmu_options' );
       $userdata = array(
-			'first_name'    =>   $first_name,
+	  'first_name'    =>   $first_name,
       'last_name'     =>   $last_name,
       'user_login'    =>   $username,
       'user_pass'     =>   $password,
@@ -382,8 +384,8 @@ function cdashmu_complete_user_registration($first_name, $last_name, $username, 
     $user = wp_insert_user( $userdata );
 		$name = $first_name . ' ' . $last_name;
 		$person_details = array(
-			'post_type' => 'person',
-		  'post_title' => $name,
+		'post_type' => 'person',
+		'post_title' => $name,
 	    'post_content' => 'This was created by the Member Updater.',
 	    'post_status' => 'pending'
 		);

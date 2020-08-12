@@ -58,7 +58,10 @@ function cdashmu_add_new_user_role() {
         __( 'Business Editor' ),
         array(
             'read'         => true,  // true allows this capability
-            'edit_posts'   => true,
+			'edit_post'   => true,
+			'edit_posts'   => true,
+			'edit_others_pages' => true,
+			'edit_published_pages' => true,
             'delete_posts' => false, // Use false to explicitly deny
             'delete_published_posts' => false,
             'upload_files' => true,
@@ -69,15 +72,13 @@ function cdashmu_add_new_user_role() {
 
 function cdashmu_add_role_cap(){
 	$role = get_role( 'cdashmu_business_editor' );
-	//$role->add_cap( 'edit_published_pages' );
-	//$role->add_cap( 'edit_published_posts' );
-  	//$role->add_cap('delete_posts');
-  	//$role->add_cap('edit_posts');
   	$role->add_cap('upload_files');
-    // editor caps
-	//$role->add_cap('edit_others_posts');
 }
-add_action( 'admin_init', 'cdashmu_add_role_cap');
+//add_action( 'admin_init', 'cdashmu_add_role_cap');
+
+function remove_business_editor_role(){
+	remove_role( 'cdashmu_business_editor' );
+}
 
 // ----------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_activation_hook(__FILE__, 'cdashmu_add_defaults')

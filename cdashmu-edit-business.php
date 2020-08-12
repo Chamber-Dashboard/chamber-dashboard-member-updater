@@ -69,7 +69,7 @@ function cdashmu_business_update_form(){
             return;
         }
         ?>
-
+    <?php //var_dump(wp_get_current_user()); ?>
     <p>
         <label for="bus_name"><?php echo __('Business Name')?></label>
         <?php echo $bus_title; ?>
@@ -78,10 +78,10 @@ function cdashmu_business_update_form(){
     <p>
         <label for="bus_desc"><?php echo __('Business Description')?></label>
         <?php
-
+            
             $content = $bus_content;
             $editor_id = 'bdesc';
-            $settings = array( "wpautop" => true, 'editor_height' => '300', 'media_buttons' => false );
+            $settings = array( "wpautop" => true, 'editor_height' => '300', 'media_buttons' => true );
             wp_editor( $content, $editor_id, $settings );
         ?>
     </p>

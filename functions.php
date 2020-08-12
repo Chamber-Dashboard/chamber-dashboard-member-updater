@@ -104,4 +104,16 @@ function cdashmu_login_page(){
        return $login_page;
 }
 
+//Restrict media library files to user's own uploads
+add_filter( 'ajax_query_attachments_args', 'cdashmu_show_current_user_attachments' );
+ 
+function cdashmu_show_current_user_attachments( $query ) {
+    $user_id = get_current_user_id();
+    if ( $user_id && !current_user_can('activate_plugins') ) {
+        $query['author'] = $user_id;
+    }
+    return $query;
+} 
+
+
 ?>
