@@ -1,5 +1,5 @@
 <fieldset>
-    <legend>Social Media Links</legend>
+    <legend><?php echo __('Social Media Links', 'cdash-mu')?></legend>
     <div id="social_media" class="social_media_div">
         <?php
             //$social_media_list = "";
@@ -21,7 +21,7 @@
                 );
         ?>
         <div id="buscontact_meta_social_template_socialservice" class="social_media_child" style="display:none;">
-            <label for="buscontact_meta_social_template_socialservice">Social Media Service</label>
+            <label for="buscontact_meta_social_template_socialservice"><?php echo __('Social Media Service', 'cdash-mu')?></label>
             <select name="buscontact_meta_social_template_socialservice">
                 <option value=""></option>
                 <?php
@@ -33,7 +33,7 @@
                 ?>
             </select>
 
-            <label for="buscontact_meta_social_template_socialurl">Social Media Url</label>
+            <label for="buscontact_meta_social_template_socialurl"><?php echo __('Social Media Url', 'cdash-mu')?></label>
             <input type="text" name="buscontact_meta_social_template_socialurl" value="<?php if(isset($social_info['socialurl'])) echo $social_info['socialurl']; ?>" /><br />
             <span class="remove">
                 <input type="checkbox" name="social_media_remove_template" class="social_media_remove" id="social_media_remove_template" value="" />Delete
@@ -49,7 +49,7 @@
       $selected = ' selected="selected"';
     ?>
     <div id="buscontact_meta_social_<?php echo $i; ?>_socialservice" class="social_media_child">
-      <label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]">Social Media Service</label>
+      <label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]"><?php echo __('Social Media Service', 'cdash-mu')?></label>
       <select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
         <option value=""></option>
         <?php
@@ -61,7 +61,7 @@
         ?>
       </select>
 
-      <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
+      <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]"><?php echo __('Social Media Url', 'cdash-mu')?></label>
       <input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $social_info['socialurl']; ?>" /><br />
       <span class="remove">
         <input type="checkbox" name="social_media_remove_<?php echo $i; ?>" class="social_media_remove" id="social_media_remove_<?php echo $i; ?>" value="" />Delete
@@ -75,7 +75,7 @@
       $selected = ' selected="selected"';
     ?>
     <div id="buscontact_meta_social_<?php echo $i; ?>_socialservice" class="social_media_child">
-      <label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]">Social Media Service</label>
+      <label for="buscontact_meta[social][<?php echo $i; ?>][socialservice]"><?php echo __('Social Media Service', 'cdash-mu')?></label>
       <select name="buscontact_meta[social][<?php echo $i; ?>][socialservice]">
         <option value=""></option>
         <?php
@@ -98,7 +98,7 @@
           $socialurl = '';
         }
         ?>  
-      <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]">Social Media Url</label>
+      <label for="buscontact_meta[social][<?php echo $i; ?>][socialurl]"><?php echo __('Social Media Url', 'cdash-mu')?></label>
       <input type="text" name="buscontact_meta[social][<?php echo $i; ?>][socialurl]" value="<?php echo $socialurl; ?>" /><br />
       <span class="remove">
         <input type="checkbox" name="social_media_remove_<?php echo $i; ?>" class="social_media_remove" id="social_media_remove_<?php echo $i; ?>" value="" />Delete
@@ -112,5 +112,5 @@
 
         ?>
     </div><!--end of social media div-->
-    <button type="button" id="add_social_media" class="button">Add Social Media Links</button>
+    <button type="button" id="add_social_media" class="button"><?php echo __('Add Social Media Links', 'cdash-mu')?></button>
 </fieldset>

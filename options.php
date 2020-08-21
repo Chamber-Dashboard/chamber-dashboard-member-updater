@@ -80,6 +80,8 @@ function remove_business_editor_role(){
 	remove_role( 'cdashmu_business_editor' );
 }
 
+
+
 // ----------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_activation_hook(__FILE__, 'cdashmu_add_defaults')
 // ----------------------------------------------------------------------------------
@@ -275,7 +277,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_form_page_section',
 		array(
-			__( 'Here you can specify the maximum width of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
+			__( 'Here you can specify the recommended maximum width of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
 		)
 	);
 
@@ -286,7 +288,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_form_page_section',
 		array(
-			__( 'Here you can specify the maximum height of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
+			__( 'Here you can specify the recommended maximum height of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
 		)
 	);
 
@@ -297,7 +299,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_form_page_section',
 		array(
-			__( 'Here you can specify the maximum width of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
+			__( 'Here you can specify the recommended maximum width of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
 		)
 	);
 
@@ -308,7 +310,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_form_page_section',
 		array(
-			__( 'Here you can specify the maximum height of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
+			__( 'Here you can specify the recommended maximum height of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
 		)
 	);
 

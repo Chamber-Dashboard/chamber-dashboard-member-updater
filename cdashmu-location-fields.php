@@ -1,10 +1,10 @@
 <p>
-    <label for="bus_url"><?php echo __('Web Address')?></label>
+    <label for="bus_url"><?php echo __('Web Address', 'cdash-mu')?></label>
     <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][url]" value="<?php if(isset($location_info['url'])) echo $location_info['url']; ?>"/>
 </p>
 
 <p>
-    <label for="bus_loc_name"><?php echo __('Location Name')?></label>
+    <label for="bus_loc_name"><?php echo __('Location Name', 'cdash-mu')?></label>
     <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][altname]" value="<?php if(isset($location_info['altname'])) echo $location_info['altname']; ?>"/>
 </p>
 
@@ -15,39 +15,39 @@
         $display_location = $location_info['donotdisplay'];
     }
     ?>
-    <label for="display_location"><?php echo __('Do not display this location to the public?'); ?></label>
+    <label for="display_location"><?php echo __('Do not display this location to the public?', 'cdash-mu'); ?></label>
     <input type="checkbox" name="buscontact_meta[location][<?php echo $i; ?>][donotdisplay]" value="<?php echo $display_location; ?>" <?php if ($display_location == '1') echo "checked='checked'"; ?> />
 </p>
 
 <p>
-    <label for="bus_address"><?php echo __('Address')?></label>
+    <label for="bus_address"><?php echo __('Address', 'cdash-mu')?></label>
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_address" name="buscontact_meta[location][<?php echo $i; ?>][address]" value="<?php if(isset($location_info['address'])) echo $location_info['address']; ?>"/>
 </p>
 
 <p>
-    <label for="bus_city"><?php echo __('City')?></label>
+    <label for="bus_city"><?php echo __('City', 'cdash-mu')?></label>
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_city" name="buscontact_meta[location][<?php echo $i; ?>][city]" value="<?php if(isset($location_info['city'])) echo $location_info['city']; ?>"/>
 </p>
 
 <p>
-    <label for="bus_state"><?php echo __('State')?></label>
+    <label for="bus_state"><?php echo __('State', 'cdash-mu')?></label>
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_state" name="buscontact_meta[location][<?php echo $i; ?>][state]" value="<?php if(isset($location_info['state'])) echo $location_info['state']; ?>"/>
 </p>
 
 <p>
-    <label for="bus_zip"><?php echo __('Zip')?></label>
+    <label for="bus_zip"><?php echo __('Zip', 'cdash-mu')?></label>
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_zip" name="buscontact_meta[location][<?php echo $i; ?>][zip]" value="<?php if(isset($location_info['zip'])) echo $location_info['zip']; ?>"/>
 </p>
 
 <p>
-    <label for="bus_country"><?php echo __('Country')?></label>
+    <label for="bus_country"><?php echo __('Country', 'cdash-mu')?></label>
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_country" name="buscontact_meta[location][<?php echo $i; ?>][country]" value="<?php if(isset($location_info['country'])) echo $location_info['country']; ?>"/>
 </p>
 
 <!-- Set latitude and Longitude to update the map when the address is updated-->
 
 <p>
-    <label for="bus_hours"><?php echo __('Hours')?></label>
+    <label for="bus_hours"><?php echo __('Hours', 'cdash-mu')?></label>
     <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][hours]" value="<?php if(isset($location_info['hours'])) echo $location_info['hours']; ?>"/>
 </p>
 
@@ -60,12 +60,12 @@ if(isset($location_info['phone']) && is_array($location_info['phone']) ){
   foreach($location_info['phone'] as $phone_info) {
   ?>
   <p>
-    <label for="bus_phone_1">Phone Number</label>
+    <label for="bus_phone_1"><?php echo __('Phone Number', 'cdash-mu')?></label>
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_phone_<?php echo $loop_index_phone; ?>_phonenumber" name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonenumber]" value="<?php if(isset($phone_info['phonenumber'])) echo $phone_info['phonenumber']; ?>" />
   </p>
 
   <p>
-    <label for="bus_phone_1_type">Phone Number Type</label>
+    <label for="bus_phone_1_type"><?php echo __('Phone Number Type', 'cdash-mu')?></label>
     <?php $selected = ' selected="selected"'; ?>
     <select name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonetype]">
       <option value=""></option>
@@ -73,7 +73,7 @@ if(isset($location_info['phone']) && is_array($location_info['phone']) ){
       $phonetypes = $options['bus_phone_type'];
       $typesarray = explode( ",", $phonetypes);
       foreach ($typesarray as $type) { ?>
-        <option value="<?php echo $type; ?>" <?php if ($phone_info['phonetype'] == $type) echo $selected; ?>><?php echo $type; ?></option>
+        <option value="<?php echo $type; ?>" <?php if (isset($phone_info['phonetype']) && $phone_info['phonetype'] == $type) echo $selected; ?>><?php echo $type; ?></option>
       <?php } ?>
     </select>
   </p>
@@ -83,12 +83,12 @@ if(isset($location_info['phone']) && is_array($location_info['phone']) ){
 }else{
   ?>
   <p>
-    <label for="bus_phone_1">Phone Number</label>
+    <label for="bus_phone_1"><?php echo __('Phone Number', 'cdash-mu')?></label>
     <input type="text" id="buscontact_meta_location_<?php echo $i; ?>_phone_<?php echo $loop_index_phone; ?>_phonenumber" name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonenumber]" value="<?php if(isset($location_info['phonenumber'])) echo $location_info['phonenumber']; ?>" />
   </p>
 
   <p>
-    <label for="bus_phone_1_type">Phone Number Type</label>
+    <label for="bus_phone_1_type"><?php echo __('Phone Number Type', 'cdash-mu')?></label>
     <?php $selected = ' selected="selected"'; ?>
     <select name="buscontact_meta[location][<?php echo $i; ?>][phone][<?php echo $loop_index_phone; ?>][phonetype]">
       <option value=""></option>
@@ -118,13 +118,13 @@ if(isset($location_info['phone']) && is_array($location_info['phone']) ){
 				foreach($location_info['email'] as $email_info) {
 			?>
 			<p>
-				<label for="bus_email_1">Email Address</label>
+				<label for="bus_email_1"><?php echo __('Email Address', 'cdash-mu')?></label>
 
 				<input type="text" id="buscontact_meta_location_<?php echo $i; ?>_email_<?php echo $loop_index_email; ?>_emailaddress" name="buscontact_meta[location][<?php echo $i; ?>][email][<?php echo $loop_index_email; ?>][emailaddress]" value="<?php if(isset($email_info['emailaddress'])) echo $email_info['emailaddress']; ?>"/>
 			</p>
 
 			<p>
-				<label for="bus_email_1_type">Email Address Type</label>
+				<label for="bus_email_1_type"><?php echo __('Email Address Type', 'cdash-mu')?></label>
 				<?php $selected = ' selected="selected"'; ?>
 					<select name="buscontact_meta[location][<?php echo $i; ?>][email][<?php echo $loop_index_email; ?>][emailtype]">
 						<option value=""></option>
@@ -132,7 +132,7 @@ if(isset($location_info['phone']) && is_array($location_info['phone']) ){
 						$emailtypes = $options['bus_email_type'];
 						$typesarray = explode( ",", $emailtypes);
 						foreach ($typesarray as $type) { ?>
-							<option value="<?php echo $type; ?>" <?php if ($email_info['emailtype'] == $type) echo $selected; ?>><?php echo $type; ?></option>
+							<option value="<?php echo $type; ?>" <?php if (isset($email_info['emailtype']) && $email_info['emailtype'] == $type) echo $selected; ?>><?php echo $type; ?></option>
 						<?php } ?>
 					</select>
 
@@ -143,13 +143,13 @@ if(isset($location_info['phone']) && is_array($location_info['phone']) ){
 			}else{
 			?>
 				<p>
-				<label for="bus_email_1">Email Address</label>
+				<label for="bus_email_1"><?php echo __('Email Address', 'cdash-mu')?></label>
 				<?php $selected = ' selected="selected"'; ?>
 				<input type="text" id="buscontact_meta_location_<?php echo $i; ?>_email_<?php echo $loop_index_email; ?>_emailaddress" name="buscontact_meta[location][<?php echo $i; ?>][email][<?php echo $loop_index_email; ?>][emailaddress]" value="<?php if(isset($location_info['emailaddress'])) echo $location_info['emailaddress']; ?>"/>
 			</p>
 
 			<p>
-				<label for="bus_email_1_type">Email Address Type</label>
+				<label for="bus_email_1_type"><?php echo __('Email Address Type', 'cdash-mu')?></label>
 					<select name="buscontact_meta[location][<?php echo $i; ?>][email][<?php echo $loop_index_email; ?>][emailtype]">
 						<option value=""></option>
 						<?php $options = get_option('cdash_directory_options');
@@ -167,5 +167,5 @@ if(isset($location_info['phone']) && is_array($location_info['phone']) ){
 
         </div>
 
-        <button type="button" id="copy_billing_address_<?php echo $i; ?>" name="copy_billing_address_<?php echo $i; ?>" class="copy_billing_address"><?php echo __('Set as Billing Address'); ?></button><span id="billing_copy_message_<?php echo $i; ?>" class="message"></span>
+        <button type="button" id="copy_billing_address_<?php echo $i; ?>" name="copy_billing_address_<?php echo $i; ?>" class="copy_billing_address"><?php echo __('Set as Billing Address', 'cdash-mu'); ?></button><span id="billing_copy_message_<?php echo $i; ?>" class="message"></span>
         <br /><br />

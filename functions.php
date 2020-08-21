@@ -115,5 +115,18 @@ function cdashmu_show_current_user_attachments( $query ) {
     return $query;
 } 
 
-
+add_filter('upload_mimes','cdashmu_restrict_file_upload_types');
+function cdashmu_restrict_file_upload_types($mimes){
+  $user = wp_get_current_user();
+  //cd_debug("User Roles: " . print_r($user->roles),true);
+  if ( in_array( 'cdashmu_business_editor', (array) $user->roles ) ) {
+    //The user has the "cdashmu_business_editor" role
+    $mimes = array(
+      'jpg|jpeg|jpe' => 'image/jpeg',
+      'gif' => 'image/gif',
+      'png' =>  'image/png'
+      );
+  }
+  return $mimes;
+}
 ?>

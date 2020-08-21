@@ -22,11 +22,11 @@ function cdashmu_business_update_form(){
     $business_edit_page_slug = get_queried_object()->post_name;
 
     if(!$user_id){
-        echo __("<p>Please login <a href='" . $login_page . "'>here</a> to update your business.</p>", "cdashmu");
+        echo __("<p>Please login <a href='" . $login_page . "'>here</a> to update your business.</p>", "cdash-mu");
         return;
     }
     if(!cdashmu_is_business_editor($user_id)){
-      echo __("<p>You are not authorized to edit your business. Please contact your site admin for more details.</p>", "cdashmu");
+      echo __("<p>You are not authorized to edit your business. Please contact your site admin for more details.</p>", "cdash-mu");
       return;
     }
     $person_id = cdashmu_get_person_id_from_user_id($user_id, false);
@@ -35,10 +35,10 @@ function cdashmu_business_update_form(){
         $person_id = cdashmu_get_person_id_from_user_id($user_id, true);
         $business_id = cdashmu_get_business_id_from_person_id($person_id, true);
         if($business_id){
-            echo __("Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.", "cdashmu");
+            echo __("Your connection to the business has not been approved yet. Please contact your Chamber of Commerce.", "cdash-mu");
         }
         else{
-            echo __("You are not connected to a business. Please contact your Chamber of Commerce.", "cdashmu");
+            echo __("You are not connected to a business. Please contact your Chamber of Commerce.", "cdash-mu");
         }
         return;
     }
@@ -71,12 +71,12 @@ function cdashmu_business_update_form(){
         ?>
     <?php //var_dump(wp_get_current_user()); ?>
     <p>
-        <label for="bus_name"><?php echo __('Business Name')?></label>
+        <label for="bus_name"><?php echo __('Business Name', 'cdash-mu')?></label>
         <?php echo $bus_title; ?>
     </p>
 
     <p>
-        <label for="bus_desc"><?php echo __('Business Description')?></label>
+        <label for="bus_desc"><?php echo __('Business Description', 'cdash-mu')?></label>
         <?php
             
             $content = $bus_content;
@@ -92,8 +92,8 @@ function cdashmu_business_update_form(){
         $current_terms = wp_get_post_terms( $business_id, $taxonomy);
     ?>
     <p>
-        <label for="bus_cat"><?php echo __('Business Categories')?></label>
-        <p> <?php echo __('Current categories have been checked. If you would like to add more categories, please select them from the list below. If you would like to remove the current categories, please un-check them.')?></p>
+        <label for="bus_cat"><?php echo __('Business Categories', 'cdash-mu')?></label>
+        <p> <?php echo __('Current categories have been checked. If you would like to add more categories, please select them from the list below. If you would like to remove the current categories, please un-check them.', 'cdash-mu')?></p>
         <?php
         $taxonomy = 'business_category';
         $current_terms = wp_get_post_terms( $business_id, $taxonomy );
@@ -121,7 +121,7 @@ function cdashmu_business_update_form(){
     </p>
 
     <p>
-        <label for="membership_level"><?php echo __('Membership Level')?></label>
+        <label for="membership_level"><?php echo __('Membership Level', 'cdash-mu')?></label>
         <?php
         $level = 'membership_level';
         $terms = wp_get_post_terms( $business_id, $level );
@@ -149,7 +149,11 @@ function cdashmu_business_update_form(){
     }
     ?><br />
        <?php $member_options = get_option('cdashmu_options');  ?>
-        <label for="bus_logo"><?php echo __('Logo')?></label><?php echo $logo; ?> <br />If you wish, you can upload a new logo (<?php echo $member_options['bus_logo_image_width']; ?>px X <?php echo $member_options['bus_logo_image_height']; ?>px ).
+        <label for="bus_logo"><?php echo __('Logo')?></label><?php echo $logo; ?> <br />
+        
+        <?php 
+        echo __("If you wish, you can upload a new logo<br /> (<small>Recommended size: " . $member_options['bus_logo_image_width'] . "px X " . $member_options['bus_logo_image_height'] . "px)</small><br />", "cdash-mu");
+        ?>
         <input type="file" name="bus_logo" value=""/>
     </p>
 
@@ -163,10 +167,12 @@ function cdashmu_business_update_form(){
             $thumbnail_image = "There is no featured image set for your business.";
         }
     ?>
-        <label for="featured_image"><?php echo __('Featured Image')?></label>
+        <label for="featured_image"><?php echo __('Featured Image', 'cdash-mu')?></label>
             <?php echo $thumbnail_image; ?>
         <br />
-        If you wish, you can upload a new featured image (<?php echo $member_options['bus_featured_image_width']; ?>px X <?php echo $member_options['bus_featured_image_height']; ?>px).
+        <?php 
+        echo __("If you wish, you can upload a new featured image<br /> (<small>Recommended size: " . $member_options['bus_featured_image_width'] . "px X " . $member_options['bus_featured_image_height'] . "px)</small><br />", "cdash-mu");
+        ?>
         <input type="file" name="featured_image" id="featured_image_upload" value=""/>
     </p>
     <?php
@@ -177,7 +183,7 @@ function cdashmu_business_update_form(){
         $i = 0;
         ?>
         <fieldset>
-        <legend><?php echo __('Location and Address')?></legend>
+        <legend><?php echo __('Location and Address', 'cdash-mu')?></legend>
         <?php
         if(!isset($contactmeta['location'])){
           //echo "show the empty location fields";
@@ -188,7 +194,7 @@ function cdashmu_business_update_form(){
           include 'cdashmu-location-fields.php';
          ?>
         <!--<p>
-            <label for="bus_url"><?php echo __('Web Address')?></label>
+            <label for="bus_url"><?php echo __('Web Address', 'cdash-mu')?></label>
             <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][url]" value="<?php if(isset($location_info['url'])) echo $location_info['url']; ?>"/>
         </p>-->
     </fieldset>
@@ -208,37 +214,37 @@ function cdashmu_business_update_form(){
             $billingmeta = $billing_metabox->the_meta();
         ?>
         <p>
-            <label for="billing_address">Address</label>
+            <label for="billing_address"><?php echo __('Address', 'cdash-mu'); ?></label>
             <input type="text" id="billing_address" name="billing_address" value="<?php if(isset($billingmeta['billing_address'])) echo $billingmeta['billing_address']; ?>"/>
         </p>
 
         <p>
-            <label for="billing_city">City</label>
+            <label for="billing_city"><?php echo __('City', 'cdash-mu'); ?></label>
             <input type="text" id="billing_city" name="billing_city" value="<?php if(isset($billingmeta['billing_city'])) echo $billingmeta['billing_city']; ?>"/>
         </p>
 
         <p>
-            <label for="billing_state">State</label>
+            <label for="billing_state"><?php echo __('State', 'cdash-mu'); ?></label>
             <input type="text" id="billing_state" name="billing_state" value="<?php if(isset($billingmeta['billing_state'])) echo $billingmeta['billing_state']; ?>"/>
         </p>
 
         <p>
-            <label for="billing_zip">Zip</label>
+            <label for="billing_zip"><?php echo __('Zip', 'cdash-mu'); ?></label>
             <input type="text" id="billing_zip" name="billing_zip" value="<?php if(isset($billingmeta['billing_zip'])) echo $billingmeta['billing_zip']; ?>"/>
         </p>
 
         <p>
-            <label for="billing_zip">Country</label>
+            <label for="billing_zip"><?php echo __('Country', 'cdash-mu'); ?></label>
             <input type="text" id="billing_country" name="billing_country" value="<?php if(isset($billingmeta['billing_country'])) echo $billingmeta['billing_country']; ?>"/>
         </p>
 
         <p>
-            <label for="billing_email">Billing Email</label>
+            <label for="billing_email"><?php echo __('Billing Email', 'cdash-mu'); ?></label>
             <input type="text" id="billing_email" name="billing_email" value="<?php if(isset($billingmeta['billing_email'])) echo $billingmeta['billing_email']; ?>"/>
         </p>
 
         <p>
-            <label for="billing_phone">Billing Phone</label>
+            <label for="billing_phone"><?php echo __('Billing Phone', 'cdash-mu'); ?></label>
             <input type="text" id="billing_phone" name="billing_phone" value="<?php if(isset($billingmeta['billing_phone'])) echo $billingmeta['billing_phone']; ?>"/>
         </p>
 
