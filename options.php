@@ -58,7 +58,10 @@ function cdashmu_add_new_user_role() {
         __( 'Business Editor' ),
         array(
             'read'         => true,  // true allows this capability
-            'edit_posts'   => true,
+			'edit_post'   => true,
+			'edit_posts'   => true,
+			'edit_others_pages' => true,
+			'edit_published_pages' => true,
             'delete_posts' => false, // Use false to explicitly deny
             'delete_published_posts' => false,
             'upload_files' => true,
@@ -69,15 +72,15 @@ function cdashmu_add_new_user_role() {
 
 function cdashmu_add_role_cap(){
 	$role = get_role( 'cdashmu_business_editor' );
-	//$role->add_cap( 'edit_published_pages' );
-	//$role->add_cap( 'edit_published_posts' );
-  	//$role->add_cap('delete_posts');
-  	//$role->add_cap('edit_posts');
   	$role->add_cap('upload_files');
-    // editor caps
-	//$role->add_cap('edit_others_posts');
 }
-add_action( 'admin_init', 'cdashmu_add_role_cap');
+//add_action( 'admin_init', 'cdashmu_add_role_cap');
+
+function remove_business_editor_role(){
+	remove_role( 'cdashmu_business_editor' );
+}
+
+
 
 // ----------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_activation_hook(__FILE__, 'cdashmu_add_defaults')
@@ -92,19 +95,19 @@ function cdashmu_add_defaults() {
 	}
 
     if(!isset($tmp['custom_registration_message'])){
-        $tmp['custom_registration_message'] = 'Thank you for registering as a member. You will be able to update your business after you have been approved by the site admin. If you have questions, please contact us.';
+        $tmp['custom_registration_message'] = __('Thank you for registering as a member. You will be able to update your business after you have been approved by the site admin. If you have questions, please contact us.', 'cdash-mu');
     }
 
     if(!isset($tmp['custom_admin_message'])){
-        $tmp['custom_admin_message'] = 'You have a new user registered on your site';
+        $tmp['custom_admin_message'] = __('You have a new user registered on your site', 'cdash-mu');
     }
 
     if(!isset($tmp['custom_business_message'])){
-        $tmp['custom_business_message'] = 'A new user has been added to your business listing';
+        $tmp['custom_business_message'] = __('A new user has been added to your business listing', 'cdash-mu');
     }
 
     if(!isset($tmp['custom_user_message'])){
-        $tmp['custom_user_message'] = 'You have been successfully registered as a user for ' . bloginfo('name');
+        $tmp['custom_user_message'] = __('You have been successfully registered as a user for ' . bloginfo('name') . '. We will follow up shortly as soon as we have confirmed your status as an editor for this listing.', 'cdash-mu');
     }
 
   	if( !isset( $tmp['user_login_page'] ) ) {
@@ -274,7 +277,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_form_page_section',
 		array(
-			__( 'Here you can specify the maximum width of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
+			__( 'Here you can specify the recommended maximum width of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
 		)
 	);
 
@@ -285,7 +288,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_form_page_section',
 		array(
-			__( 'Here you can specify the maximum height of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
+			__( 'Here you can specify the recommended maximum height of the logo image that the businesses can upload. The default is 200px.', 'cdashmu' )
 		)
 	);
 
@@ -296,7 +299,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_form_page_section',
 		array(
-			__( 'Here you can specify the maximum width of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
+			__( 'Here you can specify the recommended maximum width of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
 		)
 	);
 
@@ -307,7 +310,7 @@ function cdashmu_options_init(  ) {
 		'cdashmu_settings_page',
 		'cdashmu_form_page_section',
 		array(
-			__( 'Here you can specify the maximum height of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
+			__( 'Here you can specify the recommended maximum height of the featured image that the businesses can upload. The default is 400px.', 'cdashmu' )
 		)
 	);
 
@@ -611,7 +614,7 @@ function cdashmu_render_form() {
                         <a href="?page=cd-settings&tab=cdash-mu&section=cdmu_settings" class="<?php echo $section == 'cdmu_settings' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Member Updater Settings', 'cdash' ); ?></a><span>|</span>
                     </li>
                     <li class="<?php echo $section == 'cdmu_docs' ? 'section_active' : ''; ?>">
-                        <a href="?page=cd-settings&tab=cdash-mu&section=cdmu_docs" class="<?php echo $section == 'cdmu_docs' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Quick Setup Guide', 'cdash' ); ?></a>
+                        <a href="?page=cd-settings&tab=cdash-mu&section=cdmu_docs" class="<?php echo $section == 'cdmu_docs' ? 'section_active' : ''; ?>"><?php esc_html_e( 'Shortcodes', 'cdash-mu' ); ?></a>
                     </li>
                 </ul>
             </div>

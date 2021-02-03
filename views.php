@@ -358,6 +358,4 @@ function cdashmu_logout_link(){
     //$logout_link = wp_logout_url();
     echo "Logout";
 }
-
-
 ?>

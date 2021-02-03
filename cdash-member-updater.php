@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.4.0
+Version: 1.4.1
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
@@ -33,7 +33,7 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.4.0');
+define('CDASHMU_VERSION',   				'1.4.1');
 
 $license_page_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
 define('MU_IMPORT_LICENSE_PAGE_URL', $license_page_url);
@@ -42,7 +42,7 @@ define('MU_IMPORT_LICENSE_PAGE_URL', $license_page_url);
 add_action('cdash_technical_details_hook', 'cdmu_render_technical_details');
 
 function cdmu_render_technical_details(){
-  echo "<h4>Member Updater Version: " . CDASHMU_VERSION . "</h4>";
+  echo "<h4>" . __("Member Updater Version: ", "cdash-mu") . CDASHMU_VERSION . "</h4>";
 }
 
 // ------------------------------------------------------------------------
@@ -195,6 +195,8 @@ add_action( 'admin_init', 'cdashmu_init' );
 
 //What to do when the plugin is uninstalled
 register_uninstall_hook(__FILE__, 'cdashmu_delete_plugin_options');
+register_deactivation_hook( __FILE__, 'remove_business_editor_role' );
+
 
 //Required Files
 require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
@@ -213,7 +215,7 @@ function cdash_mu_edd_plugin_updater() {
 
 	// setup the updater
 	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.4.0',                // current version number
+			'version'   => '1.4.1',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
 			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
 			'author'    => 'Chandrika Guntur',   // author of this plugin
@@ -264,7 +266,7 @@ function cdashmu_user_registration_form( $first_name, $last_name, $username, $pa
     <?php
 
 	if ( is_wp_error( $reg_errors ) ) {
-        echo "<span class='errors'>There are some errors in the form. Please check below.</span>";
+        echo "<span class='errors'>" . __("There are some errors in the form. Please check below.", "cdash-mu") . "</span>";
 	}
 
     ?>
@@ -303,7 +305,7 @@ function cdashmu_user_registration_form( $first_name, $last_name, $username, $pa
     </p>
 
 	<p>
-        <label><?= __( 'Business Name', 'cdashmu' ) ?> *</label><span><?= __('Please enter your business name and press tab to select your business from the list.')?> <small><?= __('(Your business needs to be already registered with our chamber.)') ?></small></span>
+        <label><?= __( 'Business Name', 'cdashmu' ) ?> *</label><span><?= __('Please enter your business name and press tab to select your business from the list.')?> <small><?= __('(Your business needs to be already registered with us.)') ?></small></span>
 		<input name="bus_name" type="text" id="bus_name" required value="<?= ( $business_id ? $bus_name : null ) ?>">
         <?= cdashmu_display_error('business_name', $reg_errors) ?>
 	</p>
@@ -372,7 +374,7 @@ function cdashmu_user_registration_validation( $first_name, $last_name, $usernam
 function cdashmu_complete_user_registration($first_name, $last_name, $username, $password, $email, $bus_name, $business_id, $show_registration_message) {
 	$options = get_option( 'cdashmu_options' );
       $userdata = array(
-			'first_name'    =>   $first_name,
+	  'first_name'    =>   $first_name,
       'last_name'     =>   $last_name,
       'user_login'    =>   $username,
       'user_pass'     =>   $password,
@@ -382,8 +384,8 @@ function cdashmu_complete_user_registration($first_name, $last_name, $username, 
     $user = wp_insert_user( $userdata );
 		$name = $first_name . ' ' . $last_name;
 		$person_details = array(
-			'post_type' => 'person',
-		  'post_title' => $name,
+		'post_type' => 'person',
+		'post_title' => $name,
 	    'post_content' => 'This was created by the Member Updater.',
 	    'post_status' => 'pending'
 		);

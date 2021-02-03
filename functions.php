@@ -104,4 +104,29 @@ function cdashmu_login_page(){
        return $login_page;
 }
 
+//Restrict media library files to user's own uploads
+add_filter( 'ajax_query_attachments_args', 'cdashmu_show_current_user_attachments' );
+ 
+function cdashmu_show_current_user_attachments( $query ) {
+    $user_id = get_current_user_id();
+    if ( $user_id && !current_user_can('activate_plugins') ) {
+        $query['author'] = $user_id;
+    }
+    return $query;
+} 
+
+/*add_filter('upload_mimes','cdashmu_restrict_file_upload_types');
+function cdashmu_restrict_file_upload_types($mimes){
+  $user = wp_get_current_user();
+  //cd_debug("User Roles: " . print_r($user->roles),true);
+  if ( in_array( 'cdashmu_business_editor', (array) $user->roles ) ) {
+    //The user has the "cdashmu_business_editor" role
+    $mimes = array(
+      'jpg|jpeg|jpe' => 'image/jpeg',
+      'gif' => 'image/gif',
+      'png' =>  'image/png'
+      );
+  }
+  return $mimes;
+}*/
 ?>
