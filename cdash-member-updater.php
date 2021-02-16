@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.4.1
+Version: 1.4.2
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
@@ -33,7 +33,7 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.4.1');
+define('CDASHMU_VERSION',   				'1.4.2');
 
 $license_page_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
 define('MU_IMPORT_LICENSE_PAGE_URL', $license_page_url);
@@ -215,7 +215,7 @@ function cdash_mu_edd_plugin_updater() {
 
 	// setup the updater
 	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.4.1',                // current version number
+			'version'   => '1.4.2',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
 			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
 			'author'    => 'Chandrika Guntur',   // author of this plugin

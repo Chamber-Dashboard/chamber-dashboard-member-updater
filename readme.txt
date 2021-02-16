@@ -3,9 +3,9 @@ Contributors: cguntur
 Tags: Chamber of Commerce, business directory, businesses, membership, update members
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 7.0
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,9 @@ None yet
 == Screenshots ==
 
 == Changelog ==
+= 1.4.2 =
+* Updated the dispaly of business edit link using the custom member info filter on the member account page 
+
 = 1.4.1 =
 * The members can now add media when they edit their businesses.
 
