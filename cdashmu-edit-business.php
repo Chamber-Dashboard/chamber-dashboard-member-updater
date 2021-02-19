@@ -371,5 +371,4 @@ function insert_attachment($file_handler,$post_id) {
 
     return $attach_id;
 }
-
 ?>

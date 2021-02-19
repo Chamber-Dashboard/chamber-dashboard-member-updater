@@ -615,5 +615,4 @@ function cdashmu_prefill_user_registration_form() {
 }
 add_action( 'wp_ajax_nopriv_cdashmu_prefill_user_registration_form', 'cdashmu_prefill_user_registration_form' );
 add_action( 'wp_ajax_cdashmu_prefill_user_registration_form', 'cdashmu_prefill_user_registration_form' );
-
 ?>

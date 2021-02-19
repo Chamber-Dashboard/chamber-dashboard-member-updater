@@ -348,5 +348,4 @@ function cdash_mu_edd_admin_notices() {
 	}
 }
 add_action( 'admin_notices', 'cdash_mu_edd_admin_notices' );
-
 ?>

@@ -16,5 +16,4 @@ require_once( plugin_dir_path( __FILE__ ) . 'cdashmu-edit-business.php' );
 
 // Require functions.php
 require_once( plugin_dir_path( __FILE__ ) . 'functions.php' );
-
 ?>
