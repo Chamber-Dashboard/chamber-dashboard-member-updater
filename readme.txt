@@ -46,7 +46,7 @@ None yet
 
 == Changelog ==
 = 1.4.2 =
-* Updated the dispaly of business edit link using the custom member info filter on the member account page 
+* Updated the display of business edit link using the custom member info filter on the member account page 
 
 = 1.4.1 =
 * The members can now add media when they edit their businesses.
