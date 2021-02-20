@@ -193,10 +193,6 @@ function cdashmu_business_update_form(){
         foreach( $contactmeta['location'] as $location_info ) {
           include 'cdashmu-location-fields.php';
          ?>
-        <!--<p>
-            <label for="bus_url"><?php echo __('Web Address', 'cdash-mu')?></label>
-            <input type="text" name="buscontact_meta[location][<?php echo $i; ?>][url]" value="<?php if(isset($location_info['url'])) echo $location_info['url']; ?>"/>
-        </p>-->
     </fieldset>
     <?php
             $i++;
