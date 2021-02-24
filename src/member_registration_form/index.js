@@ -6,11 +6,11 @@ import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
 import { setState } from '@wordpress/compose';
 
  
-registerBlockType( 'cdash-bd-blocks/mu-edit-form', {
-    title: 'Business Edit Form',
+registerBlockType( 'cdash-bd-blocks/mu-registration-form', {
+    title: 'Member Registration Form',
     icon: 'list-view',
     category: 'cd-blocks',
-    description: __('This block displays the business edit form.', 'cdashmu'),
+    description: __('This block displays the member registration form.', 'cdashmu'),
     example: {
     },
     edit: edit,
