@@ -3,9 +3,9 @@ Contributors: cguntur
 Tags: Chamber of Commerce, business directory, businesses, membership, update members
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 4.2
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,9 @@ None yet
 == Screenshots ==
 
 == Changelog ==
+= 1.4.3 =
+* Added Gutenberg blocks for the member registration form and the business update shortcodes 
+
 = 1.4.2 =
 * Updated the display of business edit link using the custom member info filter on the member account page 
 

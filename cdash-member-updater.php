@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Member Updater
 Plugin URI: http://chamberdashboard.com
 Description: Enables members to update their businesses
-Version: 1.4.2
+Version: 1.4.3
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
@@ -33,7 +33,7 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.4.2');
+define('CDASHMU_VERSION',   				'1.4.3');
 
 $license_page_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
 define('MU_IMPORT_LICENSE_PAGE_URL', $license_page_url);
@@ -215,7 +215,7 @@ function cdash_mu_edd_plugin_updater() {
 
 	// setup the updater
 	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.4.2',                // current version number
+			'version'   => '1.4.3',                // current version number
 			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
 			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
 			'author'    => 'Chandrika Guntur',   // author of this plugin
@@ -241,6 +241,19 @@ function cdashmu_plugin_action_links( $links ) {
   return $links;
 }
 add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'cdashmu_plugin_action_links' );
+
+function cdashmu_block_scripts() {
+	$asset_file = include( plugin_dir_path( __FILE__ ) . 'build/index.asset.php');	
+	wp_register_script(
+		'member-updater-blocks',
+		plugins_url( 'build/index.js', __FILE__ ),
+		$asset_file['dependencies'],
+		$asset_file['version']
+	);
+	wp_enqueue_script('member-updater-blocks');
+	wp_localize_script( 'member-updater-blocks', 'wpAjax', array( 'wpurl' => get_bloginfo('wpurl') ) );
+}
+add_action( 'enqueue_block_editor_assets', 'cdashmu_block_scripts', 30 );
 
 // ------------------------------------------------------------------------
 // MEMBER REGISTRATION FORM
@@ -396,7 +409,7 @@ function cdashmu_complete_user_registration($first_name, $last_name, $username, 
 
 	        //echo 'Registration complete. Goto <a href="' . $options['user_login_page'] . '">Login page</a>.';
 					if($show_registration_message){
-						echo nl2br($options['custom_registration_message']);
+						echo "<p>" . nl2br($options['custom_registration_message']) . "</p>";
 					}
 
 			// send an email to the admin alerting them of the registration
