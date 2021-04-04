@@ -199,29 +199,27 @@ function cdashmu_get_business_email_from_business_id($business_id) {
  */
  function cdashmu_wp_new_user_notification($user_id, $business_id, $bus_name, $name) {
     $bus_name = wp_specialchars_decode($bus_name, ENT_QUOTES);
-     $member_options = get_option('cdashmu_options');
-	   $user = get_userdata( $user_id );
-     //$bus_email1 = cdashmu_get_business_email_from_business_id($business_id);
-     $bus_email = cdashmu_get_business_email_from_business_id($business_id);
-     $user_email = $user->user_email;
-     $user_login = $user->user_login;
-     //$headers = array('Content-Type: text/html; charset=UTF-8');
-     $headers = "MIME-Version: 1.0\r\n";
-     //$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-     $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+    $member_options = get_option('cdashmu_options');
+	$user = get_userdata( $user_id );
+    //$bus_email1 = cdashmu_get_business_email_from_business_id($business_id);
+    $bus_email = cdashmu_get_business_email_from_business_id($business_id);
+    $user_email = $user->user_email;
+    $user_login = $user->user_login;
+    //$headers = array('Content-Type: text/html; charset=UTF-8');
+    $headers = "MIME-Version: 1.0\r\n";
+    //$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+    $headers .= "Content-Type: text/html; charset=utf-8\r\n";
 
-     if($member_options['additional_admin_email'] == ""){
-         $admin_email = get_option('admin_email');
-         cd_debug("Admin email 1: ". $admin_email);
-     }else{
-         $admin_email = $member_options['additional_admin_email'];
-         cd_debug("Admin email 2: ". $admin_email);
-     }
+    if($member_options['additional_admin_email'] == ""){
+        $admin_email = get_option('admin_email');
+    }else{
+        $admin_email = $member_options['additional_admin_email'];
+    }
    // The blogname option is escaped with esc_html on the way into the database in sanitize_option
-	 // we want to reverse this for the plain text arena of emails.
-	 $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+    // we want to reverse this for the plain text arena of emails.
+    $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
-	 cdashmu_send_admin_email($blogname, $name, $user_email, $bus_name, $bus_email, $admin_email, $headers);
+    cdashmu_send_admin_email($blogname, $name, $user_email, $bus_name, $bus_email, $admin_email, $headers);
 
    cdashmu_send_bus_email($bus_name, $name, $user_email, $headers, $bus_email);
 
@@ -246,12 +244,10 @@ function cdashmu_send_admin_email($blogname, $name, $user_email, $bus_name, $bus
 function cdashmu_send_bus_email($bus_name, $name, $user_email, $headers, $bus_email){
   $member_options = get_option('cdashmu_options');
  //This email goes to the first business email listed under the business listing.
- // Provides: You should eat pizza, beer, and ice cream every day
  $message  = sprintf(__('New user connected to your business %s:'), $bus_name) . "<br />";
  $message .= sprintf(__('Name: %s'), $name) . "<br />";
  $message .= sprintf(__('Registered E-mail: %s'), $user_email) . "<br />";
  $message .= nl2br($member_options['custom_business_message']);
-
  @wp_mail($bus_email, sprintf(__('[%s] New User added to your business listing'), $bus_name), $message, $headers);
 }
 
@@ -262,7 +258,6 @@ function cdashmu_send_user_email($bus_name, $user_login, $user_email, $blogname,
   $message .= sprintf(__('Here is your username: %s'), $user_login) . "<br />";
   $message .= sprintf(__('Registered E-mail: %s'), $user_email) . "<br />";
   $message .= nl2br($member_options['custom_user_message']);
-  add_filter('wp_mail_from', 'sushmasomu@gmail.com');
   @wp_mail($user_email, sprintf(__('[%s] Your Registration was Successful.'), $blogname), $message, $headers);
 }
 

@@ -406,17 +406,15 @@ function cdashmu_complete_user_registration($first_name, $last_name, $username, 
 		$person = wp_insert_post( $person_details );
         p2p_type('businesses_to_people')->connect($business_id, $person, array('date' => current_time('mysql')));
         cdashmu_connect_user_to_people($user, $person);
+        //echo 'Registration complete. Goto <a href="' . $options['user_login_page'] . '">Login page</a>.';
+		if($show_registration_message){
+			echo "<p>" . nl2br($options['custom_registration_message']) . "</p>";
+		}
 
-	        //echo 'Registration complete. Goto <a href="' . $options['user_login_page'] . '">Login page</a>.';
-					if($show_registration_message){
-						echo "<p>" . nl2br($options['custom_registration_message']) . "</p>";
-					}
-
-			// send an email to the admin alerting them of the registration
-            //$user_id =  $user->ID;
-			cdashmu_wp_new_user_notification($user, $business_id, $bus_name, $name);
-
-			return $user;
+    	// send an email to the admin alerting them of the registration
+        //$user_id =  $user->ID;
+		cdashmu_wp_new_user_notification($user, $business_id, $bus_name, $name);
+		return $user;
 }
 
 function cdashmu_member_custom_registration_function() {
@@ -427,7 +425,7 @@ function cdashmu_member_custom_registration_function() {
         $username   =   sanitize_user( $_POST['username'] );
         $password   =   esc_attr( $_POST['password'] );
         $email      =   sanitize_email( $_POST['email'] );
-				$bus_name	=	$_POST['bus_name'];
+		$bus_name	=	$_POST['bus_name'];
         $business_id =  $_POST['business_id'];
 
         $reg_errors = cdashmu_user_registration_validation($first_name, $last_name, $username, $password, $email, $bus_name, $business_id);
