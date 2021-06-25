@@ -38,13 +38,6 @@ define('CDASHMU_VERSION',   				'1.4.3');
 $license_page_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
 define('MU_IMPORT_LICENSE_PAGE_URL', $license_page_url);
 
-//Display Member Updater version in the technical details tab
-add_action('cdash_technical_details_hook', 'cdmu_render_technical_details');
-
-function cdmu_render_technical_details(){
-  echo "<h4>" . __("Member Updater Version: ", "cdash-mu") . CDASHMU_VERSION . "</h4>";
-}
-
 // ------------------------------------------------------------------------
 // ADD THE EDD LICENSE INFORMATION
 // ------------------------------------------------------------------------

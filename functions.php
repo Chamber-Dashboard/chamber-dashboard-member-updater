@@ -12,11 +12,11 @@ function cdashmu_set_plugin_inactive(){
   delete_transient('cdashmu_active');
 }
 
-add_action('cdash_technical_details_hook', 'cdashmu_render_technical_details', 60);
-
+//Display Member Updater version in the technical details tab
 function cdashmu_render_technical_details(){
   echo "<h4>Member Updater Version: " . CDASHMU_VERSION . "</h4>";
 }
+add_action('cdash_technical_details_hook', 'cdashmu_render_technical_details', 60);
 
 function cdashmu_display_license_notice(){
   if(get_transient('cdashmu_active')){
