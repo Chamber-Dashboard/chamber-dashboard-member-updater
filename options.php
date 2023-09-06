@@ -12,19 +12,6 @@ cdashmu_remove_admin_bar();
 // Delete options table entries ONLY when plugin deactivated AND deleted
 function cdashmu_delete_plugin_options() {
 	//delete_option('cdashmu_options');
-    delete_option( 'cdash_mu_edd_license_key' );
-	delete_option( 'cdash_mu_edd_license_status' );
-}
-
-// --------------------------------------------------------------------------------------
-//  REDIRECTING THE PLUGIN TO THE LICENSE PAGE AFTER ACTIVATION
-// --------------------------------------------------------------------------------------
-
-
-function cdashmu_plugin_activate(){
-  //cdash_license_page();
-  add_option('cdashmu_do_activation_redirect', true);
-  //cdashmu_plugin_redirect();
 }
 
 function cdashmu_remove_admin_bar() {
@@ -36,17 +23,7 @@ function cdashmu_remove_admin_bar() {
 	}
 }
 
-function cdashmu_plugin_redirect(){
-    if (get_option('cdashmu_do_activation_redirect', false)) {
-        delete_option('cdashmu_do_activation_redirect');
-    }else{
-      if(!isset($_GET['activate-multi']))
-      {
-          //wp_safe_redirect(admin_url('admin.php?page=cdash-mu&tab=cdashmu_license_page'));
-          wp_safe_redirect(admin_url('admin.php?page=chamber_dashboard_license'));
-      }
-    }
-}
+
 
 // --------------------------------------------------------------------------------------
 // ADDING THE ROLE 'BUSINESS EDITOR' WHEN THE PLUGIN IN ACTIVATED
@@ -325,13 +302,6 @@ function cdashmu_options_init(  ) {
 		)
 	);
 
-    // license tab
-	add_settings_section(
-		'cdashmu_license_page_section',
-		__( 'License', 'cdashmu' ),
-		'cdashmu_license_section_callback',
-		'cdashmu_licence_page'
-	);
 }
 
 //All the Callback functions that render the fields
@@ -659,16 +629,18 @@ function cdashmu_quick_setup_guide(){
     		<div class="cdash_block">
     			<h3><?php echo __('Member Registration Form', 'cdashmu'); ?></h3>
     			<p><span class="bold">[cdashmu_registration_form]</span> - <?php echo __('Displays the member registation form', 'cdashmu'); ?><br />
+				<p>You can also use the Member registration form block.</p>
 
     			</p>
-    			<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/member-claimed-listings/"><?php echo __('Member Updater Docs', 'cdashmu'); ?></a></p>
+    			<!--<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/member-claimed-listings/"><?php //echo __('Member Updater Docs', 'cdashmu'); ?></a></p>-->
     		</div>
             <div class="cdash_block">
     			<h3><?php echo __('Member Update Business Form', 'cdashmu'); ?></h3>
     			<p><span class="bold">[cdashmu_update_business]</span> - <?php echo __('Displays the member/business update form', 'cdashmu'); ?><br />
+				<p>You can also use the Business edit form block.</p>
 
     			</p>
-    			<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/member-claimed-listings/"><?php echo __('Member Updater Docs', 'cdashmu'); ?></a></p>
+    			<!--<p><a target="_blank" href="https://chamberdashboard.com/docs/plugin-features/member-claimed-listings/"><?php //echo __('Member Updater Docs', 'cdashmu'); ?></a></p>-->
     		</div>
         </div>
     </div>

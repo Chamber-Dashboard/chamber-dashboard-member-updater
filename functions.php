@@ -18,24 +18,6 @@ function cdashmu_render_technical_details(){
 }
 add_action('cdash_technical_details_hook', 'cdashmu_render_technical_details', 60);
 
-function cdashmu_display_license_notice(){
-  if(get_transient('cdashmu_active')){
-    $plugin_slug = plugin_basename( __FILE__ );
-  	$license_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
-  	add_option( 'Activated_Plugin', $plugin_slug );
-  	$license_active = cdash_mu_edd_check_license();
-  	global $pagenow;
-  	if(!$license_active){
-  		if($pagenow == 'plugins.php'){
-  			echo "<div class='notice notice is-dismissible cdash_update_notice'><p>";
-  			printf (__('Your license key for Chamber Dashboard Member Updater is either invalid or not activated. Please enter your license key and activate it <a href="' . $license_url . '">here</a>') );
-  			echo "</p></div>";
-  		}
-  	}
-  }
-}
-add_action( 'admin_notices', 'cdashmu_display_license_notice' );
-
 //Taken from https://alka-web.com/blog/how-to-restrict-access-to-wordpress-dashboard-programmatically/
 // Could be better adds the function to the 'init' hook and check later if it's an admin page
 add_action( 'init', 'cdashmu_admin_access_handler');
@@ -71,27 +53,6 @@ function cdashmu_is_business_editor($user_id){
 		return false;
 	}
 }
-
-function cdashmu_check_license_message($license_validity, $site_count, $license_limit, $license_expiry_date){
-  $message = '';
-  if($license_validity == 'valid'){
-    $message .= '<p class="license_information" style="font-style:italic; font-size:12px;"><span class="cdash_active_license" style="color:green;">';
-    $message .= __( 'Your license key is active. ' );
-    $message .= '</span>';
-
-    if(isset($license_expiry_date) && $license_expiry_date != 'lifetime'){
-      $message .= __( 'It expires on ' . date_i18n( get_option( 'date_format' ), strtotime( $license_expiry_date, current_time( 'timestamp' ) ) ) );
-    }
-     $message .=  __(' You have ' . $site_count .'/' .$license_limit . ' sites active.' );
-     $message .= '</p>';
-  }elseif($license_validity == 'invalid'){
-    $message .= '<p class="license_information" style="font-style:italic; font-size:12px;"><span class="cdash_inactive_license" style="color:red;">';
-    $message .= __( 'Your license key is not active.' );
-    $message .= '</span></p>';
-  }
-  return $message;
-}
-
 function cdashmu_login_page(){
     $member_options = get_option('cdashmu_options');
     $mm_options = get_option('cdashmm_options');

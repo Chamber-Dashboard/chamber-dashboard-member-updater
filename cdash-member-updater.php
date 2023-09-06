@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Chamber Dashboard Member Updater
-Plugin URI: http://chamberdashboard.com
+Plugin URI: https://github.com/Chamber-Dashboard/chamber-dashboard-member-updater
 Description: Enables members to update their businesses
-Version: 1.4.3
+Version: 1.4.4
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: cdash-mu
@@ -33,30 +33,7 @@ if ( ! defined('ABSPATH') ) {
 /* some plugin defines */
 define('CDASH_MU_PLUGIN_URL',       		plugins_url().'/chamber-dashboard-member-updater/');
 define('CDASH_MU_INCLUDES_DIR',	    		dirname( __FILE__ ) . '/includes/' );
-define('CDASHMU_VERSION',   				'1.4.3');
-
-$license_page_url = get_admin_url() . 'admin.php?page=chamber_dashboard_license';
-define('MU_IMPORT_LICENSE_PAGE_URL', $license_page_url);
-
-// ------------------------------------------------------------------------
-// ADD THE EDD LICENSE INFORMATION
-// ------------------------------------------------------------------------
-
-// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
-define( 'CDASH_MU_STORE_URL', 'https://chamberdashboard.com/' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
-
-// the name of your product. This should match the download name in EDD exactly
-define( 'CDASHMU_EDD_ITEM_NAME', 'Member Updater' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
-
-// the name of the settings page for the license input to be displayed
-//define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'cdash-mu' );
-//define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'cdash-mu&tab=cdashmu_license_page' );
-define( 'CDASHMU_EDD_PLUGIN_LICENSE_PAGE', 'chamber_dashboard_license' );
-
-if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-	// load our custom updater
-	include( dirname( __FILE__ ) . '/includes/EDD_SL_Plugin_Updater.php' );
-}
+define('CDASHMU_VERSION',   				'1.4.4');
 
 // ------------------------------------------------------------------------
 // REQUIRE MINIMUM VERSION OF WORDPRESS:
@@ -67,10 +44,10 @@ function cdashmu_requires_wordpress_version() {
 	$plugin = plugin_basename( __FILE__ );
 	$plugin_data = get_plugin_data( __FILE__, false );
 
-	if ( version_compare($wp_version, "4.2", "<" ) ) {
+	if ( version_compare($wp_version, "5.0", "<" ) ) {
 		if( is_plugin_active($plugin) ) {
 			deactivate_plugins( $plugin );
-			wp_die( "'".$plugin_data['Name']."' requires WordPress 4.2 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."'>WordPress admin</a>." );
+			wp_die( "'".$plugin_data['Name']."' requires WordPress 5.0 or higher, and has been deactivated! Please upgrade WordPress and try again.<br /><br />Back to <a href='".admin_url()."'>WordPress admin</a>." );
 		}
 	}
 }
@@ -149,28 +126,6 @@ $file   = plugin_basename( __FILE__ );
 $folder = dirname(__FILE__);
 $hook = "in_plugin_update_message-{$folder}/{$file}";
 
-function cdashmu_add_license( $plugin_file, $plugin_data, $status ){
-	$license = get_option( 'cdash_mu_edd_license_key' );
-	$status  = get_option( 'cdash_mu_edd_license_status' );
-	$license_url = MU_IMPORT_LICENSE_PAGE_URL;
-	if(!$license || $license == ''){
-		?>
-		<tr class="cd_license_key_notice" style="background-color:#f0d99c;"><td>&nbsp;</td><td colspan="2">
-        <?php echo __("<a href='$license_url'><b>Enter License Key</b></a> | Please enter your license key to receive plugin updates.", "cdash-mu"); ?>
-        </td></tr>
-		<?php
-	}else{
-		if($status != "valid"){
-			?>
-			<tr class="cd_license_key_notice" style="background-color:#f0d99c;"><td>&nbsp;</td><td colspan="2">
-	        <?php echo __("<a href='$license_url'><b>Activate License Key</b></a> | Please make sure your license key is valid and active to receive plugin updates.", "cdash-mu"); ?>
-	        </td></tr>
-			<?php
-		}
-	}
-}
-add_action( "after_plugin_row_{$file}", "cdashmu_add_license", 10, 3 );
-
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:
 // ------------------------------------------------------------------------
@@ -200,36 +155,13 @@ function cdashmu_language_init() {
 }
 add_action('init', 'cdashmu_language_init');
 
-
-function cdash_mu_edd_plugin_updater() {
-
-	// retrieve our license key from the DB
-	$license_key = trim( get_option( 'cdash_mu_edd_license_key' ) );
-
-	// setup the updater
-	$edd_updater = new EDD_SL_Plugin_Updater( CDASH_MU_STORE_URL, __FILE__, array(
-			'version'   => '1.4.3',                // current version number
-			'license'   => $license_key,         // license key (used get_option above to retrieve from DB)
-			'item_name' => CDASHMU_EDD_ITEM_NAME, // name of this plugin
-			'author'    => 'Chandrika Guntur',   // author of this plugin
-      		'url'       => home_url()
-		)
-	);
-
-}
-add_action( 'admin_init', 'cdash_mu_edd_plugin_updater', 0 );
-
 //Adding settings link on the plugins page
 function cdashmu_plugin_action_links( $links ) {
-  //Check transient. If it is available, display the settings and license link
+  //Check transient. If it is available, display the settings link
   if(get_transient('cdashmu_active')){
     $settings_url = get_admin_url() . 'admin.php?page=cd-settings&tab=cdash-mu';
     $settings_link = '<a href="' . $settings_url . '">' . __('Settings', 'cdash-mu') . '</a>';
     array_unshift( $links, $settings_link );
-
-  	$license_url = MU_IMPORT_LICENSE_PAGE_URL;
-    $license_link = '<a href="' . $license_url . '">' . __('License', 'cdash-mu') . '</a>';
-    array_unshift( $links, $license_link );
   }
   return $links;
 }

@@ -2,10 +2,10 @@
 Contributors: cguntur
 Tags: Chamber of Commerce, business directory, businesses, membership, update members
 Donate link: http://chamberdashboard.com/donate
-Requires at least: 4.2
-Tested up to: 5.7
+Requires at least: 5.0
+Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,7 +19,7 @@ Requires Chamber Dashboard Member Manager
 * Enables user registration on your site and the users are connected to their business.
 * Once the user is approved by the site admin, they can login from the front end and edit their business.
 
-You can learn more at [Chamber Dashboard](https://chamberdashboard.com)
+You can learn more at [Member Updater Documentation](https://github.com/Chamber-Dashboard/chamber-dashboard-member-updater/wiki)
 
 == Installation ==
 = Using The WordPress Dashboard =
@@ -45,6 +45,9 @@ None yet
 == Screenshots ==
 
 == Changelog ==
+= 1.4.4 = 
+* Moved plugin to Github
+
 = 1.4.3 =
 * Added Gutenberg blocks for the member registration form and the business update shortcodes 
 
